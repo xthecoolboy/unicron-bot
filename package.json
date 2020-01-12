@@ -3,11 +3,23 @@
   "version": "1.0.0",
   "description": "Multipurpose fun discord bot",
   "main": "src/index.js",
-  "dependencies": {},
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.0",
+    "sequelize": "^5.21.3",
+    "sqlite": "^3.0.3"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "reset-database": "node src/dbInit.js -f -all",
+    "reset-guilds": "node src/dbInit.js -f -guild",
+    "reset-users": "node src/dbInit.js -f -currency",
+    "reset-user-xp": "node src/dbInit.js -f -experience",
+    "reset-guild-tags": "ndoe src/dbInit.js -f -guildtags"
   },
   "keywords": [
     "discordjs",
