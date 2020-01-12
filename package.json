@@ -1,0 +1,20 @@
+{
+  "name": "unicron",
+  "version": "1.0.0",
+  "description": "Multipurpose fun discord bot",
+  "main": "src/index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "discordjs",
+    "discord",
+    "bot",
+    "unicron"
+  ],
+  "author": "undefine#6084",
+  "license": "MIT"
+}
