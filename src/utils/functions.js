@@ -106,12 +106,10 @@ module.exports = (client) => {
     client.chunk = function (array, chunkSize) {
         return array.reduce(function (previous, current) {
             let chunk;
-            if (previous.length === 0 ||
-                previous[previous.length - 1].length === chunkSize) {
+            if (previous.length === 0 || previous[previous.length - 1].length === chunkSize) {
                 chunk = [];
                 previous.push(chunk);
-            }
-            else {
+            } else {
                 chunk = previous[previous.length - 1];
             }
             chunk.push(current);

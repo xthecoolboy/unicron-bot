@@ -1,11 +1,11 @@
 
 const { MessageEmbed } = require('discord.js');
-const { discord } = require('../utils/Regex.js');
+const { Regex } = require('../utils/');
 
 module.exports = (client, message) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (await guild.inviteFilter() && message.content.match(discord.invite)) {
+            if (await message.data.inviteFilter() && message.content.match(Regex.discord.invite)) {
                 resolve(true);
             } else { 
                 return resolve(false);
@@ -16,7 +16,7 @@ module.exports = (client, message) => {
             await message.channel.send(`No Advertising! ${message.author}`).them(m => {
                 m.delete(3000);
             });
-            const mChannel = message.guild.channels.cache.get(await guild.getModLogChannel());
+            const mChannel = message.guild.channels.cache.get(await message.data.getModLogChannel());
             if (mChannel) {
                 mChannel.send(new MessageEmbed()
                     .setAuthor(message.author.tag)
