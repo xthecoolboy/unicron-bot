@@ -1,8 +1,4 @@
 
-module.exports = (client) => {
-    require('./functions')(client);
-}
-
 module.exports = {
     Colors: require('./Colors'),
     Logger:  require('./Logger'),

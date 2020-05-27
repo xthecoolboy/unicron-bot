@@ -4,12 +4,14 @@
   "description": "Multipurpose fun discord bot",
   "main": "src/index.js",
   "dependencies": {
+    "chalk": "^4.0.0",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "ms": "^2.1.2",
     "node-fetch": "^2.6.0",
     "query-string": "^6.12.1",
+    "querystring": "^0.2.0",
     "sequelize": "^5.21.10",
     "sqlite": "^3.0.3"
   },
@@ -19,9 +21,8 @@
     "start": "node src/index.js",
     "reset-database": "node src/dbInit.js -f -all",
     "reset-guilds": "node src/dbInit.js -f -guild",
-    "reset-users": "node src/dbInit.js -f -currency",
-    "reset-user-xp": "node src/dbInit.js -f -experience",
-    "reset-guild-tags": "ndoe src/dbInit.js -f -guildtags"
+    "reset-users": "node src/dbInit.js -f -user",
+    "reset-unicron": "node src/dbInit.js -f -unicron"
   },
   "keywords": [
     "discordjs",

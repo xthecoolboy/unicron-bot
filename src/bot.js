@@ -1,5 +1,9 @@
 
+const { Logger } = require('./utils/');
+
 module.exports = (client) => {
-    require('./utils/')(client);
+    client.logger = Logger;
+    require('./utils/functions')(client);
     require('./modules/')(client);
+    require('./database/database.js').SyncDatabase();
 }

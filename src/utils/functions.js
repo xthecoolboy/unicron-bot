@@ -1,21 +1,7 @@
 
+const { token } = require('../handlers/Unicron');
+
 module.exports = (client) => {
-
-    client.permlevel = message => {
-        let permlvl = 0;
-
-        const permOrder = client.config.permLevels.slice(0).sort((p, c) => p.level < c.level ? 1 : -1);
-
-        while (permOrder.length) {
-            const currentLevel = permOrder.shift();
-            if (message.guild && currentLevel.guildOnly) continue;
-            if (currentLevel.check(message)) {
-                permlvl = currentLevel.level;
-                break;
-            }
-        }
-        return permlvl;
-    };
 
     client.awaitReply = async (msg, question, limit = 60000) => {
         const filter = m => m.author.id === msg.author.id;
@@ -38,7 +24,7 @@ module.exports = (client) => {
         text = text
             .replace(/`/g, '`' + String.fromCharCode(8203))
             .replace(/@/g, '@' + String.fromCharCode(8203))
-            .replace(client.token, 'NO-TOKEN-FOR-YOU');
+            .replace(client.token, token());
 
         return text;
     };
@@ -101,26 +87,15 @@ module.exports = (client) => {
         }
         return false;
     };
-    client.escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    client.escapeRegex = (str) => { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') };
 
-    client.chunk = function (array, chunkSize) {
-        return array.reduce(function (previous, current) {
-            let chunk;
-            if (previous.length === 0 || previous[previous.length - 1].length === chunkSize) {
-                chunk = [];
-                previous.push(chunk);
-            } else {
-                chunk = previous[previous.length - 1];
-            }
-            chunk.push(current);
-            return previous;
-        }, []);
+    client.chunk = function (array = [], chunkSize = 0) {
+        if (!array) return [];
+        if (!chunkSize) return array;
+        const clone = array.slice();
+        const chunks = [];
+        while (clone.length) chunks.push(clone.splice(0, chunkSize));
+        return chunks;
     }
     client.wait = require('util').promisify(setTimeout);
-
-    client.levelCache = {};
-    for (let i = 0; i < client.config.permLevels.length; i++) {
-        const thisLevel = client.config.permLevels[i];
-        client.levelCache[thisLevel.name] = thisLevel.level;
-    }
 }
