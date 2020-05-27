@@ -8,6 +8,13 @@ class Warnings extends Base {
         this.guild_id = guild_id;
     }
     /**
+     * ```js
+     * message.member.warnings.add({ 
+     *      reason: "HakDog",
+     *      issued_by: "what sstafff",
+     *      issued_at: Date.now()}
+     * );
+     * ```
      * ```json
      * // Examples
      * {
@@ -15,7 +22,6 @@ class Warnings extends Base {
      *      "issued_by": "Staff_SnowFlake",
      *      "issued_at": Date.now()
      * }
-     * 
      * ```
      * @param {JSON} value Value
      */
@@ -67,7 +73,7 @@ class Warnings extends Base {
         const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
         if (!loser.data) loser.data = {};
         loser.data['warnings'] = [];
-        await GuildWarns.update({ data: loser.data }, { where: { guild_id: this.guild_id, member_id: this.id } });
+        GuildWarns.update({ data: loser.data }, { where: { guild_id: this.guild_id, member_id: this.id } });
     }
 }
 

@@ -1,11 +1,12 @@
 
 const ms = require('ms');
 const { Collection, MessageEmbed, Message, Client } = require('discord.js');
-const Guild = require('../handlers/Guild');
-const User = require('../handlers/User');
-
 const cooldowns = new Collection();
 const LevelingCD = new Collection();
+
+const Guild = require('../handlers/Guild');
+const User = require('../handlers/User');
+const Member = require('../handlers/Member');
 
 const Blacklist = require('../modules/Blacklist');
 const Tags = require('../modules/Tags');
@@ -25,12 +26,13 @@ module.exports = async (client, message) => {
         return;
     }
 
+    if (!message.member) message.member.fetch();
+
     message.author.permLevel = await client.permlevel(client, message);
 
     message.guild.db = new Guild(message.guild.id);
     message.author.db = new User(message.author.id);
-
-
+    message.member.db = new Member(message.author.id, message.guild.id);
 
 
 
