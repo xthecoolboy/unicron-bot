@@ -51,10 +51,10 @@ class Guild {
      * @param {String|Boolean} value Search value
      */
     async settings(value) {
-        if (typeof value === "boolean") {
-            return await GuildSettings.findOne({ where: { guild_id: this.id } });
-        }
         const [retval,] = await GuildSettings.findOrCreate({ where: { guild_id: this.id } });
+        if (typeof value === "boolean") {
+            return retval;
+        }
         return retval[value];
     }
     /**
@@ -66,10 +66,10 @@ class Guild {
      * @param {String|Boolean} value Search value
      */
     async dynamicVoice(value) {
-        if (typeof value === "boolean") {
-            return await GuildDynamicVoice.findOne({ where: { guild_id: this.id } });
-        }
         const [retval,] = await GuildDynamicVoice.findOrCreate({ where: { guild_id: this.id } });
+        if (typeof value === "boolean") {
+            return retval;
+        }
         return retval[value];
     }
     /**
@@ -81,10 +81,10 @@ class Guild {
      * @param {String|Boolean} value Search value
      */
     async verification(value) {
-        if (typeof value === "boolean") {
-            return await GuildVerification.findOne({ where: { guild_id: this.id } });
-        }
         const [retval,] = await GuildVerification.findOrCreate({ where: { guild_id: this.id } });
+        if (typeof value === "boolean") {
+            return retval;
+        }
         return retval[value];
     }
     /**
@@ -95,10 +95,10 @@ class Guild {
      * @param {String|Boolean} value Search value
      */
     async ticket(value) {
-        if (typeof value === "boolean") {
-            return await GuildTicket.findOne({ where: { guild_id: this.id } });
-        }
         const [retval,] = await GuildTicket.findOrCreate({ where: { guild_id: this.id } });
+        if (typeof value === "boolean") {
+            return retval;
+        }
         return retval[value];
     }
     /**
@@ -117,10 +117,10 @@ class Guild {
      * @param {String|Boolean} value Search value
      */
     async moderation(value) {
-        if (typeof value === "boolean") {
-            return await GuildModeration.findOne({ where: { guild_id: this.id } });
-        }
         const [retval,] = await GuildModeration.findOrCreate({ where: { guild_id: this.id } });
+        if (typeof value === "boolean") {
+            return retval;
+        }
         return retval[value];
     }
     /**
@@ -132,10 +132,10 @@ class Guild {
      * @param {String|Boolean} value Search value
      */
     async filters(value) {
-        if (typeof value === 'boolean') {
-            return await GuildFilter.findOne({ where: { guild_id: this.id } });
-        }
         const [retval,] = await GuildFilter.findOrCreate({ where: { guild_id: this.id } });
+        if (typeof value === "boolean") {
+            return retval;
+        }
         return retval[value];
     }
     /**
@@ -146,10 +146,10 @@ class Guild {
      * @param {String|Boolean} value Search value
      */
     async welcomer(value) {
-        if (typeof value === "boolean") {
-            return await GuildWelcome.findOne({ where: { guild_id: this.id } });
-        }
         const [retval,] = await GuildWelcome.findOrCreate({ where: { guild_id: this.id } });
+        if (typeof value === "boolean") {
+            return retval;
+        }
         return retval[value];
     }
     /**
@@ -160,10 +160,10 @@ class Guild {
      * @param {String|Boolean} value Search value
      */
     async leaver(value) {
-        if (typeof value === "boolean") {
-            return await GuildLeave.findOne({ where: { guild_id: this.id } });
-        }
         const [retval,] = await GuildLeave.findOrCreate({ where: { guild_id: this.id } });
+        if (typeof value === "boolean") {
+            return retval;
+        }
         return retval[value];
     }
     /**
