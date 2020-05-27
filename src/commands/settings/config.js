@@ -95,8 +95,8 @@ module.exports = {
                     const autoModeration = await db.moderation('autoModeration') ? 'ON' : 'OFF';
                     const autoModAction = `${await db.moderation('autoModAction')} MEMBER`;
                     const maxWarnTreshold = await db.moderation('maxWarnTreshold');
-                    const warnActionExpiresOn = await db.moderation('warnActionExpiresOn') ? await db.moderation('warnActionExpiresOn').toHumanString() : '0s';
-                    const warningExpiresOn = await db.moderation('warningExpiresOn') ? await db.moderation('warningExpiresOn').toHumanString() : '0s';
+                    const warnActionExpiresOn = await db.moderation('warnActionExpiresOn') ? ms(await db.moderation('warnActionExpiresOn')) : '0s';
+                    const warningExpiresOn = await db.moderation('warningExpiresOn') ? ms(await db.moderation('warningExpiresOn')) : '0s';
                     embed.addField('Key', `
                     \`prefix\`
                     \`moderatorRole\`
@@ -1091,12 +1091,9 @@ module.exports = {
                     });
                     break;
                 }
-                /**
-                 * numbers + string
-                 */
                 case 'maxWarnTreshold': {
                     const time = value[0];
-                    if (!isNaN(time)) {
+                    if (isNaN(time)) {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RED')
                             .setDescription(`Incorrect Arguments: Use \`config set ${key} [Number]\``)
@@ -1110,6 +1107,39 @@ module.exports = {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${time}\`.`)
+                            .setTimestamp()
+                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                        );
+                    }).catch(e => {
+                        client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
+                        return message.channel.send(new Discord.MessageEmbed()
+                            .setColor('RED')
+                            .setDescription(`An error occured while setting \`${key}\`.`)
+                            .setTimestamp()
+                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                        );
+                    });
+                    break;
+                }
+                case 'warningExpiresOn':
+                case 'warnActionExpiresOn': {
+                    const num = value[0];
+                    const suffix = value[1];
+                    if (isNaN(num) || !['s','m','h','d'].includes(suffix)) {
+                        return message.channel.send(new Discord.MessageEmbed()
+                            .setColor('RED')
+                            .setDescription(`Incorrect Arguments: Use \`config set ${key} [Number] [s|m|h|d]\``)
+                            .setTimestamp()
+                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                        );
+                    }
+                    const time = ms(`${num}${suffix}`);
+                    const settings = await db.moderation(true);
+                    settings[key] = time;
+                    Promise.all([await settings.save()]).then(() => {
+                        return message.channel.send(new Discord.MessageEmbed()
+                            .setColor('RANDOM')
+                            .setDescription(`Successfully set \`${key}\` to \`${ms(time)}\`.`)
                             .setTimestamp()
                             .setFooter(message.author.tag, message.author.displayAvatarURL())
                         );
@@ -1159,7 +1189,7 @@ module.exports = {
                 default: {
                     return message.channel.send(new Discord.MessageEmbed()
                         .setColor('RED')
-                        .setDescription('Error: Invalid Arguments')
+                        .setDescription('Error: Invalid Key provided')
                     );
                 }
             }
