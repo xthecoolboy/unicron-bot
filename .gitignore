@@ -116,3 +116,4 @@ dist
 .pnp.*
 .env
 test.js
+.vscode/
