@@ -1,5 +1,6 @@
 
 const Discord = require('discord.js');
+const ms = require('ms');
 
 module.exports = {
     /**
@@ -1093,6 +1094,36 @@ module.exports = {
                 /**
                  * numbers + string
                  */
+                case 'maxWarnTreshold': {
+                    const time = value[0];
+                    if (!isNaN(time)) {
+                        return message.channel.send(new Discord.MessageEmbed()
+                            .setColor('RED')
+                            .setDescription(`Incorrect Arguments: Use \`config set ${key} [Number]\``)
+                            .setTimestamp()
+                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                        );
+                    }
+                    const settings = await db.moderation(true);
+                    settings.maxWarnTreshold = Number(time);
+                    Promise.all([await settings.save()]).then(() => {
+                        return message.channel.send(new Discord.MessageEmbed()
+                            .setColor('RANDOM')
+                            .setDescription(`Successfully set \`${key}\` to \`${time}\`.`)
+                            .setTimestamp()
+                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                        );
+                    }).catch(e => {
+                        client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
+                        return message.channel.send(new Discord.MessageEmbed()
+                            .setColor('RED')
+                            .setDescription(`An error occured while setting \`${key}\`.`)
+                            .setTimestamp()
+                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                        );
+                    });
+                    break;
+                }
                 case 'swearFilter':
                 case 'mentionSpamFilter':
                 case 'inviteFilter': {
