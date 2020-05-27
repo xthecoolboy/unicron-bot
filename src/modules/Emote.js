@@ -9,9 +9,8 @@ const { Client } = require('discord.js');
 module.exports = (client) => {
     /**
      * @param {String} name Name
-     * @param {String} group Group
      */
-    client.getEmoji = async function(name, group = 'badges') {
-        return client.emojis.cache.get(Emotes[group][name]);
+    client.getEmoji = async function(name) {
+        return client.emojis.cache.get(Emotes[name]);
     }
 }

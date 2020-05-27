@@ -28,17 +28,16 @@ module.exports = {
         const inventoryCount = inventory.reduce((acc, cur) => {
             acc += cur.amount;
         }, 0);
-        const bText = badges.reduce(async (acc, cur) => {
-            if (!cur) return;
-            const b = await client.getEmoji(cur, 'badges');
-            if (b) acc += `${b}`;
-        }, '');
+        let badgeText = '\u200b';
+        for (let i = 0; i < badges.length; i++) {
+            badgeText += `${await client.getEmoji(badges[i])}  `;
+        }
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
             .setAuthor(target.tag, target.displayAvatarURL() || client.user.displayAvatarURL())
-            .addField('**Progress**', `**${level}** ${progress} **${level+1}**\n**${req}** - remaining`, true)
-            .addField('**Badges**', bText || 'none', true)
+            .addField('**Progress**', `**${level}** [${progress}](${client.unicron.serverInviteURL} 'O.o') **${level+1}**\n**${req}** - remaining`, true)
+            .addField('**Badges**', badgeText, true)
             .addField('\u200b', '\u200b', true)
             .addField('**Coins**', `**${balance}** 💰`, true)
             .addField('**Inventory**', `**${inventoryCount}** item(s)`, true)

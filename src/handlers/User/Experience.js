@@ -48,7 +48,7 @@ class Experience extends Base {
         return Leveling.LevelChart[await this.getNextLevel()];
     }
     async getProgressBar() {
-        return Leveling.ProgressBar(this.getPercentageProgressToNextLevel);
+        return Leveling.ProgressBar(await this.getPercentageProgressToNextLevel());
     }
     async getPercentageProgressToNextLevel() {
         return ((await this.fetch() - await this.getLevelXP()) /
