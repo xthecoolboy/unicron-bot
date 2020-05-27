@@ -29,7 +29,7 @@ class Captcha extends Base {
         };
         return user.data['captcha'];
     }
-    destroy() {
+    async destroy() {
         const [user,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
         if (!user.data) user.data = {};
         user.data['captcha'] = '';

@@ -69,7 +69,7 @@ class Warnings extends Base {
     /**
      * Clears Member's Warns
      */
-    destroy() {
+    async destroy() {
         const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
         if (!loser.data) loser.data = {};
         loser.data['warnings'] = [];
