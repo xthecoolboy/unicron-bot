@@ -12,20 +12,16 @@ const {
     GuildMember,
 } = require('../database/database.js');
 
+const Base = require('../classes/Base');
 
-class Guild {
+class Guild extends Base {
     /**
      * 
      * @param {String} _id 
      */
-    constructor(_id) {
-        this.id = _id;
+    constructor(id) {
+        super(id);
     }
-    /**
-     * 
-     * @returns id
-     */
-    id() { return this.id; }
     /**
      * 
      * @brief Reset/Delete Guild's Data from Unicron's Database
@@ -41,7 +37,6 @@ class Guild {
         GuildLeave.destroy({ where: { guild_id: this.id } });
         GuildVerification.destroy({ where: { guild_id: this.id } });
         GuildDynamicVoice.destroy({ where: { guild_id: this.id } });
-        
     }
     /**
      * Values:
@@ -251,57 +246,6 @@ class Guild {
         }
         const taglist = await GuildTags.findAll({ where: { guild_id: this.id } });
         return `\`${taglist.map(t => t.tag).join('\`, \`') || 'No tags set.'}\``;
-    }
-    /**
-     * 
-     * @param {String} user Member
-     * @param {Text} reason Reason
-     * @param {String} staff Staff who issued the warn
-     */
-    async warn(user, reason, staff) {
-        const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.id, member_id: user } });
-        if (!loser.data) {
-            loser.data = {};
-        }
-        if (!loser.data['warnings']) {
-            loser.data['warnings'] = [];
-        }
-        loser.data['warnings'].push({
-            reason: reason,
-            issued_by: staff,
-            time: Date.now(),
-        });
-        await GuildMember.update({ data: loser.data }, { where: { guild_id: this.id, member_id: user } });
-    }
-    /**
-     * 
-     * @param {String} user Member
-     */
-    async clearWarns(user) {
-        const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.id, member_id: user } });
-        if (!loser.data) {
-            loser.data = {};
-        }
-        loser.data['warnings'] = [];
-        await GuildWarns.update({ data: loser.data }, { where: { guild_id: this.id, member_id: user } });
-    }
-    /**
-     * @returns {Array}
-     * @param {String} user Member
-     */
-    async getWarns(user) {
-        const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.id, member_id: user } });
-        if (!loser.data) {
-            loser.data = {};
-        }
-        if (!loser.data['warnings']) {
-            return [];
-        }
-        let retval = [];
-        loser.data['warnings'].forEach(w => {
-            retval.push(w);
-        });
-        return retval;
     }
 };
 

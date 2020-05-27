@@ -8,66 +8,31 @@ const Leveling = require('../modules/Leveling');
 const { Random } = require('../utils/');
 const { MessageEmbed } = require('discord.js');
 
-const inventoryHelper = {
-    add: async function (id, options) {
-        const useritem = await UserInventory.findOrCreate({ where: { user_id: id, item_id: options.item } });
-        useritem += 1;
-        useritem.save();
-        return true;
-    },
-    remove: async function (id, options) {
-        const useritem = await UserInventory.findOne({ where: { user_id: id, item_id: options.item } });
-        if (!useritem) return;
-        if (useritem.amount === 1) return UserInventory.destroy({ where: { user_id: id, item_id: options.item } });
-        useritem.amount -= 1;
-        useritem.save();
-        return true;
-    },
-    fetch: async function (id, options) {
-        const useritem = await UserInventory.findOne({ where: { user_id: id, item_id: options.item } });
-        if (!useritem) return false;
-        return useritem.amount;
-    }
-}
+const Base = require('../classes/Base');
 
-class User {
-    constructor(_id) {
-        this.id = _id;
+const Coin = require('./User/Coin');
+const Badge = require('./User/Badge');
+const Inventory = require('./User/Inventory');
+const Experience = require('./User/Experience');
+
+class User extends Base {
+    constructor(id) {
+        super(id);
+        this.badges = new Badge(id);
+        this.inventory = new Inventory(id);
+        this.coins = new Coin(id);
+        this.experience = new Experience(id);
     }
     /**
      * @brief Destroy data
      */
     destroy() {
-        this.inventory({ action: 'reset' });
         UserProfile.destroy({ where: { user_id: this.id } });
+        this.inventory.destroy();
     }
     async profile(value) {
         const [retval,] = await UserProfile.findOrCreate({ where: { user_id: this.id } });
         return retval[value];
-    }
-    async addCoins(amount = 0) {
-        let user = await UserProfile.findOne({ where: { user_id: this.id } });
-        if (!user) {
-            return UserProfile.create({ user_id: this.id, balance: amount });
-        }
-        user.balance += Number(amount);
-        return user.save();
-    }
-    async getBalance() {
-        const user = await UserProfile.findOne({ where: { user_id: this.id } });
-        return user ? user.balance : 0;
-    }
-    async addExperience(amount = 0) {
-        let user = await UserProfile.findOne({ where: { user_id: this.id } });
-        if (!user) {
-            return UserProfile.create({ user_id: this.id, experience: amount });
-        }
-        user.experience += Number(amount);
-        return user.save();
-    }
-    async getExperience() {
-        const user = await UserProfile.findOne({ where: { user_id: this.id } });
-        return user ? user.experience : 0;
     }
     async getLevel() {
         let lvl = 0;
@@ -110,35 +75,6 @@ class User {
                 .setFooter(`${message.author.tag}`)
             );
         }
-    }
-    /**
-     * 
-     * @param {JSON} options Options
-     * 
-     * Actions:
-     * * add
-     * * remove
-     * * fetch
-     * * reset
-     * 
-     * ```js
-     * // Examples
-     * const status = await message.author.db.inventory({ action: 'add', item: 'newItem'});
-     * const status = await message.author.db.inventory({ action: 'remove', item: 'removeItem'});
-     * const nums = await message.author.db.invenoty({ action: 'fetch', item: 'hasItem'});
-     * const items = await message.author.db.inventory();
-     * ```
-     */
-    async inventory(options) {
-        if (options.action) {
-            if (options.action === 'reset') {
-                await UserInventory.destroy({ where: { user_id: this.id } });
-                return true;
-            } else {
-                return inventoryHelper[options.action](this.id, options);
-            }
-        }
-        return await UserInventory.findAll({ where: { user_id: this.id } });
     }
 }
 

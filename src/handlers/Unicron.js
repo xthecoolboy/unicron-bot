@@ -22,13 +22,11 @@ class Unicron {
         this.host = options.hostURL;
     }
     async database(table) {
-        let data = await Admin.findOne({ where: { table: table } });
-        if (!data) data = await Admin.create({ table: table });
+        const [data,] = await Admin.findOrCreate({ where: { table: table } });
         return data.data;
     }
     async model(table) {
-        let model = await Admin.findOne({ where: { table: table}});
-        if (!model) model = await Admin.create({ table: table});
+        const [model,] = await Admin.findOne({ where: { table: table}});
         return model;
     }
 };
