@@ -2,7 +2,7 @@ const LvlChart = [];
 const ReqLvlChart = [];
 
 for (var i = 0; i < 101; i++) {
-    ReqLvlChart.push(2 * (i * i) + i + 69);
+    ReqLvlChart.push(2 * (i * i) + (50 * i) + 69);
 }
 for (var i = 0; i < 101; i++) {
     if (i === 0) {

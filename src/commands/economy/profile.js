@@ -16,10 +16,10 @@ module.exports = {
         if (target.bot) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
-                .setDescription('Cannot show profile of a bot user.'));
+                .setDescription('Error: Cannot show profile of a bot user.'));
         }
         const profile = new User(target.id);
-        const badges = await profile.badges.fetch();
+        const badges = client.chunk(await profile.badges.fetch(), 7);
         const balance = await profile.coins.fetch();
         const inventory = await profile.inventory.fetch();
         const level = await profile.experience.getLevel();
@@ -29,14 +29,17 @@ module.exports = {
             acc += cur.amount;
         }, 0);
         let badgeText = '\u200b';
-        for (let i = 0; i < badges.length; i++) {
-            badgeText += `${await client.getEmoji(badges[i])}  `;
+        for (var i = 0; i < badges.length; i++) {
+            for (var j = 0; j < badges[i].length; j++) {
+                badgeText += `${await client.getEmoji(badges[i][j])}  `;
+            }
+            badgeText += '\n';
         }
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
             .setAuthor(target.tag, target.displayAvatarURL() || client.user.displayAvatarURL())
-            .addField('**Progress**', `**${level}** [${progress}](${client.unicron.serverInviteURL} 'O.o') **${level+1}**\n**${req}** - remaining`, true)
+            .addField('**Progress**', `**${level}** [${progress}](${client.unicron.serverInviteURL} 'O.o') **${level + 1}**\n**${req}** - remaining`, true)
             .addField('**Badges**', badgeText, true)
             .addField('\u200b', '\u200b', true)
             .addField('**Coins**', `**${balance}** 💰`, true)
