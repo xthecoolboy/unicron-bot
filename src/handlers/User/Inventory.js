@@ -26,7 +26,7 @@ class Inventory extends Base {
         return useritem.amount;
     }
     async fetch() {
-        const items = await UserInventory.findAll({ where: { user_id: this.user_id }});
+        const items = await UserInventory.findAll({ where: { user_id: this.id }});
         return items ? items : [];
     }
     destroy() {

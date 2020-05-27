@@ -51,11 +51,11 @@ class Experience extends Base {
         return Leveling.ProgressBar(this.getPercentageProgressToNextLevel);
     }
     async getPercentageProgressToNextLevel() {
-        return ((await this.getExperience() - await this.getLevelXP()) /
+        return ((await this.fetch() - await this.getLevelXP()) /
             (await this.getNextLevelXP() - await this.getLevelXP())) * 100; // (xp - lxp / nxp - lxp) * 100 = n
     };
     async getRequiredExpToNextLevel() {
-        return await this.getNextLevelXP() - await this.getExperience();
+        return await this.getNextLevelXP() - await this.fetch();
     }
 };
 
