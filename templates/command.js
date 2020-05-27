@@ -24,5 +24,6 @@ module.exports = {
         args: false,
         usage: '',
         donatorOnly: false,
+        premiumServer: false,
     }
 }

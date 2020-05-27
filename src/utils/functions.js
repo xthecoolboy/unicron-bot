@@ -90,12 +90,19 @@ module.exports = (client) => {
     client.escapeRegex = (str) => { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') };
 
     client.chunk = function (array = [], chunkSize = 0) {
-        if (!array) return [];
-        if (!chunkSize) return array;
-        const clone = array.slice();
-        const chunks = [];
-        while (clone.length) chunks.push(clone.splice(0, chunkSize));
-        return chunks;
+        return array.reduce(function (previous, current) {
+            let chunk;
+            if (previous.length === 0 ||
+                previous[previous.length - 1].length === chunkSize) {
+                chunk = [];
+                previous.push(chunk);
+            }
+            else {
+                chunk = previous[previous.length - 1];
+            }
+            chunk.push(current);
+            return previous;
+        }, []);
     }
     client.wait = require('util').promisify(setTimeout);
 }

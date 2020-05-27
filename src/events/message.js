@@ -59,8 +59,15 @@ module.exports = async (client, message) => {
     while (args[0] && args[0][0] === '-') {
         message.flags.push(args.shift().slice(1));
     }
-    const level = await client.permlevel(client, message);
 
+    if (command.options.premiumServer && ! await message.guild.db.settings('premium')) {
+        return message.channel.send(new MessageEmbed()
+            .setColor('RED')
+            .setDescription(`Sorry, this command is only for [Premium Servers](${message.unicron.serverInviteURL()} 'Join here').`)
+        );
+    }
+
+    const level = await client.permlevel(client, message);
     if (message.author.permLevel < client.levelCache[command.config.permission]) {
         return message.channel.send(new MessageEmbed()
             .setColor('RED')
@@ -99,8 +106,8 @@ module.exports = async (client, message) => {
     if (command.options.donatorOnly && ! await message.author.db.profile('premium')) {
         return message.channel.send(new MessageEmbed()
             .setColor('RED')
-            .setDescription(`Sorry, this limited only for premium users, if you want to buy the premium feature for yourself goto Bot\'s [Support Server](${client.unicron.serverInviteURL} \'Click here\') for more information.`));
-    } else if (! await message.author.db.profile('premium')) {
+            .setDescription(`Sorry, this is limited only for [Supporters](${message.unicron.serverInviteURL} 'Click me!').`));
+    } else if (await message.author.db.profile('premium')) {
         cooldownAmount = Math.floor(cooldownAmount - (cooldownAmount * 0.25));
     }
 
