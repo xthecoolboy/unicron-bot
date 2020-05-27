@@ -259,9 +259,9 @@ class Guild {
      * @param {String} staff Staff who issued the warn
      */
     async warn(user, reason, staff) {
-        let loser = await GuildMember.findOne({ where: { guild_id: this.id, member_id: user } });
-        if (!loser) {
-            loser = await GuildMember.create({ guild_id: this.id, member_id: user });
+        const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.id, member_id: user } });
+        if (!loser.data) {
+            loser.data = {};
         }
         if (!loser.data['warnings']) {
             loser.data['warnings'] = [];
@@ -278,9 +278,9 @@ class Guild {
      * @param {String} user Member
      */
     async clearWarns(user) {
-        let loser = await GuildMember.findOne({ where: { guild_id: this.id, member_id: user } });
-        if (!loser) {
-            loser = await GuildMember.create({ guild_id: this.id, member_id: user });
+        const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.id, member_id: user } });
+        if (!loser.data) {
+            loser.data = {};
         }
         loser.data['warnings'] = [];
         await GuildWarns.update({ data: loser.data }, { where: { guild_id: this.id, member_id: user } });
@@ -290,9 +290,9 @@ class Guild {
      * @param {String} user Member
      */
     async getWarns(user) {
-        let loser = await GuildMember.findOne({ where: { guild_id: this.id, member_id: user } });
-        if (!loser) {
-            loser = await GuildMember.create({ guild_id: this.id, member_id: user });
+        const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.id, member_id: user } });
+        if (!loser.data) {
+            loser.data = {};
         }
         if (!loser.data['warnings']) {
             return [];
