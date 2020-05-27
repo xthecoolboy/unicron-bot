@@ -2,6 +2,7 @@
 require('dotenv').config();
 
 const Discord = require('discord.js');
+const Unicron = require('./handlers/Unicron');
 const client = new Discord.Client();
 
 require('./listeners')(client);
