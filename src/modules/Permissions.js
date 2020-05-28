@@ -39,9 +39,7 @@ const levels = [
         name: 'Bot Moderator',
         check: async (client, message) => {
             try {
-                const guildMod = await client.guilds.fetch(client.unicron.server);
-                const memberMod = guildMod.members.cache.get(message.author.id);
-                return memberMod.roles.cache.has(client.unicron.moderatorRole);
+                return false;
             } catch (e) {
                 return false;
             }
@@ -52,9 +50,7 @@ const levels = [
         name: 'Bot Administrator',
         check: async (client, message) => {
             try {
-                const guildAdmin = await client.guilds.fetch(client.unicron.server);
-                const memberAdmin = guildAdmin.members.cache.get(message.author.id);
-                return memberAdmin.roles.cache.has(client.unicron.adminRole);
+                return false;
             } catch (e) {
                 return false;
             }
@@ -78,7 +74,7 @@ module.exports = (client) => {
     }
     client.permlevel = async (client, message) => {
         let permlvl = 0;
-        const permOrder = levels.slice(0).sort((p, c) => c.level - p.level);
+        const permOrder = levels.slice().sort((p, c) => c.level - p.level);
         while (permOrder.length) {
             const currentLevel = permOrder.shift();
             if (await currentLevel.check(client, message)) {
