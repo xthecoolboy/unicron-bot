@@ -57,6 +57,34 @@ module.exports = (client) => {
         }
         return false;
     }
+    client.loadCrate = (itemName) => {
+        try {
+            const props = require(`../crate/${itemName}`);
+            if (props.init) {
+                props.init(client);
+            }
+            client.crates.set(`${props.config.id}`, props);
+        } catch (e) {
+            return `Unable to load Crate ${itemName}: ${e}`;
+        }
+    }
+    client.unloadCrate = async (itemName) => {
+        const item = client.crates.get(itemName);
+        if (!item) return `The crate \`${itemName}\` doesn\'t seem to exists. Try again!`;
+        client.crates.delete(itemName);
+        if (item.shutdown) {
+            await item.shutdown(client);
+        }
+        const mod = require.cache[require.resolve(`../crates/${item.config.id}`)];
+        delete require.cache[require.resolve(`../crates/${item.config.id}.js`)];
+        for (let i = 0; i < mod.parent.children.length; i++) {
+            if (mod.parent.children[i] === mod) {
+                mod.parent.children.splice(i, 1);
+                break;
+            }
+        }
+        return false;
+    }
     client.loadCommand = (commandName, category) => {
         try {
             const props = require(`../commands/${category}/${commandName}`);

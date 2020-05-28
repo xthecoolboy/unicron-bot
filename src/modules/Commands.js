@@ -14,11 +14,4 @@ module.exports = async (client) => {
             if (response) client.logger.error(response);
         });
     });
-    client.shopitems = new Collection();
-    const itemFiles = await readdir('./src/items/');
-    itemFiles.forEach(f => {
-        if (!f.endsWith('.js')) return;
-        const response = client.loadItem(f);
-        if (response) client.logger.error(response);
-    });
 }
