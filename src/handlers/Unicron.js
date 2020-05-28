@@ -21,13 +21,10 @@ class Unicron {
         this.adminRole = options.adminRole;
         this.host = options.hostURL;
     }
-    async database(table) {
+    async database(table, model) {
         const [data,] = await Admin.findOrCreate({ where: { table: table } });
+        if (typeof model === 'boolean') return data;
         return data.data;
-    }
-    async model(table) {
-        const [model,] = await Admin.findOne({ where: { table: table}});
-        return model;
     }
 };
 

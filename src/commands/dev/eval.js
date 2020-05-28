@@ -13,7 +13,7 @@ module.exports = {
     },
     config: {
         name: 'eval',
-        description: 'Evaluates Arbituary javascript.',
+        description: 'Evaluates Arbitary javascript.',
         permission: 'Bot Owner',
     },
     options: {

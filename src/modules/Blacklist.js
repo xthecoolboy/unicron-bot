@@ -2,15 +2,12 @@
 module.exports = (client, message) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let users = await client.unicron.database('blacklistedUsers');
-            let guilds = await client.unicron.database('blacklistedGuilds');
-            if (!users || !guilds) {
-                if (!users) users = [];
-                if (!guilds) guilds = [];
-                return resolve(false);
-            }
-            if (message.guild) return guilds.hasOwnProperty(message.guild.id) ? resolve(true) : resolve(false);
-            return users.hasOwnProperty(message.author.id) ? resolve(true) : resolve(false);
+            const Modelusers = await client.unicron.database('blacklistedUsers', true);
+            const Modelguilds = await client.unicron.database('blacklistedGuilds', true);
+            const users = Array.isArray(Modelusers.data) ? Modelusers.data : [];
+            const guilds = Array.isArray(Modelguilds.data) ? Modelguilds.data : [];
+            const ok = (users.find((item) => item.id === message.author.id) || guilds.find((item) => item.id === message.guilds.id)) ? true : false;
+            resolve(ok);
         } catch (e) {
             reject(e);
         }

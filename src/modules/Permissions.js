@@ -37,9 +37,9 @@ const levels = [
     {
         level: 8,
         name: 'Bot Moderator',
-        check: (client, message) => {
+        check: async (client, message) => {
             try {
-                const guildMod = client.guilds.cache.get(client.unicron.server);
+                const guildMod = await client.guilds.fetch(client.unicron.server);
                 const memberMod = guildMod.members.cache.get(message.author.id);
                 return memberMod.roles.cache.has(client.unicron.moderatorRole);
             } catch (e) {
@@ -50,9 +50,9 @@ const levels = [
     {
         level: 9,
         name: 'Bot Administrator',
-        check: (client, message) => {
+        check: async (client, message) => {
             try {
-                const guildAdmin = client.guilds.cache.get(client.unicron.server);
+                const guildAdmin = await client.guilds.fetch(client.unicron.server);
                 const memberAdmin = guildAdmin.members.cache.get(message.author.id);
                 return memberAdmin.roles.cache.has(client.unicron.adminRole);
             } catch (e) {
