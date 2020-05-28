@@ -24,7 +24,7 @@ module.exports = (sequelize, DataType) => {
         married_id: {
             type: DataType.STRING,
             allowNull: false,
-            defaultValue: '0',
+            defaultValue: '',
         },
         multiplier: {
             type: DataType.INTEGER,

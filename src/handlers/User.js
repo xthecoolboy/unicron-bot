@@ -29,12 +29,15 @@ class User extends Base {
     }
     async profile(value) {
         const [retval,] = await UserProfile.findOrCreate({ where: { user_id: this.id } });
+        if (typeof value === 'boolean') {
+            return retval;
+        }
         return retval[value];
     }
     async levelup(client, message, exp) {
         const next_level = await this.experience.getNextLevel();
         let current_level = await this.experience.getLevel();
-        await this.experience.add(exp || Random.nextInt({ max: 15, min: 5 }));
+        await this.experience.add(exp || Random.nextInt({ max: 12, min: 6 }));
         current_level = await this.experience.getLevel();
         if (current_level === next_level) {
             const prize = Leveling.RequiredLevelChart[current_level];
