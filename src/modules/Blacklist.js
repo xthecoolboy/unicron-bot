@@ -6,7 +6,7 @@ module.exports = (client, message) => {
             const Modelguilds = await client.unicron.database('blacklistedGuilds', true);
             const users = Array.isArray(Modelusers.data) ? Modelusers.data : [];
             const guilds = Array.isArray(Modelguilds.data) ? Modelguilds.data : [];
-            const ok = (users.find((item) => item.id === message.author.id) || guilds.find((item) => item.id === message.guilds.id)) ? true : false;
+            const ok = (users.some((item) => item.id === message.author.id) || guilds.some((item) => item.id === message.guild.id)) ? true : false;
             resolve(ok);
         } catch (e) {
             reject(e);

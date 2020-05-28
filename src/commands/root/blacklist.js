@@ -1,7 +1,7 @@
 
 const Discord = require('discord.js');
 
-const { Regex } = require('../../utils/');
+const { Admin } = require('../../database/database');
 
 const filter = function (arr, key) {
     return arr.filter((item) => item.id !== key);
@@ -18,22 +18,22 @@ const evaluation = async function (client, message, args) {
         if (!id) return false;
         if (!model.data || !Array.isArray(model.data)) model.data = [];
         if (pardon) {
-            if (!model.data.find((item) => { return item.id === id})) return false;
             model.data = model.data.filter((item) => item.id !== id);
-            await model.save();
+            await Admin.update({ data: model.data }, { where: { table: type } });
             return true;
         } else if (check) {
             const data = model.data.find((item) => { return item.id === id });
             if (!data) return false;
-            return `ID: ${id}\nReason: ${data.reason}\nModerator: ${data.issued_by}\nDate: ${data.when}`;
+            if (message.flags.includes('guild')) return `Guild: ${await client.guilds.resolve(id).name} / ${id}\nReason: ${data.reason}\nModerator: ${data.issued_by}\nDate: ${data.when}`;
+            return `User: ${await client.users.resolve(id).tag} / ${id}\nReason: ${data.reason}\nModerator: ${data.issued_by}\nDate: ${data.when}`;
         }
         model.data.push({
             id: id,
             reason: reason,
             issued_by: `${message.author.tag} / ${message.author.id}`,
-            when: Date.now()
+            when: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
         });
-        await model.save();
+        await Admin.update({ data: model.data }, { where: { table: type } });
         return true;
     } catch (e) {
         return e;
