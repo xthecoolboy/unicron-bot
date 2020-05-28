@@ -117,3 +117,4 @@ dist
 .env
 test.js
 .vscode/
+*.sqlite
