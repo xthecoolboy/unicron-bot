@@ -25,12 +25,6 @@ module.exports = {
                 client.user.setPresence({ activity: { name: message, type: type }, status: status });
                 return;
             }
-            if (message.flags.includes('resetGuildData')) {
-
-            }
-            if (message.flags.includes('resetUserData')) {
-
-            }
         } catch (e) {
             message.channel.send(`\`ERROR\`
             \`\`\`xl
@@ -41,21 +35,25 @@ module.exports = {
     },
     config: {
         name: 'root',
-        description: `Usages
-        \`-setStatus\` [online|idle|dnd|offline]
-        \`-setActivity\` [PLAYING|WATCHING|LISTENING|STREAMING] [...Message]
-        \`-setPresence\` [online|idle|dnd|offline] [PLAYING|WATCHING|LISTENING|STREAMING] [...Message]
-        \`-resetUserData\` [UserID]
-        \`-resetGuildData\` [GuildID]
+        description: `Usages:
+        \`-setPresence [Status] [Activity] [...Message]\`
+        \`-resetUserData [UserID]\` 
+        \`-resetGuildData [GuildID]\` 
+        \`-moderator [-add|-remove] [UserID]\`
+        \`-admin [-add|-remove] [UserID]\`
+        \`-partner [-add|-remove] [UserID]\`
+        \`-tester [-add|-remove] [UserID]\`
+        \`-supporter [-add|-remove] [UserID]\`
+        \`-codes [-add|-remove|-regenerate] [-user|-guild] [name|amount]\`
         `,
-        permission: 'Bot Administrator',
+        permission: 'Bot Owner',
     },
     options: {
         aliases: ['dev'],
         cooldown: 3,
         nsfwCommand: false,
-        args: false,
-        usage: 'root [Single flag] [a] [b]',
+        args: true,
+        usage: 'root [Flags] [...values]',
         donatorOnly: false,
         premiumServer: false,
     }
