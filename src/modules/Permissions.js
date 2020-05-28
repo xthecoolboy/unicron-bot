@@ -1,87 +1,68 @@
 
-const levels = [
+const Levels = [
     {
-        level: 0,
         name: 'User',
-        check: () => {
+        level: 1,
+        check: function () {
             return true;
         }
-    },
-    {
-        level: 2,
+    }, {
         name: 'Server Moderator',
-        check: async (client, message) => {
-            try {
-                return message.member.roles.cache.has(await message.guild.db.moderation('moderatorRole'));
-            } catch (e) {
-                return false;
-            }
+        level: 2,
+        check: async function (client, message) {
+            const role = await message.guild.db.moderation('moderatorRole');
+            return role ? message.member.roles.cache.has(role) : false;
         }
-    },
-    {
-        level: 3,
+    }, {
         name: 'Server Administrator',
-        check: async (client, message) => {
-            try {
-                return message.member.roles.cache.has(await message.guild.db.moderation('adminRole'));
-            } catch (e) {
-                return false;
-            }
+        level: 3,
+        check: async function (client, message) {
+            const role = await message.guild.db.moderation('adminRole');
+            return role ? message.member.roles.cache.has(role) : false;
         }
-    },
-    {
-        level: 4,
+    }, {
         name: 'Server Owner',
-        check: (client, message) => { return message.guild.ownerID === message.author.id; }
-    },
-    {
-        level: 8,
+        level: 4,
+        check: async function (client, message) {
+            return message.author.id === message.guild.ownerID;
+        }
+    }, {
         name: 'Bot Moderator',
-        check: async (client, message) => {
-            try {
-                return false;
-            } catch (e) {
-                return false;
-            }
+        level: 8,
+        check: async function (client, message) {
+            const gg = await client.guilds.fetch(client.unicron.server);
+            const mem = await gg.members.fetch(message.author.id);
+            return mem ? mem.roles.cache.has(client.unicron.moderatorRole) : false;
         }
-    },
-    {
-        level: 9,
+    }, {
         name: 'Bot Administrator',
-        check: async (client, message) => {
-            try {
-                return false;
-            } catch (e) {
-                return false;
-            }
+        level: 9,
+        check: async function (client, message) {
+            const gg = await client.guilds.fetch(client.unicron.server);
+            const mem = await gg.members.fetch(message.author.id);
+            return mem ? mem.roles.cache.has(client.unicron.adminRole) : false;
         }
-    },
-    {
-        level: 10,
+    }, {
         name: 'Bot Owner',
-        check: (client, message) => { 
+        level: 10,
+        check: function (client, message) {
             return client.unicron.owner === message.author.id;
         }
-    }
+    },
 ]
+const permCache = {};
+
+(function () {
+    Levels.forEach((l) => {
+        permCache[l.name] = l.level;
+    })
+})();
 
 module.exports = (client) => {
-    client.levels = levels;
-    client.levelCache = {};
-    for (let i = 0; i < levels.length; i++) {
-        const thisLevel = levels[i];
-        client.levelCache[thisLevel.name] = thisLevel.level;
-    }
-    client.permlevel = async (client, message) => {
-        let permlvl = 0;
-        const permOrder = levels.slice().sort((p, c) => c.level - p.level);
-        while (permOrder.length) {
-            const currentLevel = permOrder.shift();
-            if (await currentLevel.check(client, message)) {
-                permlvl = currentLevel.level;
-                break;
-            }
-        }
-        return permlvl;
+    client.permission.level = async function (client, message) {
+        return await Levels.reduce(async (level, cur) => {
+            level = await cur.check(client, message) ? cur.level : level;
+        }, 0);
     };
+    client.permission.levels = permCache;
 }
