@@ -3,7 +3,7 @@ const { Admin } = require('../database/database.js');
 const { Random } = require('../utils/');
 
 const token = function () {
-    return Random.string(32);
+    return Random.string(16);
 }
 
 class Unicron {

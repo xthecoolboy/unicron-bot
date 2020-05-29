@@ -34,7 +34,7 @@ module.exports = async (client, message) => {
 
     message.author.permLevel = await client.permission.level(client, message);
 
-    console.log(message.author.permLevel);
+    
 
     const prefix = await message.guild.db.settings('prefix');
     const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${client.escapeRegex(prefix)})\\s*`);
@@ -53,11 +53,6 @@ module.exports = async (client, message) => {
             .setColor('RANDOM')
             .setDescription(msg)
         );
-    }
-
-    message.flags = [];
-    while (args[0] && args[0][0] === '-') {
-        message.flags.push(args.shift().slice(1));
     }
 
     if (command.options.premiumServer && ! await message.guild.db.settings('premium')) {
@@ -81,11 +76,18 @@ module.exports = async (client, message) => {
                 .setDescription(`Sorry, but i need ${permissions.join(', ')} permission(s) to execute this command.`));
         }
     }
+    
     if (command.options.args && !args.length && command.options.usage) {
         return message.channel.send(new MessageEmbed()
             .setColor('RED')
             .setDescription(`You didn't provide any arguments, ${message.author}!\nThe proper usage would be: \`${command.options.usage}\``));
     }
+
+    message.flags = [];
+    while (args[0] && args[0][0] === '-') {
+        message.flags.push(args.shift().slice(1));
+    }
+
     if (command.options.nsfwCommand && !message.channel.nsfw) {
         return message.channel.send(new MessageEmbed()
             .setColor('RED')
