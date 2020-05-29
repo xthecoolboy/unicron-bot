@@ -5,9 +5,21 @@ const { Admin } = require('../../database/database');
 const { token } = require('../../handlers/Unicron');
 const { Crypto } = require('../../utils/');
 
+function removeItemOnce(arr, value) {
+    var index = arr.indexOf(value);
+    if (index > -1) {
+        arr.splice(index, 1);
+    }
+    return arr;
+}
+
+function encrypt(str) {
+    return Crypto({ text: str, hash: 'sha256', salt: 'oadpoaw'});
+}
+
 const evaluation = async function (client, message, [key, ...value]) {
     try {
-        switch (message.flags.shift()) {
+        switch (message.flags[0]) {
             case 'setPresence': {
                 const status = key;
                 const type = value.shift();
@@ -16,36 +28,25 @@ const evaluation = async function (client, message, [key, ...value]) {
                 return;
             }
             case 'codes': {
-                const action = message.flags.shift();
-                const table = message.flags.shift();
-                const code = value[0] ? value[0] : token();
+                const action = message.flags[1];
+                const table = message.flags[2];
+                const code = value.shift() || token();
                 if (!table) return false;
                 let model = await client.unicron.database(table, true);
                 if (!action) return false;
                 if (!model.data || !Array.isArray(model.data)) model.data = [];
                 switch (action) {
                     case 'add': {
-                        model.data.push(Crypto({ text: code, hash: 'sha256', salt: 'oadpoaw' }));
+                        const cd = encrypt(code);
+                        model.data.push(cd);
                         await Admin.update({ data: model.data }, { where: { table: table } });
                         return code;
                     }
                     case 'remove': {
-                        // TODO
-                        model.data = model.data.filter((item) => { return item !== Crypto({ text: code, hash: 'sha256', salt: 'oadpoaw' }); });
-                        await Admin.update({ data: model.data }, { where: { table: table } });
+                        const cd = encrypt(code);
+                        if (!model.data.includes(cd)) return false;
+                        await Admin.update({ data: removeItemOnce(model.data, cd) }, { where: { table: table } });
                         return true;
-                    }
-                    case 'regenerate': {
-                        if (!isNaN(code)) return false;
-                        let codes = [];
-                        for (var i = 0; i < code; i++) {
-                            codes.push(token());
-                        }
-                        await codes.forEach((item) => {
-                            model.data.push(Crypto({ text: item, hash: 'sha256', salt: 'oadpoaw' }));
-                        });
-                        await Admin.update({ data: model.data }, { where: { table: table } });
-                        return codes.map((item) => `${item}`).join('\n');
                     }
                     default:
                         return false;
@@ -56,8 +57,8 @@ const evaluation = async function (client, message, [key, ...value]) {
             case 'partner':
             case 'tester':
             case 'supporter': {
-                const table = message.flags.shift();
-                const action = message.flags.shift();
+                const table = message.flags[1];
+                const action = message.flags[2];
                 const id = value.shift();
                 const reason = value.join(' ') || 'No reason provided.';
                 let model = await client.unicron.database(table, true);
@@ -95,6 +96,8 @@ const evaluation = async function (client, message, [key, ...value]) {
                         return false;
                 }
             }
+            default:
+                return false;
         }
     } catch (e) {
         return e;
@@ -118,7 +121,7 @@ module.exports = {
         \`-partner [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]\`
         \`-tester [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]\`
         \`-supporter [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]\`
-        \`-codes [-add|-remove|-regenerate|-fetch] [-user|-guild] [name]\`
+        \`-codes [-add|-remove|-fetch] [-user|-guild] [OK] [name]\`
      */
     config: {
         name: 'root',

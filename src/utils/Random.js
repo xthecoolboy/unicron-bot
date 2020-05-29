@@ -11,7 +11,7 @@ const Random = {
         if (length <= 0) {
             throw new RangeError('Length musn\'t go below 0');
         }
-        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const chars = 'abcdefABCDEF0123456789';
         let str = '';
         for (var i = 0; i < length; i++) {
             str += chars[Math.floor(Math.random() * chars.length)];
