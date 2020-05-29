@@ -30,17 +30,13 @@ const Levels = [
         name: 'Bot Moderator',
         level: 8,
         check: async function (client, message) {
-            const gg = await client.guilds.fetch(client.unicron.server);
-            const mem = await gg.members.fetch(message.author.id);
-            return mem ? mem.roles.cache.has(client.unicron.moderatorRole) : false;
+            return false;
         }
     }, {
         name: 'Bot Administrator',
         level: 9,
         check: async function (client, message) {
-            const gg = await client.guilds.fetch(client.unicron.server);
-            const mem = await gg.members.fetch(message.author.id);
-            return mem ? mem.roles.cache.has(client.unicron.adminRole) : false;
+            return false;
         }
     }, {
         name: 'Bot Owner',
@@ -49,20 +45,19 @@ const Levels = [
             return client.unicron.owner === message.author.id;
         }
     },
-]
-const permCache = {};
-
-(function () {
-    Levels.forEach((l) => {
-        permCache[l.name] = l.level;
-    })
-})();
+];
 
 module.exports = (client) => {
+    client.permission = {};
+    Levels.forEach((l) => {
+        client.permission[l.level] = l.name;
+    });
+    client.permission.cache = Levels;
     client.permission.level = async function (client, message) {
-        return await Levels.reduce(async (level, cur) => {
-            level = await cur.check(client, message) ? cur.level : level;
-        }, 0);
+        let num = 0;
+        await Levels.forEach(async (level) => {
+            num = await level.check(client,message) ? level.level : num;
+        });
+        return num;
     };
-    client.permission.levels = permCache;
 }

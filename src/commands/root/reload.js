@@ -39,7 +39,7 @@ module.exports = {
         cooldown: 3,
         nsfwCommand: false,
         args: true,
-        usage: 'reload [-command|-item|-crate] [itemName|crateName|commandName|commandAlias]',
+        usage: 'reload [-command|-item|-crate] [itemName|crateName|commandName]',
         donatorOnly: false,
         premiumServer: false,
     }

@@ -5,5 +5,5 @@ module.exports = {
     Mutex: require('./Mutex'),
     Random: require('./Random'),
     Regex: require('./Regex'),
-    Crypto: require('./Crypto');
+    Crypto: require('./Crypto'),
 }

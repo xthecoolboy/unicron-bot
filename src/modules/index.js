@@ -1,9 +1,9 @@
-module.exports = (client) => {
-    require('../listeners')(client);
-    require('./Permissions')(client);
-    require('./Emote')(client);
-    require('./Crates')(client);
-    require('./ShopItems'(client));
-    require('./Commands')(client);
-    require('./Events')(client);
+module.exports = async (client) => {
+    await require('../listeners')(client);
+    await require('./Permissions')(client);
+    await require('./Emote')(client);
+    await require('./Crates')(client);
+    await require('./ShopItems')(client);
+    await require('./Commands')(client);
+    await require('./Events')(client);
 }

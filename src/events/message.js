@@ -28,13 +28,13 @@ module.exports = async (client, message) => {
 
     if (!message.member) message.member.fetch();
 
-    message.author.permLevel = await client.permlevel(client, message);
-
     message.guild.db = new Guild(message.guild.id);
     message.author.db = new User(message.author.id);
     message.member.db = new Member(message.author.id, message.guild.id);
 
+    message.author.permLevel = await client.permission.level(client, message);
 
+    console.log(message.author.permLevel);
 
     const prefix = await message.guild.db.settings('prefix');
     const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${client.escapeRegex(prefix)})\\s*`);
@@ -63,24 +63,22 @@ module.exports = async (client, message) => {
     if (command.options.premiumServer && ! await message.guild.db.settings('premium')) {
         return message.channel.send(new MessageEmbed()
             .setColor('RED')
-            .setDescription(`Sorry, this command is only for [Premium Servers](${message.unicron.serverInviteURL()} 'Join here').`)
+            .setDescription(`Sorry, this command is only for [Premium Servers](${message.unicron.serverInviteURL} 'Join here').`)
         );
     }
-
-    const level = await client.permlevel(client, message);
-    if (message.author.permLevel < client.levelCache[command.config.permission]) {
+    if (message.author.permLevel < client.permission.cache.find((level) => level.name === command.config.permission).level) {
         return message.channel.send(new MessageEmbed()
             .setColor('RED')
             .setDescription(`You do not have permission to use this command.
-                Your permission level is ${message.author.permLevel} (${client.levels.find(l => l.level === level).name})
-                This command requires level ${client.levelCache[command.config.permission]} (${command.config.permission})`));
+                Your permission level is ${message.author.permLevel} (${client.permission[`${message.author.permLevel}`]})
+                This command requires level ${client.permission.cache.find((level) => level.name === command.config.permission).level} (${command.config.permission})`));
     }
 
     if (command.options.clientPermissions) {
         if (!message.guild.me.permissions.has(command.options.clientPermissions)) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
-                .setDescription(`Sorry, but i need ${permissions.join(', ')} permission(s) to do this command.`));
+                .setDescription(`Sorry, but i need ${permissions.join(', ')} permission(s) to execute this command.`));
         }
     }
     if (command.options.args && !args.length && command.options.usage) {
@@ -106,7 +104,7 @@ module.exports = async (client, message) => {
     if (command.options.donatorOnly && ! await message.author.db.profile('premium')) {
         return message.channel.send(new MessageEmbed()
             .setColor('RED')
-            .setDescription(`Sorry, this is limited only for [Supporters](${message.unicron.serverInviteURL} 'Click me!').`));
+            .setDescription(`Sorry, this command is limited only for [Donators](${message.unicron.serverInviteURL} 'Click me!').`));
     } else if (await message.author.db.profile('premium')) {
         cooldownAmount = Math.floor(cooldownAmount - (cooldownAmount * 0.25));
     }
@@ -130,17 +128,17 @@ module.exports = async (client, message) => {
         if (await message.author.db.profile('premium')) setTimeout(() => LevelingCD.delete(message.author.id), 40000);
         else setTimeout(() => LevelingCD.delete(message.author.id), 55000);
     }
+    timestamps.set(message.author.id, now);
+    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
     try {
-        if (command.run(client, message, args)) {
-            timestamps.set(message.author.id, now);
-            setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-        }
+        command.run(client, message, args);
     } catch (e) {
         message.channel.send(new MessageEmbed()
             .setColor('RED')
             .setDescription(`Something went wrong executing that command. If this keeps on happening please report it to the Bot Developer to handle this issue at [Support Server](${client.unicron.serverInviteURL}).`)
         );
-        client.logger.log(`Error on command : ${command.config.name} : ${e} `, 'error');
+        client.logger.log(`Error on command : ${command.config.name}`, 'error');
+        client.logger.error(e);
     }
 };

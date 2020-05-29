@@ -3,10 +3,6 @@ const Discord = require('discord.js');
 
 const { Admin } = require('../../database/database');
 
-const filter = function (arr, key) {
-    return arr.filter((item) => item.id !== key);
-}
-
 const evaluation = async function (client, message, args) {
     try {
         const pardon = message.flags.includes('pardon');
@@ -66,7 +62,7 @@ module.exports = {
         cooldown: 3,
         nsfwCommand: false,
         args: false,
-        usage: 'blacklist [flags] [a]',
+        usage: 'blacklist [flags] [a] [b]',
         donatorOnly: false,
         premiumServer: false,
     }
