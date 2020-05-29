@@ -30,7 +30,7 @@ const evaluation = async function (client, message, [key, ...value]) {
             case 'codes': {
                 const action = message.flags[1];
                 const table = message.flags[2];
-                const code = value.shift() || token();
+                const code = key || token();
                 if (!table) return false;
                 let model = await client.unicron.database(table, true);
                 if (!action) return false;
@@ -59,7 +59,7 @@ const evaluation = async function (client, message, [key, ...value]) {
             case 'supporter': {
                 const table = message.flags[1];
                 const action = message.flags[2];
-                const id = value.shift();
+                const id = key;
                 const reason = value.join(' ') || 'No reason provided.';
                 let model = await client.unicron.database(table, true);
                 if (!id) return false;
