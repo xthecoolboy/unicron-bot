@@ -11,6 +11,8 @@ const Member = require('../handlers/Member');
 const Blacklist = require('../modules/Blacklist');
 const Tags = require('../modules/Tags');
 
+const inviteFilter = require('../filters/inviteFilter');
+
 /**
  * @param {Message} message
  * @param {Client} client
@@ -34,7 +36,7 @@ module.exports = async (client, message) => {
 
     message.author.permLevel = await client.permission.level(client, message);
 
-    
+    if (await inviteFilter(client, message)) return;
 
     const prefix = await message.guild.db.settings('prefix');
     const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${client.escapeRegex(prefix)})\\s*`);
