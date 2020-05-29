@@ -12,6 +12,8 @@ const Blacklist = require('../modules/Blacklist');
 const Tags = require('../modules/Tags');
 
 const inviteFilter = require('../filters/inviteFilter');
+const mentionSpamFilter = require('../filters/mentionSpamFilter');
+const swearFilter = require('../filters/swearFilter');
 
 /**
  * @param {Message} message
@@ -37,18 +39,24 @@ module.exports = async (client, message) => {
     message.author.permLevel = await client.permission.level(client, message);
 
     if (await inviteFilter(client, message)) return;
+    if (await mentionSpamFilter(client, message)) return;
 
     const prefix = await message.guild.db.settings('prefix');
     const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${client.escapeRegex(prefix)})\\s*`);
-    if (!prefixRegex.test(message.content)) return;
+    if (!prefixRegex.test(message.content)) {
+        await swearFilter(client, message);
+        return;
+    }
     const [, matchedPrefix] = message.content.match(prefixRegex);
     const args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.options.aliases && cmd.options.aliases.includes(commandName));
 
     if (!command) {
+        
         const msg = await Tags(message, commandName);
         if (msg === '[TAG_DOESNT_EXISTS]') {
+            await swearFilter(client, message)
             return;
         }
         return message.channel.send(new MessageEmbed()

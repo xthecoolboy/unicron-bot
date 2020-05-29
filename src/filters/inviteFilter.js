@@ -21,7 +21,7 @@ module.exports = (client, message) => {
                 mChannel.send(new MessageEmbed()
                     .setTimestamp()
                     .setAuthor(client.user.tag, client.user.displayAvatarURL())
-                    .setTitle('Invite Blocker 1000')
+                    .setTitle('Invite Blocker')
                     .setDescription(`Member: ${message.author.tag} / ${message.author.id}`)
                 );
             }
