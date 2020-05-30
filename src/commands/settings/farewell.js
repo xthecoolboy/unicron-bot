@@ -33,6 +33,44 @@ module.exports = {
             message.channel.send('Setup complete! Testing it now...')
             return client.emit('guildMemberRemove', message.member);
         }
+        const [key, ...value] = args;
+        switch (key) {
+            case 'channel': {
+                const channel = message.mentions.channels.first();
+                if (!channel || channel.type !== 'text') return message.channel.send(`\`ERROR\`: Invalid channel... Try again...`);
+                if (!channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES'])) return message.channel.send('Unicron doesn\'t have permissions to that channel, please give Unicron access to that channel for this to work and try again.');
+                const model = await message.guild.db.leave(true);
+                model.channel = channel.id;
+                await model.save();
+                client.emit('guildMemberRemove', message.member);
+                return message.channel.send(`Farewell channel has been set to ${channel}.`);
+            }
+            case 'message': {
+                const msg = value.join(' ').replace(/`/g, '`' + String.fromCharCode(8203))
+                    .replace(/@/g, '@' + String.fromCharCode(8203));
+                if (!msg.includes('{user}')) return message.channel.send(`Missing placeholer \`{user}\`... Please try again...`);
+                const model = await message.guild.db.leaver(true);
+                model.message = msg;
+                await model.save();
+                client.emit('guildMemberRemove', message.member);
+                return message.channel.send(`Welcome Message has been set to \n\`${msg}\``);
+            }
+            case 'enable':
+            case 'disable': {
+                const stat = key === 'enable';
+                const model = await message.guild.db.leaver(true);
+                model.enabled = stat;
+                await model.save();
+                return message.channel.send(`Farewell has been \`${stat ? 'enabled' : 'disabled'}\`.`);
+            }
+            default:
+                return message.channel.send(new Discord.MessageEmbed()
+                    .setColor('RED')
+                    .setTimestamp()
+                    .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                    .setDescription('Error: Invalid Key provided, Please try again.')
+                );
+        }
     },
     config: {
         name: 'farewell',
