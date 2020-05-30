@@ -15,6 +15,8 @@ const inviteFilter = require('../filters/inviteFilter');
 const mentionSpamFilter = require('../filters/mentionSpamFilter');
 const swearFilter = require('../filters/swearFilter');
 
+const memberVerification = require('../modules/Verification');
+
 /**
  * @param {Message} message
  * @param {Client} client
@@ -38,6 +40,7 @@ module.exports = async (client, message) => {
 
     message.author.permLevel = await client.permission.level(client, message);
 
+    if (await memberVerification(client, message)) return;
     if (await inviteFilter(client, message)) return;
     if (await mentionSpamFilter(client, message)) return;
 

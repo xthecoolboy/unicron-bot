@@ -1,6 +1,7 @@
-const { Client, GuildMember } = require('discord.js');
+const { Client, GuildMember, MessageEmbed } = require('discord.js');
 
 const Guild = require('../handlers/Guild');
+const Member = require('../handlers/Member');
 
 /**
  * @param {Client} client
@@ -8,7 +9,37 @@ const Guild = require('../handlers/Guild');
  */
 module.exports = async (client, member) => {
     if (member.user.bot) return;
+    const tmp = new Member(member.user.id, member.guild.id);
+    tmp.captcha.regenerate();
     const guild = new Guild(member.guild.id);
+    const verifier = await guild.verification('type');
+    if (['discrim', 'captcha'].includes(verifier)) {
+        if (await guild.verification('enabled') && await guild.verification('channel') && await guild.verification('role')) {
+            const dm = await member.user.createDM();
+            switch (verifier) {
+                case 'discrim': {
+                    await dm.send(new MessageEmbed()
+                        .setTimestamp()
+                        .setColor(0xD3D3D3)
+                        .setTitle(`Welcome to ${member.guild.name}`)
+                        .setAuthor('This Server is protected with Unicron Bot', client.user.displayAvatarURL())
+                        .setDescription(`To get yourself verified use \`I am XXXX\`, where \`XXXX\` is your discriminator at ${member.guild.channels.resolve(await guild.verification('channel'))}\nEg: \`I am ${member.user.discriminator}\``)
+                    );
+                    break;
+                }
+                case 'captcha': {
+                    await dm.send(new MessageEmbed()
+                        .setTimestamp()
+                        .setColor(0xD3D3D3)
+                        .setTitle(`Welcome to ${member.guild.name}`)
+                        .setAuthor('This Server is protected with Unicron Bot', client.user.displayAvatarURL())
+                        .setDescription(`To get yourself verified use \`>verify [Captcha]\` at ${member.guild.channels.resolve(await guild.verification('channel'))}.\nEg: \`>verify ${await tmp.captcha.fetch()}\`\n\nCaptcha: \`${await tmp.captcha.fetch()}\``)
+                    );
+                    break;
+                }
+            }
+        }
+    }
     const channel_id = await guild.welcomer('channel');
     const message = await guild.welcomer('message');
     const enabled = await guild.welcomer('enabled');
