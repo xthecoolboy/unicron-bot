@@ -10,6 +10,9 @@ category.set('utility', 'Some utility commands which can help you do better <3')
 category.set('moderation', 'The Ban Hammer has spoken!');
 category.set('settings', 'Configure Unicron to your will, All Settings are per server.');
 category.set('nsfw', `NSFW Commands made too cool`);
+category.set('dynamicvoice', 'Dynamic Voice commands');
+category.set('ticket', 'Ticket Commands');
+category.set('root', 'Bot Staff Commands ONLY!');
 
 module.exports = {
     run: async function (client, message, args) {
@@ -63,15 +66,17 @@ module.exports = {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FFFF)
             .setTitle('Unicron\'s Commands')
-            .setDescription(`[Join here](${client.unicron.serverInviteURL} 'Support Server') if want a cool server to hangout in.`)
+            .setDescription(`[Join here](${client.unicron.serverInviteURL} 'Support Server') if want a cool server to hangout in.\n\`help [category]\``)
             .setFooter(`You can also do \'help [command]\' to get an information about a specific command!`)
             .addField(`💰 Economy`, `\`economy\``, true)
-            .addField(`${await client.getEmoji('settings', 'system')} Settings`, `\`help settings\``, true)
-            .addField(`${await client.getEmoji('yes', 'system')} Misc`, `\`help misc\``, true)
-            .addField('🔨 Moderation', `\`help moderation\``, true)
-            .addField('😂 Fun', `\`help fun\``, true)
-            .addField(`${await client.getEmoji('tools', 'system')} Utility`, `\`help utility\``, true)
-            .addField(`🔞 NSFW 😏`, '\`help nsfw\`', true)
+            .addField(`${await client.getEmoji('settings', 'system')} Settings`, `\`settings\``, true)
+            .addField(`${await client.getEmoji('yes', 'system')} Misc`, `\`misc\``, true)
+            .addField('🔨 Moderation', `\`moderation\``, true)
+            .addField('😂 Fun', `\`fun\``, true)
+            .addField(`${await client.getEmoji('tools', 'system')} Utility`, `\`utility\``, true)
+            .addField(`🔞 NSFW 😏`, '\`nsfw\`', true)
+            .addField(`🎙️ Dynamic Voice`, `\`dynamicvoice\``, true)
+            .addField(`🎫 Ticket System`, `\`ticket\``, true)
         );
     },
     config: {

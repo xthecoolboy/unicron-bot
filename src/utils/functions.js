@@ -3,11 +3,12 @@ const { token } = require('../handlers/Unicron');
 
 module.exports = (client) => {
 
-    client.awaitReply = async (msg, question, limit = 60000) => {
+    client.awaitReply = async (msg, question, limit = 60000, raw = false) => {
         const filter = m => m.author.id === msg.author.id;
         await msg.channel.send(question);
         try {
             const collected = await msg.channel.awaitMessages(filter, { max: 1, time: limit, errors: ['time'] });
+            if (raw) return collected.first();
             return collected.first().content;
         } catch (e) {
             return false;
@@ -56,7 +57,7 @@ module.exports = (client) => {
     }
     client.loadCrate = (itemName) => {
         try {
-            const props = require(`../crate/${itemName}`);
+            const props = require(`../crates/${itemName}`);
             if (props.init) {
                 props.init(client);
             }

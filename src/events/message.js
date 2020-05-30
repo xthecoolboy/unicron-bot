@@ -118,14 +118,14 @@ module.exports = async (client, message) => {
             .setColor('RED')
             .setDescription(`Sorry, this command is limited only for [Donators](${message.unicron.serverInviteURL} 'Click me!').`));
     } else if (await message.author.db.profile('premium')) {
-        cooldownAmount = Math.floor(cooldownAmount - (cooldownAmount * 0.25));
+        cooldownAmount = Math.floor(cooldownAmount - (cooldownAmount * 0.3));
     }
 
     if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
         if (now < expirationTime) {
             const timeLeft = Math.floor(expirationTime - now);
-            const donCD = Math.floor(bcd - (bcd * 0.2));
+            const donCD = Math.floor(bcd - (bcd * 0.3));
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
                 .setDescription(` ${await client.getEmoji('slowmode', 'system')} Please wait **${ms(timeLeft)}** before reusing the command again.

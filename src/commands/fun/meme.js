@@ -14,7 +14,7 @@ module.exports = {
             result.on('data', (chunk) => {
                 body += chunk;
             });
-            result.on('end', async () => {
+            result.on('end', () => {
                 let response = JSON.parse(body);
                 let index = response.data.children[Math.floor(Math.random() * 99) + 1].data;
                 if (index.post_hint !== 'image') {

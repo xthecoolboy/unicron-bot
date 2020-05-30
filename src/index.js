@@ -20,6 +20,9 @@ client.unicron = new Unicron({
     adminRole: process.env.BOT_ADMINSTRATOR_ROLE,
     inviteURL: process.env.BOT_SERVER_URL
 });
+
+console.log('Starting...');
+
 require('./bot')(client);
 
 client.login(process.env.BOT_TOKEN);

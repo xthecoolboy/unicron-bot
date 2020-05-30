@@ -14,7 +14,7 @@ module.exports = {
         buyable: true,
         sellable: true,
         usable: false,
-        price: 6250,
-        cost: Math.floor(6250 * 0.3),
+        price: 1300,
+        cost: Math.floor(1300 * 0.3),
     }
 }

@@ -20,6 +20,6 @@ module.exports = {
     },
     options: {
         aliases: ['quotes'],
-        cooldown: 15,
+        cooldown: 10,
     }
 }

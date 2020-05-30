@@ -8,7 +8,7 @@ module.exports = {
     config: {
         id: 'bow',
         displayname: '🏹 Bow',
-        description: 'A weapon prevent anyone from robbing you.',
+        description: 'A weapon to prevent anyone from robbing you.',
     },
     options: {
         buyable: true,

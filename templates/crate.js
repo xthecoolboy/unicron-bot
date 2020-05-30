@@ -9,6 +9,7 @@ module.exports = {
         id: '',
         displayname: '',
         description: '',
+        enable: true,
     },
     options: {
         

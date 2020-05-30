@@ -1202,7 +1202,7 @@ module.exports = {
     },
     options: {
         aliases: ['conf'],
-        cooldown: 3,
+        cooldown: 10,
         nsfwCommand: false,
         args: true,
         usage: 'config view\nconfig view [page]\nconfig set [key] [value]\nconfig reset\nconfig reset [key]',

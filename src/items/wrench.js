@@ -8,13 +8,13 @@ module.exports = {
     config: {
         id: 'wrench',
         displayname: '🔧 Wrench',
-        description: 'You can fix almost anything from the shop!',
+        description: 'The only item can break a padlock. _Beware it might broke_!',
     },
     options: {
         buyable: true,
         sellable: true,
-        usable: true,
-        price: 8900,
-        cost: Math.floor(8900 * 0.3),
+        usable: false,
+        price: 5900,
+        cost: Math.floor(5900 * 0.3),
     }
 }

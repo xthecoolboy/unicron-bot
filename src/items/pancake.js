@@ -3,12 +3,7 @@ const Discord = require('discord.js');
 
 module.exports = {
     run: async function (client, message, user) {
-        const item = client.shopitems.get('pancake');
-        await user.levelup(message, 50);
-        await user.removeItem(item);
-        return message.channel.send(new Discord.RichEmbed()
-            .setColor('RANDOM')
-            .setDescription('YUmYY! this pancake da best!'));
+        
     },
     config: {
         id: 'pancake',

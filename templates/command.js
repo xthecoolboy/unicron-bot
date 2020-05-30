@@ -17,8 +17,8 @@ module.exports = {
         permission: 'User',
     },
     options: {
-        aliases: [''],
-        clientPermissions: [''],
+        aliases: [],
+        clientPermissions: [],
         cooldown: 3,
         nsfwCommand: false,
         args: false,
