@@ -9,7 +9,9 @@ require('./prototypes/String');
 const Discord = require('discord.js');
 const { Unicron } = require('./handlers/Unicron');
 
-const client = new Discord.Client();
+const client = new Discord.Client({ 
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'] 
+});
 client.unicron = new Unicron({
     owner: process.env.BOT_OWNER_ID,
     server: process.env.BOT_SERVER_ID,

@@ -36,7 +36,7 @@ module.exports = {
         if (response1.content === 'cancel') return message.channel.send(`Exiting setup...`);
         const channel = response1.mentions.channels.first();
         if (!channel || channel.type !== 'text') return message.channel.send(`Invalid channel... Exiting setup...Try again...`);
-        if (!channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES'])) return message.channel.send('Unicron doesn\'t have permissions to that channel, please give Unicron access to that channel for this to work and try again...Exiting Setup');
+        if (!channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES', 'ADD_REACTIONS'])) return message.channel.send('Unicron doesn\'t have permissions to that channel, please give Unicron access to that channel for this to work and try again...Exiting Setup');
 
         const response2 = await client.awaitReply(message, `Enter Verified Role:\nEg: \`[RoleMention|RoleID|RoleName]\``, 20000, true);
         if (!response2) return message.channel.send(`No response... Exiting setup...`);
@@ -54,7 +54,16 @@ module.exports = {
         model.type = response3.content;
         model.role = role.id;
         model.enabled = true;
-        model.save();
+        await model.save();
+
+        if (response3.content === 'react') {
+            const m = await channel.send(new Discord.MessageEmbed()
+                .setColor(0x00FF00)
+                .setAuthor(client.user.tag, client.user.displayAvatarURL())
+                .setDescription(`This server is protected by Unicron, React ${await client.getEmoji('yes')} to get yourself verified!`)
+            );
+            m.react(await client.getEmoji('yes'));
+        }
         message.channel.send('Setup complete!');
     },
     config: {
