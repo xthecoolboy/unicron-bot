@@ -40,6 +40,7 @@ module.exports = {
                     const leaveChannel = await db.leaver('channel') ? `<#${await db.leaver('channel')}>` : '\`none\`';
                     const leaveMessage = await db.leaver('message');
                     const leaver = await db.leaver('enabled') ? 'ON' : 'OFF';
+                    embed.setDescription('Use command \`welcomer\` or \`farewell\` to change these values')
                     embed.setFooter('Page 3 of 4', message.guild.iconURL() || client.user.displayAvatarURL())
                         .addField('Key', `
                     \`welcomer\`
@@ -66,6 +67,7 @@ module.exports = {
                     const verificationType = await db.verification('type');
                     const ticketSystem = await db.ticket('enabled') ? 'ON' : 'OFF';
                     const ticketCategory = await db.ticket('category') ? `<#${await db.ticket('category')}>` : '\`none\`';
+                    embed.setDescription('Use command \`verification\` or \`ticketconfig\` / \`ticketsetup\` to change these values.')
                     embed.setFooter('Page 4 of 4', message.guild.iconURL() || client.user.displayAvatarURL())
                         .addField('Key', `
                     \`memberVerification\`

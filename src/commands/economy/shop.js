@@ -13,7 +13,7 @@ module.exports = {
             if (!key) {
                 return message.channel.send(new Discord.MessageEmbed()
                     .setColor(`RED`)
-                    .setDescription(`You didn\'nt provide any arguments at \`[item]\`
+                    .setDescription(`You didn\'t provide any arguments at \`[item]\`
                                 Usage: \`${await message.guild.db.settings('prefix')}shop view [item]\`
                                 Example: \`${await message.guild.db.settings('prefix')}shop view bread\``));
             }
@@ -32,7 +32,7 @@ module.exports = {
             .setColor('RANDOM')
             .setTitle('**Shop**')
             .setDescription(`You can also do \`${await message.guild.db.settings('prefix')}shop view [item]\` to get an information from a specific item.\nYou currently have **${await message.author.db.coins.fetch()}** 💰`);
-        const ITEMS = client.chunk(client.shopitems.sort((a, b) => b.options.price - a.options.price), 3);
+        const ITEMS = client.chunk(client.shopitems.sort((a, b) => b.options.price - a.options.price).filter((item) => item.options.buyable), 3);
         const pages = ITEMS.length;
         if (!pages) {
             return message.channel.send(new Discord.MessageEmbed()
@@ -66,7 +66,7 @@ module.exports = {
         cooldown: 3,
         nsfwCommand: false,
         args: false,
-        usage: 'shop view [Item]\nshop page [Page]',
+        usage: 'shop view [Item]\nshop [Page]',
         donatorOnly: false,
         premiumServer: false,
     }
