@@ -1,6 +1,5 @@
 
 const Discord = require('discord.js');
-const { Random } = require('../../utils/');
 
 module.exports = {
     /**
@@ -26,9 +25,17 @@ module.exports = {
                 .setDescription('Oi, you can\'t create a ticket inside a ticket ;p')
             );
         }
-        const channel = await message.guild.channels.create(Random.string(6), {
+        if (message.guild.channels.cache.find((ch) => { return new RegExp(`${message.author.id}`).test(ch.name) })) {
+            return message.channel.send(new Discord.MessageEmbed()
+                .setColor('RED')
+                .setTimestamp()
+                .setDescription('Oi, you can\'t create a new ticket when you already have an open ticket ;p')
+            );
+        }
+        const channel = await message.guild.channels.create(`${message.author.id}`, {
             parent: strat,
             type: 'text',
+            topic: `TicketID: ${message.author.id}\n\nSubject: ${args.join(' ')}`,
             permissionOverwrites: [
                 {
                     id: message.guild.id,
@@ -51,7 +58,10 @@ module.exports = {
         if (await message.guild.db.moderation('adminRole')) channel.overwritePermissions(await message.guild.db.moderation('adminRole'));
         channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .addField('Subject', `${args.join(' ')}`).addField('Explain', "Explain in detail what you need for a faster response!").setDescription(`Thank you for creating a ticket.\nThe support team will assist you soon!`)
+            .addField('Subject', `${args.join(' ')}`)
+            .addField('Explain', "Describe your problem so it could be resolved faster!")
+            .addField('Ticket by', message.author.tag)
+            .setDescription(`Thank you for creating a ticket.\nThe support team will assist you soon!`)
         );
     },
     config: {
