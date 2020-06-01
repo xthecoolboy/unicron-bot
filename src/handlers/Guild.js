@@ -45,12 +45,14 @@ class Guild extends Base {
      * * data
      * @param {String|Boolean} value Search value
      */
-    async settings(value) {
-        const [retval,] = await GuildSettings.findOrCreate({ where: { guild_id: this.id } });
-        if (typeof value === "boolean") {
-            return retval;
-        }
-        return retval[value];
+    settings(value) {
+        return new Promise(async (resolve, reject) => {
+            const [retval,] = await GuildSettings.findOrCreate({ where: { guild_id: this.id } });
+            if (typeof value === "boolean") {
+                return resolve(retval);
+            }
+            return resolve(retval[value]);
+        });
     }
     /**
      * Values:
@@ -60,12 +62,14 @@ class Guild extends Base {
      * * enabled
      * @param {String|Boolean} value Search value
      */
-    async dynamicVoice(value) {
-        const [retval,] = await GuildDynamicVoice.findOrCreate({ where: { guild_id: this.id } });
-        if (typeof value === "boolean") {
-            return retval;
-        }
-        return retval[value];
+    dynamicVoice(value) {
+        return new Promise(async (resolve, reject) => {
+            const [retval,] = await GuildDynamicVoice.findOrCreate({ where: { guild_id: this.id } });
+            if (typeof value === "boolean") {
+                return resolve(retval);
+            }
+            return resolve(retval[value]);
+        });
     }
     /**
      * Values:
@@ -75,12 +79,15 @@ class Guild extends Base {
      * * enabled
      * @param {String|Boolean} value Search value
      */
-    async verification(value) {
-        const [retval,] = await GuildVerification.findOrCreate({ where: { guild_id: this.id } });
-        if (typeof value === "boolean") {
-            return retval;
-        }
-        return retval[value];
+    verification(value) {
+        return new Promise(async (resolve, reject) => {
+            const [retval,] = await GuildVerification.findOrCreate({ where: { guild_id: this.id } });
+            if (typeof value === "boolean") {
+                return resolve(retval);
+            }
+            return resolve(retval[value]);
+        });
+
     }
     /**
      * Values:
@@ -89,12 +96,15 @@ class Guild extends Base {
      * * enabled
      * @param {String|Boolean} value Search value
      */
-    async ticket(value) {
-        const [retval,] = await GuildTicket.findOrCreate({ where: { guild_id: this.id } });
-        if (typeof value === "boolean") {
-            return retval;
-        }
-        return retval[value];
+    ticket(value) {
+        return new Promise(async (resolve, reject) => {
+            const [retval,] = await GuildTicket.findOrCreate({ where: { guild_id: this.id } });
+            if (typeof value === "boolean") {
+                return resolve(retval);
+            }
+            return resolve(retval[value]);
+        });
+
     }
     /**
      * Values:
@@ -111,12 +121,15 @@ class Guild extends Base {
      * * warningExpiresOn
      * @param {String|Boolean} value Search value
      */
-    async moderation(value) {
-        const [retval,] = await GuildModeration.findOrCreate({ where: { guild_id: this.id } });
-        if (typeof value === "boolean") {
-            return retval;
-        }
-        return retval[value];
+    moderation(value) {
+        return new Promise(async (resolve, reject) => {
+            const [retval,] = await GuildModeration.findOrCreate({ where: { guild_id: this.id } });
+            if (typeof value === "boolean") {
+                return resolve(retval);
+            }
+            return resolve(retval[value]);
+        });
+
     }
     /**
      * Values:
@@ -126,12 +139,14 @@ class Guild extends Base {
      * * data
      * @param {String|Boolean} value Search value
      */
-    async filters(value) {
-        const [retval,] = await GuildFilter.findOrCreate({ where: { guild_id: this.id } });
-        if (typeof value === "boolean") {
-            return retval;
-        }
-        return retval[value];
+    filters(value) {
+        return new Promise(async (resolve, reject) => {
+            const [retval,] = await GuildFilter.findOrCreate({ where: { guild_id: this.id } });
+            if (typeof value === "boolean") {
+                return resolve(retval);
+            }
+            return resolve(retval[value]);
+        });
     }
     /**
      * Values:
@@ -140,12 +155,15 @@ class Guild extends Base {
      * * enabled
      * @param {String|Boolean} value Search value
      */
-    async welcomer(value) {
-        const [retval,] = await GuildWelcome.findOrCreate({ where: { guild_id: this.id } });
-        if (typeof value === "boolean") {
-            return retval;
-        }
-        return retval[value];
+    welcomer(value) {
+        return new Promise(async (resolve, reject) => {
+            const [retval,] = await GuildWelcome.findOrCreate({ where: { guild_id: this.id } });
+            if (typeof value === "boolean") {
+                return resolve(retval);
+            }
+            return resolve(retval[value]);
+        });
+
     }
     /**
      * Values:
@@ -154,12 +172,14 @@ class Guild extends Base {
      * * enabled
      * @param {String|Boolean} value Search value
      */
-    async leaver(value) {
-        const [retval,] = await GuildLeave.findOrCreate({ where: { guild_id: this.id } });
-        if (typeof value === "boolean") {
-            return retval;
-        }
-        return retval[value];
+    leaver(value) {
+        return new Promise(async (resolve, reject) => {
+            const [retval,] = await GuildLeave.findOrCreate({ where: { guild_id: this.id } });
+            if (typeof value === "boolean") {
+                return resolve(retval);
+            }
+            return resolve(retval[value]);
+        });
     }
     /**
      * 

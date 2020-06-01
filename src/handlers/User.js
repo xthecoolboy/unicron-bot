@@ -27,28 +27,34 @@ class User extends Base {
         UserProfile.destroy({ where: { user_id: this.id } });
         this.inventory.destroy();
     }
-    async profile(value) {
-        const [retval,] = await UserProfile.findOrCreate({ where: { user_id: this.id } });
-        if (typeof value === 'boolean') {
-            return retval;
-        }
-        return retval[value];
+    profile(value) {
+        return new Promise(async (resolve, reject) => {
+            const [retval,] = await UserProfile.findOrCreate({ where: { user_id: this.id } });
+            if (typeof value === 'boolean') {
+                return resolve(retval);
+            }
+            return resolve(retval[value]);
+        });
     }
-    async levelup(client, message, exp) {
-        const next_level = await this.experience.getNextLevel();
-        let current_level = await this.experience.getLevel();
-        await this.experience.add(exp || Random.nextInt({ max: 12, min: 6 }));
-        current_level = await this.experience.getLevel();
-        if (current_level === next_level) {
-            const prize = Leveling.RequiredLevelChart[current_level];
-            this.coins.add(prize);
-            return message.channel.send(new MessageEmbed()
-                .setColor('0x00FFFF')
-                .setTitle(':arrow_up:   **LEVELUP**   :arrow_up:')
-                .setDescription(`GG, You levelup from **${current_level - 1}** ${await client.getEmoji('join_arrow', 'system')} **${current_level}**\nAnd received **${prize}**💰 coins!`)
-                .setFooter(`${message.author.tag}`)
-            );
-        }
+    levelup(client, message, exp) {
+        return new Promise(async (resolve, reject) => {
+            const next_level = await this.experience.getNextLevel();
+            let current_level = await this.experience.getLevel();
+            await this.experience.add(exp || Random.nextInt({ max: 12, min: 6 }));
+            current_level = await this.experience.getLevel();
+            if (current_level === next_level) {
+                const prize = Leveling.RequiredLevelChart[current_level];
+                this.coins.add(prize);
+                return resolve(message.channel.send(new MessageEmbed()
+                    .setColor('0x00FFFF')
+                    .setTitle(':arrow_up:   **LEVELUP**   :arrow_up:')
+                    .setDescription(`GG, You levelup from **${current_level - 1}** ${await client.getEmoji('join_arrow', 'system')} **${current_level}**\nAnd received **${prize}**💰 coins!`)
+                    .setFooter(`${message.author.tag}`)
+                ));
+            }
+            return resolve(false);
+        });
+
     }
 }
 

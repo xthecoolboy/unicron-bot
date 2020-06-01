@@ -25,55 +25,66 @@ class Warnings extends Base {
      * ```
      * @param {JSON} value Value
      */
-    async add(value) {
-        const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.id, member_id: this.id } });
-        if (!loser.data) loser.data = { warningCount: 0 };
-        loser.data.warningCount++;
-        value.case = loser.data.warningCount;
-        (loser.data['warnings'] || (loser.data['warnings'] = [])).push(value);
-        loser.save();
-        return true;
+    add(value) {
+        return new Promise(async (resolve, reject) => {
+            const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.id, member_id: this.id } });
+            if (!loser.data) loser.data = { warningCount: 0 };
+            loser.data.warningCount++;
+            value.case = loser.data.warningCount;
+            (loser.data['warnings'] || (loser.data['warnings'] = [])).push(value);
+            loser.save();
+            return resolve(true);
+        });
     }
     /**
      * 
      * @param {Number} case_number Case Number
      */
-    async remove(case_number) {
-        const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
-        if (!loser.data) return false;
-        if (!loser.data['warnings']) return false;
-        const copy = loser.data['warnings'].filter((item) => { return item.case !== case_number});
-        loser.data['warnings'] = copy;
-        loser.save();
-        return true;
+    remove(case_number) {
+        return new Promise(async (resolve, reject) => {
+            const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!loser.data) return resolve(false);
+            if (!loser.data['warnings']) return resolve(false);
+            const copy = loser.data['warnings'].filter((item) => { return item.case !== case_number });
+            loser.data['warnings'] = copy;
+            loser.save();
+            return resolve(true);
+        });
     }
     /**
      * 
      * @param {Number} case_number Case Number
      */
-    async fetch(case_number) {
-        const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
-        if (!loser.data) return false;
-        if (!loser.data['warnings']) return false;
-        const ret = loser.data['warnings'].filter((item) => { return item.case === case_number});
-        return  ret ? ret : false;
+    fetch(case_number) {
+        return new Promise(async (resolve, reject) => {
+            const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!loser.data) return resolve(false);
+            if (!loser.data['warnings']) return resolve(false);
+            const ret = loser.data['warnings'].filter((item) => { return item.case === case_number });
+            return resolve(ret ? ret : false);
+        });
     }
     /**
-     * Fetches all Member Warns
+     * Fetches all Member's Warns
      */
-    async fetchAll() {
-        const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
-        if (!loser.data) return false;
-        return loser.data['warnings'] ? loser.data['warnings'] : [];
+    fetchAll() {
+        return new Promise(async (resolve, reject) => {
+            const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!loser.data) return false;
+            return resolve(loser.data['warnings'] ? loser.data['warnings'] : []);
+        });
     }
     /**
      * Clears Member's Warns
      */
-    async destroy() {
-        const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
-        if (!loser.data) loser.data = {};
-        loser.data['warnings'] = [];
-        GuildWarns.update({ data: loser.data }, { where: { guild_id: this.guild_id, member_id: this.id } });
+    destroy() {
+        return new Promise(async (resolve, reject) => {
+            const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!loser.data) loser.data = {};
+            loser.data['warnings'] = [];
+            return resolve(GuildWarns.update({ data: loser.data }, { where: { guild_id: this.guild_id, member_id: this.id } }));
+        });
+
     }
 }
 

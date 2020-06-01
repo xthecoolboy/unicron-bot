@@ -8,32 +8,42 @@ class Captcha extends Base {
         super(id);
         this.guild_id = guild_id;
     }
-    async generate() {
-        const [user,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
-        if (!user.data) user.data = {};
-        user.data['captcha'] = Random.string(6);
-        user.save();
-    }
-    async regenerate() {
-        const [user,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
-        if (!user.data) user.data = {};
-        user.data['captcha'] = Random.string(6);
-        user.save();
-    }
-    async fetch() {
-        const [user,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
-        if (!user.data) user.data = {};
-        if (!user.data['captcha']) {
+    generate() {
+        return new Promise(async (resolve, reject) => {
+            const [user,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!user.data) user.data = {};
             user.data['captcha'] = Random.string(6);
-            user.save();
-        };
-        return user.data['captcha'];
+            return resolve(user.save());
+        });
+
     }
-    async destroy() {
-        const [user,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
-        if (!user.data) user.data = {};
-        user.data['captcha'] = '';
-        await GuildWarns.update({ data: user.data }, { where: { guild_id: this.guild_id, member_id: this.id } });
+    regenerate() {
+        return new Promise(async (resolve, reject) => {
+            const [user,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!user.data) user.data = {};
+            user.data['captcha'] = Random.string(6);
+            return resolve(user.save());
+        });
+    }
+    fetch() {
+        return new Promise(async (resolve, reject) => {
+            const [user,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!user.data) user.data = {};
+            if (!user.data['captcha']) {
+                user.data['captcha'] = Random.string(6);
+                user.save();
+            };
+            return resolve(user.data['captcha']);
+        });
+    }
+    destroy() {
+        return new Promise(async (resolve, reject) => {
+            const [user,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!user.data) user.data = {};
+            user.data['captcha'] = '';
+            return resolve(await GuildWarns.update({ data: user.data }, { where: { guild_id: this.guild_id, member_id: this.id } }));
+        });
+
     }
 }
 

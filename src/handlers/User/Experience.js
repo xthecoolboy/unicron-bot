@@ -8,54 +8,77 @@ class Experience extends Base {
     constructor(id) {
         super(id);
     }
-    async add(amount = 0) {
-        let user = await UserProfile.findOne({ where: { user_id: this.id } });
-        if (!user) {
-            return UserProfile.create({ user_id: this.id, experience: amount });
-        }
-        user.experience += Number(amount);
-        return user.save();
+    add(amount = 0) {
+        return new Promise(async (resolve, reject) => {
+            const user = await UserProfile.findOne({ where: { user_id: this.id } });
+            if (!user) {
+                return resolve(UserProfile.create({ user_id: this.id, experience: amount }));
+            }
+            user.experience += Number(amount);
+            return resolve(user.save());
+        });
+
     }
-    async remove(amount = 0) {
-        let user = await UserProfile.findOne({ where: { user_id: this.id } });
-        if (!user) {
-            return UserProfile.create({ user_id: this.id, experience: amount });
-        }
-        user.experience -= Number(amount);
-        return user.save();
+    remove(amount = 0) {
+        return new Promise(async (resolve, reject) => {
+            const user = await UserProfile.findOne({ where: { user_id: this.id } });
+            if (!user) {
+                return resolve(UserProfile.create({ user_id: this.id, experience: amount }));
+            }
+            user.experience -= Number(amount);
+            return resolve(user.save());
+        });
     }
-    async fetch() {
-        const user = await UserProfile.findOne({ where: { user_id: this.id } });
-        return user ? user.experience : 0;
+    fetch() {
+        return new Promise(async (resolve, reject) => {
+            const user = await UserProfile.findOne({ where: { user_id: this.id } });
+            return resolve(user ? user.experience : 0);
+        });
     }
-    async getLevel() {
-        let lvl = 0;
-        const cur = await this.fetch();
-        for (let i = 0; i < 101; i++) {
-            lvl = i;
-            if (cur >= Leveling.LevelChart[i] && cur <= Leveling.LevelChart[i + 1])
-                break;
-        }
-        return lvl;
+    getLevel() {
+        return new Promise(async (resolve, reject) => {
+            let lvl = 0;
+            const cur = await this.fetch();
+            for (let i = 0; i < 101; i++) {
+                lvl = i;
+                if (cur >= Leveling.LevelChart[i] && cur <= Leveling.LevelChart[i + 1])
+                    break;
+            }
+            return resolve(lvl);
+        });
     }
-    async getLevelXP() {
-        return Leveling.LevelChart[await this.getLevel()];
+    getLevelXP() {
+        return new Promise(async (resolve, reject) => {
+            return resolve(Leveling.LevelChart[await this.getLevel()]);
+        });
     }
-    async getNextLevel() {
-        return await this.getLevel() + 1;
+    getNextLevel() {
+        return new Promise(async (resolve, reject) => {
+            return resolve(await this.getLevel() + 1);
+        });
     }
-    async getNextLevelXP() {
-        return Leveling.LevelChart[await this.getNextLevel()];
+    getNextLevelXP() {
+        return new Promise(async (resolve, reject) => {
+            return resolve(Leveling.LevelChart[await this.getNextLevel()]);
+        });
+
     }
-    async getProgressBar() {
-        return Leveling.ProgressBar(await this.getPercentageProgressToNextLevel());
+    getProgressBar() {
+        return new Promise(async (resolve, reject) => {
+            return resolve(Leveling.ProgressBar(await this.getPercentageProgressToNextLevel()));
+        });
     }
-    async getPercentageProgressToNextLevel() {
-        return ((await this.fetch() - await this.getLevelXP()) /
-            (await this.getNextLevelXP() - await this.getLevelXP())) * 100; // (xp - lxp / nxp - lxp) * 100 = n
+    getPercentageProgressToNextLevel() {
+        return new Promise(async (resolve, reject) => {
+            return resolve(((await this.fetch() - await this.getLevelXP()) /
+                (await this.getNextLevelXP() - await this.getLevelXP())) * 100); // (xp - lxp / nxp - lxp) * 100 = n
+        });
+
     };
-    async getRequiredExpToNextLevel() {
-        return await this.getNextLevelXP() - await this.fetch();
+    getRequiredExpToNextLevel() {
+        return new Promise(async (resolve, reject) => {
+            return await this.getNextLevelXP() - await this.fetch();
+        });
     }
 };
 

@@ -6,25 +6,32 @@ class Coin extends Base {
     constructor(id) {
         super(id);
     }
-    async add(amount) {
-        let user = await UserProfile.findOne({ where: { user_id: this.id } });
-        if (!user) {
-            return UserProfile.create({ user_id: this.id, balance: amount });
-        }
-        user.balance += Number(amount);
-        return user.save();
+    add(amount) {
+        return new Promise(async (resolve, reject) => {
+            const user = await UserProfile.findOne({ where: { user_id: this.id } });
+            if (!user) {
+                return resolve(UserProfile.create({ user_id: this.id, balance: amount }));
+            }
+            user.balance += Number(amount);
+            return resolve(user.save());
+        });
     }
-    async remove(amount) {
-        let user = await UserProfile.findOne({ where: { user_id: this.id } });
-        if (!user) {
-            return UserProfile.create({ user_id: this.id, balance: amount });
-        }
-        user.balance -= Number(amount);
-        return user.save();
+    remove(amount) {
+        return new Promise(async (resolve, reject) => {
+            const user = await UserProfile.findOne({ where: { user_id: this.id } });
+            if (!user) {
+                return resolve(UserProfile.create({ user_id: this.id, balance: amount }));
+            }
+            user.balance -= Number(amount);
+            return resolve(user.save());
+        });
     }
-    async fetch() {
-        const user = await UserProfile.findOne({ where: { user_id: this.id } });
-        return user ? user.balance : 0;
+    fetch() {
+        return new Promise(async (resolve, reject) => {
+            const user = await UserProfile.findOne({ where: { user_id: this.id } });
+            return resolve(user ? user.balance : 0);
+        });
+
     }
 };
 

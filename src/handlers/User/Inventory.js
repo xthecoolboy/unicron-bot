@@ -6,28 +6,37 @@ class Inventory extends Base {
     constructor(id) {
         super(id);
     }
-    async add(item) {
-        const [useritem,] = await UserInventory.findOrCreate({ where: { user_id: this.id, item_id: item } });
-        useritem += 1;
-        useritem.save();
-        return true;
+    add(item) {
+        return new Promise(async (resolve, reject) => {
+            const [useritem,] = await UserInventory.findOrCreate({ where: { user_id: this.id, item_id: item } });
+            useritem.amount += 1;
+            useritem.save();
+            return resolve(true);
+        });
     }
-    async remove(item) {
-        const useritem = await UserInventory.findOne({ where: { user_id: this.id, item_id: item } });
-        if (!useritem) return;
-        if (useritem.amount === 1) return UserInventory.destroy({ where: { user_id: this.id, item_id: item } });
-        useritem.amount -= 1;
-        useritem.save();
-        return true;
+    remove(item) {
+        return new Promise(async (resolve, reject) => {
+            const useritem = await UserInventory.findOne({ where: { user_id: this.id, item_id: item } });
+            if (!useritem) return resolve(true);
+            if (useritem.amount === 1) return resolve(UserInventory.destroy({ where: { user_id: this.id, item_id: item } }));
+            useritem.amount -= 1;
+            useritem.save();
+            return resolve(true);
+        });
+
     }
-    async has(item) {
-        const useritem = await UserInventory.findOne({ where: { user_id: this.id, item_id: item } });
-        if (!useritem) return 0;
-        return useritem.amount;
+    has(item) {
+        return new Promise(async (resolve, reject) => {
+            const useritem = await UserInventory.findOne({ where: { user_id: this.id, item_id: item } });
+            if (!useritem) return resolve(0);
+            return resolve(useritem.amount);
+        });
     }
-    async fetch() {
-        const items = await UserInventory.findAll({ where: { user_id: this.id }});
-        return items ? items : [];
+    fetch() {
+        return new Promise(async (resolve, reject) => {
+            const items = await UserInventory.findAll({ where: { user_id: this.id } });
+            return resolve(items ? items : []);
+        });
     }
     destroy() {
         UserInventory.destroy({ where: { user_id: this.id } });
