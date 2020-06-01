@@ -121,7 +121,7 @@ module.exports = {
         \`-partner [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]\`
         \`-tester [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]\`
         \`-supporter [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]\`
-        \`-codes [-add|-remove|-fetch] [-user|-guild] [OK] [name]\`
+        \`-codes [-add|-remove|-fetch] [-user|-guild] [name]\`
      */
     config: {
         name: 'root',
