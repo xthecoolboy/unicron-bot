@@ -25,6 +25,9 @@
     "reset-users": "node src/dbInit.js -f -user",
     "reset-unicron": "node src/dbInit.js -f -unicron"
   },
+  "engines": {
+    "node": "12.x"
+  },
   "keywords": [
     "discordjs",
     "discord",
