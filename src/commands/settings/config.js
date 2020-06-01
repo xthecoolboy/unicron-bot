@@ -137,7 +137,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s configurations for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -145,7 +145,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -160,7 +160,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -168,7 +168,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -184,7 +184,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -192,7 +192,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -207,7 +207,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -215,7 +215,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -231,7 +231,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -239,7 +239,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -254,7 +254,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -262,7 +262,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -277,7 +277,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -285,7 +285,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -300,7 +300,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -308,7 +308,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -323,7 +323,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -331,7 +331,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -346,7 +346,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -354,7 +354,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -369,7 +369,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -377,7 +377,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -392,7 +392,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -400,7 +400,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -415,7 +415,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -423,7 +423,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -438,7 +438,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -446,7 +446,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -461,7 +461,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -469,7 +469,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -484,7 +484,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -492,7 +492,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -508,7 +508,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -516,7 +516,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -532,7 +532,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -540,7 +540,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -555,7 +555,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -563,7 +563,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -578,7 +578,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -586,7 +586,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -602,7 +602,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -610,7 +610,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -625,7 +625,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -633,7 +633,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -648,7 +648,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -656,7 +656,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -671,7 +671,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -679,7 +679,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -693,13 +693,50 @@ module.exports = {
             }
         } else if (action === 'set') {
             switch (key) {
+                case 'autoModAction': {
+                    if (!['WARN', 'MUTE', 'KICK', 'BAN'].includes(value[0])) {
+                        return message.channel.send(new Discord.MessageEmbed()
+                            .setColor('RED')
+                            .setTimestamp()
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setDescription('TypeError: Available Auto Mod Actions: \`WARN\`, \`MUTE\`, \`KICK\`, \`BAN\`\nCASE SENSITIVE')
+                        );
+                    }
+                    if (value[0] === 'MUTE' && !await db.moderation('mutedRole')) {
+                        return message.channel.send(new Discord.MessageEmbed()
+                            .setColor('RED')
+                            .setTimestamp()
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setDescription('Error: Muted Role not setup, use \`config set mutedRole [RoleMention|RoleID|RoleName]\` to set it up and use this command again!')
+                        );
+                    }
+                    const settings = await db.moderation(true);
+                    settings.autoModAction = value[0];
+                    Promise.all([await settings.save()]).then(() => {
+                        return message.channel.send(new Discord.MessageEmbed()
+                            .setColor('RANDOM')
+                            .setDescription(`Successfully set \`${key}\` to \`${value[0]}\`.`)
+                            .setTimestamp()
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                        );
+                    }).catch(e => {
+                        client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
+                        return message.channel.send(new Discord.MessageEmbed()
+                            .setColor('RED')
+                            .setDescription(`An error occured while setting \`${key}\`.`)
+                            .setTimestamp()
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                        );
+                    });
+                    break;
+                }
                 case 'prefix': {
                     if (value[0].length > 3) {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RED')
                             .setDescription('Error: Prefix length must not exceed 3 characters.')
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }
                     const settings = await db.settings(true);
@@ -709,7 +746,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${value[0]}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -717,7 +754,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -731,7 +768,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`Incorrect Arguments: Use \`config set ${key} [RoleMention|RoleID|RoleName]\``)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }
                     const settings = await db.moderation(true);
@@ -741,7 +778,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to <@&${role.id}>.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -749,7 +786,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -761,7 +798,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`Incorrect Arguments: Use \`config set ${key} [ChannelMention|ChannelID|ChannelName]\``)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }
                     if (!channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES'])) {
@@ -769,7 +806,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`Error: Unicron doesn't have access to that channel`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }
                     const settings = await db.moderation(true);
@@ -780,7 +817,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to <#${channel.id}>.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -788,7 +825,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -799,7 +836,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`Incorrect Arguments: Use \`config set ${key} [on|off]\``)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }
                     const bool = (value[0] === 'on') ? true : false;
@@ -810,7 +847,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${bool ? 'on' : 'off'}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -818,7 +855,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -830,7 +867,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`Incorrect Arguments: Use \`config set ${key} [Number]\``)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }
                     const settings = await db.moderation(true);
@@ -840,7 +877,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${time}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -848,7 +885,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -857,12 +894,12 @@ module.exports = {
                 case 'warnActionExpiresOn': {
                     const num = value[0];
                     const suffix = value[1];
-                    if (isNaN(num) || !['s','m','h','d'].includes(suffix)) {
+                    if (isNaN(num) || !['s', 'm', 'h', 'd'].includes(suffix)) {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RED')
                             .setDescription(`Incorrect Arguments: Use \`config set ${key} [Number] [s|m|h|d]\``)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }
                     const time = ms(`${num}${suffix}`);
@@ -873,7 +910,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${ms(time)}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -881,7 +918,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
@@ -894,7 +931,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`Incorrect Arguments: Use \`config set ${key} [on|off]\``)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }
                     const bool = (value[0] === 'on') ? true : false;
@@ -905,7 +942,7 @@ module.exports = {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${bool ? 'on' : 'off'}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -913,7 +950,7 @@ module.exports = {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     });
                     break;
