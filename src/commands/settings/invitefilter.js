@@ -9,7 +9,10 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
-
+        const toggle = await message.guild.db.filters(true);
+        toggle.inviteFilter = !toggle.inviteFilter;
+        toggle.save();
+        message.channel.send(`inviteFilter has been ${toggle.inviteFilter ? 'enabled' : 'disabled'}`);
     },
     config: {
         name: 'invitefilter',

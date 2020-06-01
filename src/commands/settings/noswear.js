@@ -9,7 +9,10 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
-
+        const toggle = await message.guild.db.filters(true);
+        toggle.swearFilter = !toggle.swearFilter;
+        toggle.save();
+        message.channel.send(`No Swear has been ${toggle.inviteFilter ? 'enabled' : 'disabled'}`);
     },
     config: {
         name: 'noswear',
@@ -17,7 +20,7 @@ module.exports = {
         permission: 'Server Administrator',
     },
     options: {
-        aliases: ['swearFilter'],
+        aliases: ['swearfilter'],
         clientPermissions: [],
         cooldown: 10,
         nsfwCommand: false,

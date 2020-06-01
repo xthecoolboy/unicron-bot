@@ -9,15 +9,18 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
-
+        const toggle = await message.guild.db.moderation(true);
+        toggle.autoModeration = !toggle.autoModeration;
+        toggle.save();
+        message.channel.send(`Auto Moderation has been ${toggle.autoModeration ? 'enabled' : 'disabled'}`);
     },
     config: {
         name: 'automod',
-        description: 'Toggles AutoModeration of the server!',
+        description: 'Toggles AutoModeration on the server!',
         permission: 'Server Administrator',
     },
     options: {
-        aliases: [],
+        aliases: ['automoderation'],
         clientPermissions: [],
         cooldown: 10,
         nsfwCommand: false,
