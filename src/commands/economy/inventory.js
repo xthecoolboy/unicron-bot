@@ -30,14 +30,14 @@ module.exports = {
         } else if (page > 0 && page <= pages) {
             _items[page - 1].map(m => {
                 const p = client.shopitems.get(m.item_id);
-                embed.addField(` **${m.amount} ${p.config.displayname}**`, `• ${p.config.description}\n Cost : **${p.options.cost}** coins`);
+                embed.addField(` **${m.amount} ~ ${p.config.displayname}**`, `• ${p.config.description}\n Cost : **${p.options.cost}** coins`);
             });
             embed.setFooter(`Page ${page} of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL);
             return message.channel.send(embed);
         }
         _items[0].map(m => {
             const p = client.shopitems.get(m.item_id);
-            embed.addField(` **${m.amount} ${p.config.displayname}**`, `• ${p.config.description}\n Cost : **${p.options.cost}** coins`);
+            embed.addField(` **${m.amount} ~ ${p.config.displayname}**`, `• ${p.config.description}\n Cost : **${p.options.cost}** coins`);
         });
         embed.setFooter(`Page 1 of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL);
         return message.channel.send(embed);

@@ -33,7 +33,7 @@ module.exports = {
 
         message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FF00)
-            .setDescription(`You've bought: **${item.config.displayname}**, for the price of **${item.options.price}** Coins`)
+            .setDescription(`You've bought: **${item.config.displayname}** , for the price of **${item.options.price}** Coins`)
         );
     },
     config: {

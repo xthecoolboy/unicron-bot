@@ -16,7 +16,7 @@ module.exports = {
         }
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setTitle(`${target.tag}'s Avatar`)
+            .setAuthor(target.tag, target.displayAvatarURL())
             .setImage(`${target.displayAvatarURL()}`)
         );
     },

@@ -9,7 +9,7 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
-
+        return message.channel.send(['🤴 Heads!', '🐛 Tails!'].random());
     },
     config: {
         name: 'cointoss',

@@ -7,7 +7,7 @@ module.exports = {
     },
     config: {
         id: 'bread',
-        displayname: '🍞',
+        displayname: '🍞 Bread',
         description: 'Tasty Bread ma man',
     },
     options: {
