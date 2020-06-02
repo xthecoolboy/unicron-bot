@@ -73,7 +73,7 @@ module.exports = {
     },
     options: {
         aliases: ['verifier'],
-        clientPermissions: [],
+        clientPermissions: ['SEND_MESSAGES', 'ADD_REACTIONS', 'MANAGE_CHANNELS'],
         cooldown: 10,
         nsfwCommand: false,
         args: false,
