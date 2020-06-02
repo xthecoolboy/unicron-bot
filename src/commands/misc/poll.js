@@ -9,7 +9,14 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
-
+        try {
+            await message.react(await client.getEmoji('yes'));
+            await message.react(await client.getEmoji('no'));
+            await message.react(await client.getEmoji('PepoHmm'));
+            await message.react(await client.getEmoji('PepoShrug'));
+        } catch (e) {
+            client.logger.warn(`Reactions did not react on ${message.guild.name} / ${message.guild.id} / ${message.id}`)
+        }
     },
     config: {
         name: 'poll',
@@ -18,7 +25,7 @@ module.exports = {
     },
     options: {
         aliases: [],
-        clientPermissions: [],
+        clientPermissions: ['ADD_REACTIONS'],
         cooldown: 3,
         nsfwCommand: false,
         args: true,
