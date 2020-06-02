@@ -6,7 +6,7 @@ if (process.env.BOT_HOST_URL) {
     const express = require("express");
     const app = express();
     app.get("/", (request, response) => {
-        console.log(Date.now() + " ping Received");
+        console.log(Date.now().toHumanString() + " ping Received");
         response.sendStatus(200);
     });
     app.listen(4200);
