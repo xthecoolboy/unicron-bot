@@ -22,8 +22,8 @@ module.exports = async (client, member) => {
                         .setTimestamp()
                         .setColor(0xD3D3D3)
                         .setTitle(`Welcome to ${member.guild.name}`)
-                        .setAuthor(`This server is protected by [Unicron](${client.unicron.serverInviteURL} 'Unicron's Support Server'), a powerful bot that prevents servers from being raided`, client.user.displayAvatarURL())
-                        .setDescription(`To get yourself verified use \`I am XXXX\`, where \`XXXX\` is your discriminator at ${member.guild.channels.resolve(await guild.verification('channel'))}\nEg: \`I am ${member.user.discriminator}\``)
+                        .setAuthor(client.user.tag, client.user.displayAvatarURL())
+                        .setDescription(`This server is protected by [Unicron](${client.unicron.serverInviteURL} 'Unicron's Support Server'), a powerful bot that prevents servers from being raided\nTo get yourself verified use \`I am XXXX\`, where \`XXXX\` is your discriminator at ${member.guild.channels.resolve(await guild.verification('channel'))}\nEg: \`I am ${member.user.discriminator}\``)
                     );
                     break;
                 }
@@ -32,8 +32,8 @@ module.exports = async (client, member) => {
                         .setTimestamp()
                         .setColor(0xD3D3D3)
                         .setTitle(`Welcome to ${member.guild.name}`)
-                        .setAuthor(`This server is protected by [Unicron](${client.unicron.serverInviteURL} 'Unicron's Support Server'), a powerful bot that prevents servers from being raided`, client.user.displayAvatarURL())
-                        .setDescription(`To get yourself verified use \`>verify [Captcha]\` at ${member.guild.channels.resolve(await guild.verification('channel'))}.\nEg: \`>verify ${await tmp.captcha.fetch()}\`\n\nCaptcha: \`${await tmp.captcha.fetch()}\``)
+                        .setAuthor(client.user.tag, client.user.displayAvatarURL())
+                        .setDescription(`This server is protected by [Unicron](${client.unicron.serverInviteURL} 'Unicron's Support Server'), a powerful bot that prevents servers from being raided\nTo get yourself verified use \`>verify [Captcha]\` at ${member.guild.channels.resolve(await guild.verification('channel'))}.\nEg: \`>verify ${await tmp.captcha.fetch()}\`\n\nCaptcha: \`${await tmp.captcha.fetch()}\``)
                     );
                     break;
                 }

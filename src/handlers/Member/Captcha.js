@@ -10,27 +10,27 @@ class Captcha extends Base {
     }
     generate() {
         return new Promise(async (resolve, reject) => {
-            let user = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
-            if (!user) user = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
+            let user = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!user) user = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
             if (!user.data) user.data = {};
             user.data['captcha'] = Random.string(6);
-            return resolve(user.save());
+            return resolve(await user.save());
         });
 
     }
     regenerate() {
         return new Promise(async (resolve, reject) => {
-            let user = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
-            if (!user) user = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
+            let user = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!user) user = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
             if (!user.data) user.data = {};
             user.data['captcha'] = Random.string(6);
-            return resolve(user.save());
+            return resolve(await user.save());
         });
     }
     fetch() {
         return new Promise(async (resolve, reject) => {
-            let user = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
-            if (!user) user = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
+            let user = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!user) user = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
             if (!user.data) user.data = {};
             if (!user.data['captcha']) {
                 user.data['captcha'] = Random.string(6);
@@ -41,8 +41,8 @@ class Captcha extends Base {
     }
     destroy() {
         return new Promise(async (resolve, reject) => {
-            let user = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
-            if (!user) user = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
+            let user = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!user) user = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
             if (!user.data) user.data = {};
             user.data['captcha'] = '';
             return resolve(await GuildWarns.update({ data: user.data }, { where: { guild_id: this.guild_id, member_id: this.id } }));

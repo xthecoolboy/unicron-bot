@@ -25,8 +25,8 @@ class Warnings extends Base {
      */
     add(value) {
         return new Promise(async (resolve, reject) => {
-            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
-            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
+            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
             if (!loser.data) loser.data = { warningCount: 0 };
             loser.data.warningCount++;
             value.case = loser.data.warningCount;
@@ -42,8 +42,8 @@ class Warnings extends Base {
      */
     remove(case_number) {
         return new Promise(async (resolve, reject) => {
-            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
-            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
+            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
             if (!loser.data) return resolve(false);
             if (!loser.data['warnings']) return resolve(false);
             const copy = loser.data['warnings'].filter((item) => { return item.case !== case_number });
@@ -58,8 +58,8 @@ class Warnings extends Base {
      */
     fetch(case_number) {
         return new Promise(async (resolve, reject) => {
-            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
-            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
+            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
             if (!loser.data) return resolve(false);
             if (!loser.data['warnings']) return resolve(false);
             const ret = loser.data['warnings'].filter((item) => { return item.case === case_number });
@@ -71,8 +71,8 @@ class Warnings extends Base {
      */
     fetchAll() {
         return new Promise(async (resolve, reject) => {
-            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
-            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
+            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
             if (!loser.data) return false;
             return resolve(loser.data['warnings'] ? loser.data['warnings'] : []);
         });
@@ -82,8 +82,8 @@ class Warnings extends Base {
      */
     destroy() {
         return new Promise(async (resolve, reject) => {
-            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
-            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
+            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
+            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
             if (!loser.data) loser.data = {};
             loser.data['warnings'] = [];
             return resolve(GuildWarns.update({ data: loser.data }, { where: { guild_id: this.guild_id, member_id: this.id } }));
