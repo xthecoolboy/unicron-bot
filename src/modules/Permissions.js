@@ -55,7 +55,7 @@ module.exports = (client) => {
     client.permission.cache = Levels;
     client.permission.level = async function (client, message) {
         let num = 0;
-        for (const level of Levels) {
+        for await (const level of Levels) {
             num = await level.check(client,message) ? level.level : num;
         }
         return num;
