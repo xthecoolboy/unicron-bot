@@ -21,7 +21,7 @@ module.exports = {
     },
     options: {
         aliases: [],
-        clientPermissions: [],
+        clientPermissions: ['MANAGE_MESSAGES'],
         cooldown: 10,
         nsfwCommand: false,
         args: false,

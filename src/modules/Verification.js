@@ -15,8 +15,8 @@ module.exports = (client, message) => {
             const stat = (!enabled || !role || !channel_id) ? true : false;
             if (stat) return resolve(false);
             if (channel_id !== message.channel.id) return resolve(false);
+            if (message.deletable) message.delete({ timeout: 1000 });
             if (type === 'react') return resolve(false);
-            message.delete({ timeout: 1000 });
             let verified = false;
             if (type === 'discrim') {
                 verified = message.content === `I am ${message.author.discriminator}`;

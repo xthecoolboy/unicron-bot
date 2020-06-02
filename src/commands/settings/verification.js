@@ -36,7 +36,7 @@ module.exports = {
         if (response1.content === 'cancel') return message.channel.send(`Exiting setup...`);
         const channel = response1.mentions.channels.first();
         if (!channel || channel.type !== 'text') return message.channel.send(`Invalid channel... Exiting setup...Try again...`);
-        if (!channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES', 'ADD_REACTIONS'])) return message.channel.send('Unicron doesn\'t have permissions to that channel, please give Unicron access to that channel for this to work and try again...Exiting Setup');
+        if (!channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES', 'ADD_REACTIONS', 'MANAGE_MESSAGES'])) return message.channel.send('Unicron doesn\'t have permissions to that channel, please give Unicron access to that channel for this to work and try again...Exiting Setup');
 
         const response2 = await client.awaitReply(message, `Enter Verified Role:\nEg: \`[RoleMention|RoleID|RoleName]\``, 20000, true);
         if (!response2) return message.channel.send(`No response... Exiting setup...`);
@@ -60,7 +60,7 @@ module.exports = {
             const m = await channel.send(new Discord.MessageEmbed()
                 .setColor(0x00FF00)
                 .setAuthor(client.user.tag, client.user.displayAvatarURL())
-                .setDescription(`This server is protected by Unicron, React ${await client.getEmoji('yes')} to get yourself verified!`)
+                .setDescription(`This server is protected by [Unicron](${client.unicron.serverInviteURL} 'Unicron's Support Server'), a powerful bot that prevents servers from being raided, React ${await client.getEmoji('yes')} to get yourself verified!`)
             );
             m.react(await client.getEmoji('yes'));
         }
@@ -73,7 +73,7 @@ module.exports = {
     },
     options: {
         aliases: ['verifier'],
-        clientPermissions: ['SEND_MESSAGES', 'ADD_REACTIONS', 'MANAGE_CHANNELS'],
+        clientPermissions: ['SEND_MESSAGES', 'ADD_REACTIONS', 'MANAGE_CHANNELS', 'MANAGE_MESSAGES'],
         cooldown: 10,
         nsfwCommand: false,
         args: false,

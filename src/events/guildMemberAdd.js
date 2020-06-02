@@ -10,7 +10,7 @@ const Member = require('../handlers/Member');
 module.exports = async (client, member) => {
     if (member.user.bot) return;
     const tmp = new Member(member.user.id, member.guild.id);
-    tmp.captcha.regenerate();
+    await tmp.captcha.regenerate();
     const guild = new Guild(member.guild.id);
     const verifier = await guild.verification('type');
     if (['discrim', 'captcha'].includes(verifier)) {
@@ -22,7 +22,7 @@ module.exports = async (client, member) => {
                         .setTimestamp()
                         .setColor(0xD3D3D3)
                         .setTitle(`Welcome to ${member.guild.name}`)
-                        .setAuthor('This Server is protected with Unicron Bot', client.user.displayAvatarURL())
+                        .setAuthor(`This server is protected by [Unicron](${client.unicron.serverInviteURL} 'Unicron's Support Server'), a powerful bot that prevents servers from being raided`, client.user.displayAvatarURL())
                         .setDescription(`To get yourself verified use \`I am XXXX\`, where \`XXXX\` is your discriminator at ${member.guild.channels.resolve(await guild.verification('channel'))}\nEg: \`I am ${member.user.discriminator}\``)
                     );
                     break;
@@ -32,7 +32,7 @@ module.exports = async (client, member) => {
                         .setTimestamp()
                         .setColor(0xD3D3D3)
                         .setTitle(`Welcome to ${member.guild.name}`)
-                        .setAuthor('This Server is protected with Unicron Bot', client.user.displayAvatarURL())
+                        .setAuthor(`This server is protected by [Unicron](${client.unicron.serverInviteURL} 'Unicron's Support Server'), a powerful bot that prevents servers from being raided`, client.user.displayAvatarURL())
                         .setDescription(`To get yourself verified use \`>verify [Captcha]\` at ${member.guild.channels.resolve(await guild.verification('channel'))}.\nEg: \`>verify ${await tmp.captcha.fetch()}\`\n\nCaptcha: \`${await tmp.captcha.fetch()}\``)
                     );
                     break;

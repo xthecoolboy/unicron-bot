@@ -22,14 +22,14 @@ module.exports = {
                 let embed = new Discord.MessageEmbed()
                     .setColor('RANDOM')
                     .setDescription(`${category.get(args[0])}.`)
-                    .addField(`\u200b`,
+                    .addField(`Commands:`,
                         `${client.commands.filter(command => command.config.category.includes(args[0]) && !command.options.donatorOnly)
                             .map(command => `\`${command.config.name}\``)
                             .join(', ')}` || `\u200b`)
                     .setFooter(`use ${prefix} before each command!`)
                 if (client.commands.filter(command => command.config.category.includes(args[0]) && command.options.donatorOnly).map(command => `\`${command.config.name}\``).length) {
                     embed.addField(`\u200b`,
-                        `[Premium Only](${client.unicron.serverInviteURL} 'These commands are only exclusive to donators')
+                        `[Premium Commands](${client.unicron.serverInviteURL} 'These commands are only exclusive to donators')
                             ${client.commands.filter(command => command.config.category.includes(args[0]) && command.options.donatorOnly)
                             .map(command => `\`${command.config.name}\``)
                             .join(', ')}
@@ -66,17 +66,17 @@ module.exports = {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FFFF)
             .setTitle('Unicron\'s Commands')
-            .setDescription(`[Join here](${client.unicron.serverInviteURL} 'Support Server') if want a cool server to hangout in.\n\`help [category]\``)
-            .setFooter(`You can also do \'help [command]\' to get an information about a specific command!`)
-            .addField(`💰 Economy`, `\`economy\``, true)
-            .addField(`${await client.getEmoji('settings', 'system')} Settings`, `\`settings\``, true)
-            .addField(`${await client.getEmoji('yes', 'system')} Misc`, `\`misc\``, true)
-            .addField('🔨 Moderation', `\`moderation\``, true)
-            .addField('😂 Fun', `\`fun\``, true)
-            .addField(`${await client.getEmoji('tools', 'system')} Utility`, `\`utility\``, true)
-            .addField(`🔞 NSFW 😏`, '\`nsfw\`', true)
-            .addField(`🎙️ Dynamic Voice`, `\`dynamicvoice\``, true)
+            .setDescription(`[Join here](${client.unicron.serverInviteURL} 'Support Server') if want a cool server to hangout in.\nI\'m still on development, some features will work and some will not .\nBut most of the will work but some of them has bugs.`)
+            .setFooter(`help [category]`, client.user.displayAvatarURL())
+            .addField(`${await client.getEmoji('staff')} Moderation`, `\`moderation\``, true)
+            .addField(`${await client.getEmoji('settings')} Settings`, `\`settings\``, true)
             .addField(`🎫 Ticket System`, `\`ticket\``, true)
+            .addField(`🎙️ Dynamic Voice`, `\`dynamicvoice\``, true)
+            .addField(`💰 Economy`, `\`economy\``, true)
+            .addField(`${await client.getEmoji('tools')} Utility`, `\`utility\``, true)
+            .addField(`${await client.getEmoji('yes')} Misc`, `\`misc\``, true)
+            .addField('😂 Fun', `\`fun\``, true)
+            .addField(`🔞 NSFW`, '\`nsfw\`', true)
         );
     },
     config: {
