@@ -11,7 +11,7 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
-        return message.channel.send(Crypto.createHmac('sha1').update(args.join(' ')).digest('hex'));
+        return message.channel.send(Crypto.createHmac('sha1', args.join(' ')).digest('hex'));
     },
     config: {
         name: 'sha1',
