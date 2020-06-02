@@ -12,7 +12,8 @@ class Badges extends Base {
     }
     add(badge) {
         return new Promise(async (resolve, reject) => {
-            const [user,] = await UserProfile.findOrCreate({ where: { user_id: this.id } });
+            let user = await UserProfile.findOne({ where: { user_id: this.id } });
+            if (!user) user = await UserProfile.create({ user_id: this.id });
             if (!user.data) user.data = {};
             const copy = user.data;
             if (copy['badges'] && copy['badges'].includes(badge)) return resolve(false);
@@ -23,7 +24,8 @@ class Badges extends Base {
     }
     remove(badge) {
         return new Promise(async (resolve, reject) => {
-            const [user,] = await UserProfile.findOrCreate({ where: { user_id: this.id } });
+            let user = await UserProfile.findOne({ where: { user_id: this.id } });
+            if (!user) user = await UserProfile.create({ user_id: this.id });
             if (!user.data) user.data = {};
             if (user.data['badges'] && !user.data['badges'].includes(badge)) return resolve(false);
             const mcpy = removeElement(user.data['badges'], badge);
@@ -35,7 +37,8 @@ class Badges extends Base {
 
     has(value) {
         return new Promise(async (resolve, reject) => {
-            const [user,] = await UserProfile.findOrCreate({ where: { user_id: this.id } });
+            let user = await UserProfile.findOne({ where: { user_id: this.id } });
+            if (!user) user = await UserProfile.create({ user_id: this.id });
             if (!user.data) user.data = {};
             if (!user.data['badges']) user.data['badges'];
             user.save();
@@ -44,7 +47,8 @@ class Badges extends Base {
     }
     fetch() {
         return new Promise(async (resolve, reject) => {
-            const [user,] = await UserProfile.findOrCreate({ where: { user_id: this.id } });
+            let user = await UserProfile.findOne({ where: { user_id: this.id } });
+            if (!user) user = await UserProfile.create({ user_id: this.id });
             if (!user.data) user.data = {};
             return resolve(user.data['badges'] ? user.data['badges'] : []);
         });

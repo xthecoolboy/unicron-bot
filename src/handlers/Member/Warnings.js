@@ -12,27 +12,27 @@ class Warnings extends Base {
      * message.member.warnings.add({ 
      *      reason: "HakDog",
      *      issued_by: "what sstafff",
-     *      issued_at: Date.now()}
-     * );
+     * });
      * ```
      * ```json
      * // Examples
      * {
      *      "reason": "No reason provided.",
      *      "issued_by": "Staff_SnowFlake",
-     *      "issued_at": Date.now()
      * }
      * ```
      * @param {JSON} value Value
      */
     add(value) {
         return new Promise(async (resolve, reject) => {
-            const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.id, member_id: this.id } });
+            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
+            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
             if (!loser.data) loser.data = { warningCount: 0 };
             loser.data.warningCount++;
             value.case = loser.data.warningCount;
+            value.when = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
             (loser.data['warnings'] || (loser.data['warnings'] = [])).push(value);
-            loser.save();
+            await loser.save();
             return resolve(true);
         });
     }
@@ -42,12 +42,13 @@ class Warnings extends Base {
      */
     remove(case_number) {
         return new Promise(async (resolve, reject) => {
-            const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
+            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
+            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
             if (!loser.data) return resolve(false);
             if (!loser.data['warnings']) return resolve(false);
             const copy = loser.data['warnings'].filter((item) => { return item.case !== case_number });
             loser.data['warnings'] = copy;
-            loser.save();
+            await loser.save();
             return resolve(true);
         });
     }
@@ -57,7 +58,8 @@ class Warnings extends Base {
      */
     fetch(case_number) {
         return new Promise(async (resolve, reject) => {
-            const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
+            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
+            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
             if (!loser.data) return resolve(false);
             if (!loser.data['warnings']) return resolve(false);
             const ret = loser.data['warnings'].filter((item) => { return item.case === case_number });
@@ -69,7 +71,8 @@ class Warnings extends Base {
      */
     fetchAll() {
         return new Promise(async (resolve, reject) => {
-            const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
+            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
+            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
             if (!loser.data) return false;
             return resolve(loser.data['warnings'] ? loser.data['warnings'] : []);
         });
@@ -79,7 +82,8 @@ class Warnings extends Base {
      */
     destroy() {
         return new Promise(async (resolve, reject) => {
-            const [loser,] = await GuildMember.findOrCreate({ where: { guild_id: this.guild_id, member_id: this.id } });
+            let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id ,member_id: this.id } });
+            if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id ,member_id: this.id });
             if (!loser.data) loser.data = {};
             loser.data['warnings'] = [];
             return resolve(GuildWarns.update({ data: loser.data }, { where: { guild_id: this.guild_id, member_id: this.id } }));

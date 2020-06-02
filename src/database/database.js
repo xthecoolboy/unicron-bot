@@ -10,6 +10,9 @@ const UnicronDB = new Sequelize(
         dialect: 'sqlite',
         logging: false,
         storage: `./database/${process.env.UNICRON_DATABASE_FILE}.sqlite`,
+        retry: {
+            max: 10,
+        }
     }
 );
 const UserDB = new Sequelize(
@@ -21,6 +24,9 @@ const UserDB = new Sequelize(
         dialect: 'sqlite',
         logging: false,
         storage: `./database/${process.env.USER_DATABASE_FILE}.sqlite`,
+        retry: {
+            max: 10,
+        }
     }
 )
 const GuildDB = new Sequelize(
@@ -32,6 +38,9 @@ const GuildDB = new Sequelize(
         dialect: 'sqlite',
         logging: false,
         storage: `./database/${process.env.GUILD_DATABASE_FILE}.sqlite`,
+        retry: {
+            max: 10,
+        }
     }
 )
 

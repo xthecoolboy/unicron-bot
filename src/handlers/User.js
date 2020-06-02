@@ -16,24 +16,31 @@ class User extends Base {
     constructor(id) {
         super(id);
         this.badges = new Badge(id);
-        this.inventory = new Inventory(id);
         this.coins = new Coin(id);
         this.experience = new Experience(id);
+        this.inventory = new Inventory(id);
     }
     /**
      * @brief Destroy data
      */
-    destroy() {
-        UserProfile.destroy({ where: { user_id: this.id } });
+    async destroy() {
+        await UserProfile.destroy({ where: { user_id: this.id } });
         this.inventory.destroy();
     }
+    /**
+     * Searches
+     * * premium
+     * * data (JSON OBJECT)
+     * @param {String|Boolean} value 
+     */
     profile(value) {
         return new Promise(async (resolve, reject) => {
-            const [retval,] = await UserProfile.findOrCreate({ where: { user_id: this.id } });
+            let retval = await UserProfile.findOne({ where: { user_id: this.id } });
+            if (!retval) retval = await UserProfile.create({ guild_id: this.id });
             if (typeof value === 'boolean') {
-                return resolve(retval);
+                return resolve(this.profile);
             }
-            return resolve(retval[value]);
+            return resolve(this.profile[value]);
         });
     }
     levelup(client, message, exp) {

@@ -5,33 +5,33 @@ const Base = require('../../classes/Base');
 const Leveling = require('../../modules/Leveling');
 
 class Experience extends Base {
-    constructor(id) {
+    constructor(id, inst) {
         super(id);
     }
     add(amount = 0) {
         return new Promise(async (resolve, reject) => {
-            const user = await UserProfile.findOne({ where: { user_id: this.id } });
+            let user = await UserProfile.findOne({ where: { user_id: this.id } });
             if (!user) {
                 return resolve(UserProfile.create({ user_id: this.id, experience: amount }));
             }
             user.experience += Number(amount);
-            return resolve(user.save());
+            return resolve(await user.save());
         });
 
     }
     remove(amount = 0) {
         return new Promise(async (resolve, reject) => {
-            const user = await UserProfile.findOne({ where: { user_id: this.id } });
+            let user = await UserProfile.findOne({ where: { user_id: this.id } });
             if (!user) {
                 return resolve(UserProfile.create({ user_id: this.id, experience: amount }));
             }
             user.experience -= Number(amount);
-            return resolve(user.save());
+            return resolve(await user.save());
         });
     }
     fetch() {
         return new Promise(async (resolve, reject) => {
-            const user = await UserProfile.findOne({ where: { user_id: this.id } });
+            let user = await UserProfile.findOne({ where: { user_id: this.id } });
             return resolve(user ? user.experience : 0);
         });
     }

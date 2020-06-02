@@ -3,12 +3,14 @@ const { UserProfile } = require('../../database/database');
 const Base = require('../../classes/Base');
 
 class Coin extends Base {
-    constructor(id) {
+    constructor(id, inst) {
         super(id);
+
+        this.inst = inst;
     }
     add(amount) {
         return new Promise(async (resolve, reject) => {
-            const user = await UserProfile.findOne({ where: { user_id: this.id } });
+            let user = await UserProfile.findOne({ where: { user_id: this.id } });
             if (!user) {
                 return resolve(UserProfile.create({ user_id: this.id, balance: amount }));
             }
@@ -18,7 +20,7 @@ class Coin extends Base {
     }
     remove(amount) {
         return new Promise(async (resolve, reject) => {
-            const user = await UserProfile.findOne({ where: { user_id: this.id } });
+            let user = await UserProfile.findOne({ where: { user_id: this.id } });
             if (!user) {
                 return resolve(UserProfile.create({ user_id: this.id, balance: amount }));
             }
@@ -28,7 +30,8 @@ class Coin extends Base {
     }
     fetch() {
         return new Promise(async (resolve, reject) => {
-            const user = await UserProfile.findOne({ where: { user_id: this.id } });
+            let user = await UserProfile.findOne({ where: { user_id: this.id } });
+            if (!user) user = await UserProfile.create({ user_id: this.id });
             return resolve(user ? user.balance : 0);
         });
 

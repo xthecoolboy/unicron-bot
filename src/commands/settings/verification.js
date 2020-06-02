@@ -17,7 +17,7 @@ module.exports = {
                     const model = await message.guild.db.verification(true);
                     model.enabled = stat;
                     await model.save();
-                    return message.channel.send(`Welcomer has been \`${stat ? 'enabled' : 'disabled'}\`.`);
+                    return message.channel.send(`Member Verification has been \`${stat ? 'enabled' : 'disabled'}\`.`);
                 }
                 default: {
                     return message.channel.send(new Discord.MessageEmbed()

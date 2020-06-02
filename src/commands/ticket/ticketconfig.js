@@ -63,7 +63,7 @@ module.exports = {
     },
     options: {
         aliases: ['ticketconf'],
-        clientPermissions: [],
+        clientPermissions: ['SEND_MESSAGES', 'MANAGE_CHANNELS', 'VIEW_CHANNEL'],
         cooldown: 10,
         nsfwCommand: false,
         args: true,
