@@ -19,6 +19,7 @@ module.exports = async (client, oldState, newState) => {
                 {
                     type: 'voice',
                     parent: category,
+                    userLimit: 8,
                     permissionOverwrites: [
                         { 
                             id: newState.member.id, 
