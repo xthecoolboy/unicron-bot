@@ -22,16 +22,30 @@ module.exports = {
                     .addField('Value', `
                     ${await db.dynamicVoice('category') ? `${message.guild.channels.cache.get(await db.dynamicVoice('category')).name}` : `\`none\``} }
                     ${await db.dynamicVoice('waitingRoom') ? `${message.guild.channels.cache.get(await db.dynamicVoice('waitingRoom')).name}` : `\`none\``}
-                    `, true)
+                    `, true);
+                message.channel.send(embed);
                 break;
             }
             case 'set': {
                 switch (key) {
                     case 'category': {
-                        const category = 
+                        const channel = message.guild.channels.cache.get(value[0]);
+                        if (!channel || channel.type !== 'category') return message.channel.send(`Invalid channel category, try again`);
+                        if (!channel.permissionsFor(message.guild.me).has(['MANAGE_CHANNELS', 'MOVE_MEMBERS'])) return message.channel.send('Unicron doesn\'t have permissions to that channel, please give Unicron access to that channel for this to work and try again...');
+                        const model = await db.dynamicVoice(true);
+                        model.category = channel.id;
+                        await model.save();
+                        message.channel.send('Dynamic Voice Category set!');
                         break;
                     }
                     case 'waitingRoom': {
+                        const channel = message.guild.channels.cache.get(value[0]);
+                        if (!channel || channel.type !== 'voice') return message.channel.send(`Invalid voice channel, try again`);
+                        if (!channel.permissionsFor(message.guild.me).has(['MANAGE_CHANNELS', 'MOVE_MEMBERS'])) return message.channel.send('Unicron doesn\'t have permissions to that channel, please give Unicron access to that channel for this to work and try again...');
+                        const model = await db.dynamicVoice(true);
+                        model.waitingRoom = channel.id;
+                        await model.save();
+                        message.channel.send('Dynamic Voice Waiting Room set!');
                         break;
                     }
                     default: {
