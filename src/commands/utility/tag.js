@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     run: async function (client, message, [action, key, ...value]) {
-        if (message.author.permLevel >= client.levelCache['Server Moderator']) {
+        if (message.author.permLevel >= 2) {
             switch (action) {
                 case 'create': {
                     if (action === key || 'edit' === key || 'delete' === key) {
