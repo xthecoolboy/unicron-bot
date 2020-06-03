@@ -61,6 +61,11 @@ module.exports = {
             }
             case 'enable':
             case 'disable': {
+                const bo = action === 'enable';
+                const model = await db.dynamicVoice(true);
+                model.enabled = bo;
+                await model.save();
+                message.channel.send(`Dynamic Voice has been ${bo ? 'enabled': 'disabled'}`);
                 break;
             }
             default: {
