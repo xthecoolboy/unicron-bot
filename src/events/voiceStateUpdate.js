@@ -15,9 +15,19 @@ module.exports = async (client, oldState, newState) => {
     const category = await db.dynamicVoice('category');
     if (!!newState.channel) {
         if (newState.channel.id === waitingRoom) {
-            newState.guild.channels.create(`${newState.member.displayName}'s voice channel`, { type: 'voice', parent: category, permissionOverwrites: [{ id: newState.member.id, allow: ['MANAGE_CHANNELS'] }] }).then(channel => {
-                newState.setChannel(channel)
-            })
+            newState.guild.channels.create(`${newState.member.displayName}'s voice channel`,
+                {
+                    type: 'voice',
+                    parent: category,
+                    permissionOverwrites: [
+                        { 
+                            id: newState.member.id, 
+                            allow: ['MANAGE_CHANNELS'] 
+                        }
+                    ]
+                }).then(channel => {
+                    newState.setChannel(channel)
+                });
         }
     }
     if (!!oldState.channel) {
