@@ -38,9 +38,9 @@ class User extends Base {
             let retval = await UserProfile.findOne({ where: { user_id: this.id } });
             if (!retval) retval = await UserProfile.create({ guild_id: this.id });
             if (typeof value === 'boolean') {
-                return resolve(this.profile);
+                return resolve(retval);
             }
-            return resolve(this.profile[value]);
+            return resolve(retval[value]);
         });
     }
     levelup(client, message, exp) {
