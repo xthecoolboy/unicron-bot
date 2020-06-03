@@ -9,7 +9,22 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
+        const response = await client.awaitReply(message, 'Please select a name for the category of which to setup the dynamic voice channels in\nType `cancel` to cancel this command', 20000, true) //Asks for a category to set DVC In
+        if(!response) return message.channel.send('No response was given, canceling command...') //Stops execution if no response
+        if(response.content === 'cancel') return message.channel.send('Command was canceled...') //Stops execution if command cancel is run
+        const channel = await message.guild.channels.create(response.content, {type: "category"})
+        let response1 = await client.awaitReply(message, 'Please select a name for a channel of which to create the dynamic voice channels in\nType `cancel` to cancel this command', 20000, true) //Asks for a category to set DVC In
+        if(!response1) return message.channel.send('No response was given, canceling command...') //Stops execution if no response
+        if(response1.content === 'cancel') return message.channel.send('Command was canceled...') //Stops execution if command cancel is run
+        const chan = await message.guild.channels.create(`${response1}`, {type: 'voice', parent: channel});
+        const category = await message.guild.db.dynamicVoice('category');
+        const waitingroom = await message.guild.db.dynamicVoice('waitingRoom')
+        const model = await message.guild.db.dynamicVoice(true);
 
+        model.category = channel.id;
+        model.waitingRoom = chan.id;
+
+        await model.save()
     },
     config: {
         name: 'dvsetup',
