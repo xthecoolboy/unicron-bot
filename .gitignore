@@ -4,3 +4,4 @@ node_modules/
 .vscode/
 *.sqlite
 tests/
+package-lock.json
