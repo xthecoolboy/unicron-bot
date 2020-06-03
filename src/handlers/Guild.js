@@ -181,8 +181,8 @@ class Guild extends Base {
      */
     leaver(value) {
         return new Promise(async (resolve, reject) => {
-            let retval = await GuildWelcome.findOne({ where: { guild_id: this.id } });
-            if (!retval) retval = await GuildWelcome.create({ guild_id: this.id });
+            let retval = await GuildLeave.findOne({ where: { guild_id: this.id } });
+            if (!retval) retval = await GuildLeave.create({ guild_id: this.id });
             if (typeof value === "boolean") {
                 return resolve(retval);
             }

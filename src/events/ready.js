@@ -7,7 +7,7 @@ const { Client } = require('discord.js');
 module.exports = (client) => {
     client.user.setPresence({
         activity: { 
-            name: `with ${client.users.cache.size} users!`, 
+            name: `on ${client.guilds.cache.size} guilds!`, 
             type: 'PLAYING',
         }, 
         status: 'online',

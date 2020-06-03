@@ -33,7 +33,7 @@ module.exports = {
                 break;
             }
         }
-        let roles = member.roles.cache.map(r => `<@&${r.id}>`).slice(1).join(', ').replace(new RegExp(`<@${message.guild.id}>`, 'g'), '');
+        let roles = member.roles.cache.map(r => `<@&${r.id}>`).slice(1).join(', ').replace(new RegExp(`<@&${message.guild.id}>`, 'g'), '');
         if (roles.length === 0) roles = '-';
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
