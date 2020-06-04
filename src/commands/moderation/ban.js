@@ -42,7 +42,7 @@ module.exports = {
             if (!member.bannable) {
                 return message.channel.send(new Discord.MessageEmbed()
                     .setColor('RED')
-                    .setDescription('You can\'t ban that member.')
+                    .setDescription('Error: I can\'t ban that member.')
                     .setTimestamp()
                     .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                 );
@@ -56,19 +56,22 @@ module.exports = {
             );
         }
         const duration = reason[0] ? ms(reason[0]) : false;
+        if (duration) reason.shift();
         const _reason = reason ? reason.join(' ') : 'No reason provided.';
-        const modchannel = await client.channels.fetch(await message.guild.db.moderation('modLogChannel'));
         try {
-            await member.ban({
-                days: 7,
-                reason: _reason,
-            });
+            await message.guild.members.ban(member.user.id,
+                {
+                    days: 7,
+                    reason: _reason,
+                }
+            );
             if (duration && !isNaN(duration)) {
                 setTimeout(() => {
                     message.guild.members.unban(target.id);
-                }, duration);
+                }, Number(duration));
             }
         } catch (e) {
+            console.log(e);
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setDescription(`Unexpected error occured. Member was not banned`)
@@ -76,14 +79,15 @@ module.exports = {
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
             );
         }
-        message.channel.send(`Successfully banned ${target.tag}`)
+        message.channel.send(`Successfully banned ${target.tag}`);
+        const modchannel = await client.channels.fetch(await message.guild.db.moderation('modLogChannel'));
         if (modchannel && modchannel.type === 'text') {
             modchannel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
                 .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
                 .setTimestamp()
                 .setThumbnail(target.displayAvatarURL() || null)
-                .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : Ban\n${duration ? `**Length** : ` : ''}\n**Reason** : ${_reason}`)
+                .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : Ban\n${duration ? `**Length** : ${ms(duration)}` : ''}\n**Reason** : ${_reason}`)
             );
         }
         try {
@@ -91,7 +95,7 @@ module.exports = {
             await dm.send(new Discord.MessageEmbed()
                 .setTimestamp()
                 .setTitle(`You have been banned from ${message.guild.name} / ${message.guild.id}`)
-                .setDescription(`Reason : ${reason}`)
+                .setDescription(`Reason : ${_reason}`)
                 .setFooter(`You we\'re banned by ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
             );
         } catch (e) {
@@ -109,7 +113,7 @@ module.exports = {
         cooldown: 10,
         nsfwCommand: false,
         args: true,
-        usage: 'ban [UserMention|UserID|UserTag] [...Reason]\nban [UserMention|UserID|UserTag] [Duration][s|m|h|d] [...Reason]',
+        usage: 'ban [UserMention|UserID|UserTag] [...Reason]\nban [UserMention|UserID|UserTag] [Duration] [...Reason]',
         donatorOnly: false,
         premiumServer: false,
     }
