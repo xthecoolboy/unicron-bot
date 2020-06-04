@@ -11,7 +11,7 @@ module.exports = {
     run: async function (client, message, args) {
         const toggle = await message.guild.db.moderation(true);
         toggle.autoModeration = !toggle.autoModeration;
-        toggle.save();
+        await toggle.save();
         message.channel.send(`Auto Moderation has been ${toggle.autoModeration ? 'enabled' : 'disabled'}`);
     },
     config: {
