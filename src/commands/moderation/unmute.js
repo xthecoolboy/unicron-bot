@@ -22,7 +22,7 @@ module.exports = {
         cooldown: 10,
         nsfwCommand: false,
         args: true,
-        usage: 'unmute [UserMention|UserID|UserTag]',
+        usage: 'unmute [UserMention|UserID]',
         donatorOnly: false,
         premiumServer: false,
     }

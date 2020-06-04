@@ -60,7 +60,7 @@ module.exports = {
         cooldown: 10,
         nsfwCommand: false,
         args: false,
-        usage: 'warnings [UserMention|UserID|UserTag] [Page](Optional)\nwarnings [Page]',
+        usage: 'warnings [UserMention|UserID] [Page](Optional)\nwarnings [Page]',
         donatorOnly: false,
         premiumServer: false,
     }

@@ -22,7 +22,7 @@ module.exports = {
         cooldown: 10,
         nsfwCommand: false,
         args: true,
-        usage: 'clearwarns [UserMention|UserID|UserTag]',
+        usage: 'clearwarns [UserMention|UserID]',
         donatorOnly: false,
         premiumServer: false,
     }
