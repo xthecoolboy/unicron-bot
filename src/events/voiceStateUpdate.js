@@ -10,20 +10,22 @@ const Guild = require('../handlers/Guild');
 module.exports = async (client, oldState, newState) => {
     const db = new Guild(oldState.guild.id);
     const enabled = await db.dynamicVoice('enabled');
-    if (!enabled || !oldState.guild.me.permissions.has(['MOVE_MEMBERS', 'MANAGE_CHANNELS'])) return;
     const waitingRoom = await db.dynamicVoice('waitingRoom');
     const category = await db.dynamicVoice('category');
+    if (!enabled || !oldState.guild.me.permissions.has(['MOVE_MEMBERS', 'MANAGE_CHANNELS']) || !category || !waitingRoom) return;
+
     if (!!newState.channel) {
-        if (newState.channel.id === waitingRoom) {
+        const dvlimit = newState.channel.parentID === category ? 11 : 10;
+        if (newState.channel.id === waitingRoom && newState.channel.parent.children.size <= dvlimit) {
             newState.guild.channels.create(`${newState.member.displayName}'s voice channel`,
                 {
                     type: 'voice',
                     parent: category,
                     userLimit: 8,
                     permissionOverwrites: [
-                        { 
-                            id: newState.member.id, 
-                            allow: ['MANAGE_CHANNELS'] 
+                        {
+                            id: newState.member.id,
+                            allow: ['MANAGE_CHANNELS']
                         }
                     ]
                 }).then(channel => {
