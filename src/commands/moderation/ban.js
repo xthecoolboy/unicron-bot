@@ -11,7 +11,7 @@ module.exports = {
     run: async function (client, message, [user, ...reason]) {
         let target;
         if (message.mentions.users.size) target = message.mentions.users.first();
-        else if (user) target = await client.user.fetch(user);
+        else if (user) target = await client.users.fetch(user);
         if (!target) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
@@ -28,7 +28,7 @@ module.exports = {
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
             );
         }
-        const member = await message.guild.members.fetch(target.id);
+        const member = message.guild.member(target.id);
         if (member) {
             if (message.author.id !== message.guild.ownerID && message.member.roles.highest.comparePositionTo(member.roles.highest) <= 0) {
                 return message.channel.send(new Discord.MessageEmbed()

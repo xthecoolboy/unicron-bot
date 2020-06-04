@@ -27,13 +27,14 @@ class Warnings extends Base {
         return new Promise(async (resolve, reject) => {
             let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
             if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
-            if (!loser.data) loser.data = { warningCount: 0 };
-            loser.data.warningCount++;
+            if (!loser.data) loser.data = {};
+            if (!loser.data.warningCount) loser.data.warningCount = 1;
             value.case = loser.data.warningCount;
             value.when = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
-            (loser.data['warnings'] || (loser.data['warnings'] = [])).push(value);
-            await loser.save();
-            return resolve(true);
+            loser.data.warningCount++;
+            await (loser.data['warnings'] || (loser.data['warnings'] = [])).push(value);
+            await GuildMember.update({ data: loser.data }, { where: { guild_id: this.guild_id, member_id: this.id } });
+            return resolve(value.case ? value.case : 1);
         });
     }
     /**
@@ -48,7 +49,7 @@ class Warnings extends Base {
             if (!loser.data['warnings']) return resolve(false);
             const copy = loser.data['warnings'].filter((item) => { return item.case !== case_number });
             loser.data['warnings'] = copy;
-            await loser.save();
+            await GuildMember.update({ data: loser.data }, { where: { guild_id: this.guild_id, member_id: this.id } });
             return resolve(true);
         });
     }

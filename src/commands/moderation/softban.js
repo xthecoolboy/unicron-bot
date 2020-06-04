@@ -11,7 +11,7 @@ module.exports = {
     run: async function (client, message, [user, ...reasons]) {
         let target;
         if (message.mentions.users.size) target = message.mentions.users.first();
-        else if (user) target = await client.user.fetch(user);
+        else if (user) target = await client.users.fetch(user);
         if (!target) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')

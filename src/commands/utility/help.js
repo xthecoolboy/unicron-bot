@@ -3,15 +3,15 @@ const Discord = require('discord.js');
 const ms = require('ms');
 
 const category = new Discord.Collection();
-category.set('fun', 'Fun related commands. What more could you expect?');
-category.set('economy', 'ECONOMY COMMANDS. What more could you want?');
-category.set('misc', 'Miscellanus _wtf the spelling_ commands')
-category.set('utility', 'Some utility commands which can help you do better <3');
-category.set('moderation', 'The Ban Hammer has spoken!');
-category.set('settings', 'Configure Unicron to your will, All Settings are per server.');
-category.set('nsfw', `NSFW Commands made too cool`);
-category.set('dynamicvoice', 'Dynamic Voice commands');
-category.set('ticket', 'Ticket Commands');
+category.set('fun', 'Indeed very cool **Fun commands**.');
+category.set('economy', 'Oustanding **Economy System**! ONE OF THE BEST');
+category.set('misc', 'Miscellaneous commands! over over the door')
+category.set('utility', '**Utility** commands that can help you do better.');
+category.set('moderation', 'Simple **Moderation** commands to strict your server from rule breakers!');
+category.set('settings', 'Fully **Customizable** Configurations. including simplistic interactive configuration setups.');
+category.set('nsfw', `**NSFW** commands made too cool:>`);
+category.set('dynamicvoice', '**Dynamic Voice System!** Which Allows users to create their own voice Channels to enhance your community environment as your users continue to meet new people.');
+category.set('ticket', 'Wonderful **Ticket System** for ease of server management.');
 category.set('root', 'Bot Staff Commands ONLY!');
 
 module.exports = {

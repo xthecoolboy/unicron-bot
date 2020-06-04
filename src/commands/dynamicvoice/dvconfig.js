@@ -20,7 +20,7 @@ module.exports = {
                     \`waitingRoom\`
                     `, true)
                     .addField('Value', `
-                    ${await db.dynamicVoice('category') ? `${message.guild.channels.cache.get(await db.dynamicVoice('category')).name}` : `\`none\``} }
+                    ${await db.dynamicVoice('category') ? `${message.guild.channels.cache.get(await db.dynamicVoice('category')).name}` : `\`none\``}
                     ${await db.dynamicVoice('waitingRoom') ? `${message.guild.channels.cache.get(await db.dynamicVoice('waitingRoom')).name}` : `\`none\``}
                     `, true);
                 message.channel.send(embed);
