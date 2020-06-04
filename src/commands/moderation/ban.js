@@ -96,7 +96,7 @@ module.exports = {
                 .setTimestamp()
                 .setTitle(`You have been banned from ${message.guild.name} / ${message.guild.id}`)
                 .setDescription(`Reason : ${_reason}`)
-                .setFooter(`You we\'re banned by ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
+                .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
             );
         } catch (e) {
 
