@@ -44,6 +44,10 @@ module.exports = {
                 {
                     id: message.author.id,
                     allow: ['VIEW_CHANNEL'],
+                },
+                {
+                    id: client.user.id,
+                    allow: ['VIEW_CHANNEL', 'MANAGE_CHANNELS', 'MANAGE_MESSAGES'],
                 }
             ],
         });
