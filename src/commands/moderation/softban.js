@@ -8,14 +8,14 @@ module.exports = {
      * @param {Discord.Message} message Message
      * @param {Array} args Arguments
      */
-    run: async function (client, message, args) {
+    run: async function (client, message, [user, ...reasons]) {
         let target;
         if (message.mentions.users.size) target = message.mentions.users.first();
         else if (user) target = await client.user.fetch(user);
         if (!target) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
-                .setDescription(`Incorrect Usage, the corrage usages are:\n\`${this.options.usage}\``)
+                .setDescription(`Incorrect Usage, the correct usages are:\n\`${this.options.usage}\``)
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
             );
@@ -82,7 +82,7 @@ module.exports = {
                 .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
                 .setTimestamp()
                 .setThumbnail(target.displayAvatarURL() || null)
-                .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : SoftBan\n${duration ? `**Length** : ${ms(duration)}` : ''}\n**Reason** : ${_reason}`)
+                .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : SoftBany\n**Reason** : ${_reason}`)
             );
         }
         try {
@@ -108,7 +108,7 @@ module.exports = {
         cooldown: 10,
         nsfwCommand: false,
         args: true,
-        usage: 'softban [UserMention|UserID|UserTag]',
+        usage: 'softban [UserMention|UserID] [..Reason](Optional)',
         donatorOnly: false,
         premiumServer: false,
     }

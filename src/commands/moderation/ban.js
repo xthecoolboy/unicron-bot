@@ -1,6 +1,5 @@
-
 const Discord = require('discord.js');
-const ms = require('ms')
+const ms = require('ms');
 
 module.exports = {
     /**
@@ -16,7 +15,7 @@ module.exports = {
         if (!target) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
-                .setDescription(`Incorrect Usage, the corrage usages are:\n\`${this.options.usage}\``)
+                .setDescription(`Incorrect Usage, the correct usages are:\n\`${this.options.usage}\``)
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
             );
@@ -24,7 +23,7 @@ module.exports = {
         if (target.equals(message.author)) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
-                .setDescription(`Hey there, You can\'t ban yourself :P`)
+                .setDescription(`Hey there, You can't ban yourself :P`)
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
             );
@@ -67,7 +66,7 @@ module.exports = {
             );
             if (duration && !isNaN(duration)) {
                 setTimeout(() => {
-                    message.guild.members.unban(target.id);
+                    message.guild.members.unban(target.id, 'Duration expired');
                 }, Number(duration));
             }
         } catch (e) {
@@ -99,7 +98,7 @@ module.exports = {
                 .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
             );
         } catch (e) {
-
+            //
         }
     },
     config: {
@@ -113,8 +112,8 @@ module.exports = {
         cooldown: 10,
         nsfwCommand: false,
         args: true,
-        usage: 'ban [UserMention|UserID|UserTag] [...Reason]\nban [UserMention|UserID|UserTag] [Duration] [...Reason]',
+        usage: 'ban [UserMention|UserID] [...Reason](Optional)\nban [UserMention|UserID] [Duration] [...Reason](Optional)',
         donatorOnly: false,
         premiumServer: false,
     }
-}
+};
