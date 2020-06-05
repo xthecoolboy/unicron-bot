@@ -77,7 +77,7 @@ class Experience extends Base {
     };
     getRequiredExpToNextLevel() {
         return new Promise(async (resolve, reject) => {
-            return await this.getNextLevelXP() - await this.fetch();
+            return resolve(await this.getNextLevelXP() - await this.fetch());
         });
     }
 };

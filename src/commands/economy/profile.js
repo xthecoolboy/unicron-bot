@@ -26,7 +26,7 @@ module.exports = {
         const progress = await profile.experience.getProgressBar();
         const req = await profile.experience.getRequiredExpToNextLevel();
         const inventoryCount = inventory.reduce((acc, cur) => {
-            acc += cur.amount;
+            return acc += cur.amount;
         }, 0);
         let badgeText = '\u200b';
         for (var i = 0; i < badges.length; i++) {

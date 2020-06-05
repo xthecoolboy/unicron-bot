@@ -1,5 +1,6 @@
 
 const Discord = require('discord.js');
+const Member = require('../../handlers/Member');
 
 module.exports = {
     /**
@@ -18,11 +19,11 @@ module.exports = {
     },
     options: {
         aliases: ['moot'],
-        clientPermissions: ['MANAGE_ROLES', 'MUTE_MEMBERS'],
+        clientPermissions: ['MANAGE_ROLES'],
         cooldown: 10,
         nsfwCommand: false,
         args: true,
-        usage: 'mute [UserMention|UserID] [...Reason]\nmute [UserMention|UserID|UserTag] [Time][s|m|h|d] [..Reason]',
+        usage: 'mute [UserMention|UserID] [...Reason]\nmute [UserMention|UserID|UserTag] [Duration] [...Reason]',
         donatorOnly: false,
         premiumServer: false,
     }
