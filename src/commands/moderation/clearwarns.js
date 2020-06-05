@@ -1,5 +1,6 @@
 
 const Discord = require('discord.js');
+const Member = require('../../handlers/Member');
 
 module.exports = {
     /**
@@ -9,7 +10,18 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
-        
+        let target;
+        if (message.mentions.users.size) target = message.mentions.users.first();
+        else if (user) target = await client.users.fetch(user);
+        else target = message.author;
+        if (!target || target.bot) target = message.author;
+        const member = new Member(target.id, message.guild.id);
+        const warns = await member.warnings.fetchAll();
+        if (warns) {
+            await member.warnings.destroy();
+            return message.channel.send(`${target}'s warnings cleared!`);
+        }
+        return message.channel.send(`${target}'s warnings was not cleared, because he/she doesn't have any warnings :P`);
     },
     config: {
         name: 'clearwarns',

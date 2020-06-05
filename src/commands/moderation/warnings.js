@@ -27,7 +27,6 @@ module.exports = {
             .setTimestamp();
         const mem = new Member(target.id, message.guild.id);
         const warns = client.chunk(await mem.warnings.fetchAll(), 3);
-        console.log(warns);
         if (!warns.length) {
             embed.setDescription('No warnings here, clean slate');
             return message.channel.send(embed);

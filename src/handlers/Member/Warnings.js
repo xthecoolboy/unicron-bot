@@ -87,7 +87,7 @@ class Warnings extends Base {
             if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
             if (!loser.data) loser.data = {};
             loser.data['warnings'] = [];
-            return resolve(GuildWarns.update({ data: loser.data }, { where: { guild_id: this.guild_id, member_id: this.id } }));
+            return resolve(GuildMember.update({ data: loser.data }, { where: { guild_id: this.guild_id, member_id: this.id } }));
         });
 
     }
