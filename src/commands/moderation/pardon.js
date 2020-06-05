@@ -38,7 +38,7 @@ module.exports = {
     },
     options: {
         aliases: [],
-        clientPermissions: ['MANAGE_MEMBERS'],
+        clientPermissions: ['BAN_MEMBERS'],
         cooldown: 10,
         nsfwCommand: false,
         args: true,
