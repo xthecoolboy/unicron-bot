@@ -62,9 +62,13 @@ module.exports = {
             }
         }
         if (duration && !isNaN(duration)) {
-            setTimeout(() => {
-                member.roles.remove(role, 'Mute Duration expired');
-            }, Number(duration));
+            try {
+                setTimeout(() => {
+                    member.roles.remove(role, 'Mute Duration expired');
+                }, Number(duration));
+            } catch (E) {
+
+            }
         }
         message.channel.send(`Successfully muted ${target}`);
         const modchannel = await client.channels.fetch(await message.guild.db.moderation('modLogChannel'));
