@@ -18,5 +18,5 @@ module.exports = async (client, member) => {
     if (!channel_id || !enabled || !message) return;
     const channel = await client.channels.fetch(channel_id);
     if (!channel) return;
-    channel.send(message.replace('{user}', member.user));
+    channel.send(message.replace('{user}', member.user.tag));
 }

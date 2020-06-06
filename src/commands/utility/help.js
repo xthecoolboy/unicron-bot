@@ -26,7 +26,7 @@ module.exports = {
                         `${client.commands.filter(command => command.config.category.includes(args[0]) && !command.options.donatorOnly)
                             .map(command => `\`${command.config.name}\``)
                             .join(', ')}` || `\u200b`)
-                    .setFooter(`use ${prefix} before each command!`)
+                    .setFooter(`You can do 'help [Command]' to get a specific information about that command.`)
                 if (client.commands.filter(command => command.config.category.includes(args[0]) && command.options.donatorOnly).map(command => `\`${command.config.name}\``).length) {
                     embed.addField(`\u200b`,
                         `[Premium Commands](${client.unicron.serverInviteURL} 'These commands are only exclusive to donators')
