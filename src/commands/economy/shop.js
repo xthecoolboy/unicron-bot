@@ -32,7 +32,7 @@ module.exports = {
             .setColor('RANDOM')
             .setTitle('**Shop**')
             .setDescription(`You can also do \`${await message.guild.db.settings('prefix')}shop view [item]\` to get an information from a specific item.\nYou currently have **${await message.author.db.coins.fetch()}** 💰`);
-        const ITEMS = client.chunk(client.shopitems.sort((a, b) => b.options.price - a.options.price).filter((item) => item.options.buyable), 3);
+        const ITEMS = client.chunk(client.shopitems.sort((a, b) => b.options.price - a.options.price).filter((item) => item.options.buyable), 4);
         const pages = ITEMS.length;
         if (!pages) {
             return message.channel.send(new Discord.MessageEmbed()

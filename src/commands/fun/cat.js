@@ -1,5 +1,9 @@
 
 const Discord = require('discord.js');
+const gateway = [
+    'https://cataas.com/cat',
+    'https://cataas.com/cat/gif'
+]
 
 module.exports = {
     /**
@@ -9,7 +13,15 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
-
+        try {
+            message.channel.send(new Discord.MessageEmbed()
+                .setImage(gateway.random())
+                .setTitle('Cats <3')
+                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+            );
+        } catch (e) {
+            throw e;
+        }
     },
     config: {
         name: 'cat',

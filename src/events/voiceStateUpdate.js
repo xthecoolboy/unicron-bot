@@ -12,7 +12,7 @@ module.exports = async (client, oldState, newState) => {
     const enabled = await db.dynamicVoice('enabled');
     const waitingRoom = await db.dynamicVoice('waitingRoom');
     const category = await db.dynamicVoice('category');
-    if (!enabled || !oldState.guild.me.permissions.has(['MOVE_MEMBERS', 'MANAGE_CHANNELS']) || !category || !waitingRoom) return;
+    if (newState.member.user.bot || oldState.member.user.bot || !enabled || !oldState.guild.me.permissions.has(['MOVE_MEMBERS', 'MANAGE_CHANNELS']) || !category || !waitingRoom) return;
 
     if (!!newState.channel) {
         const dvlimit = newState.channel.parentID === category ? 11 : 10;
