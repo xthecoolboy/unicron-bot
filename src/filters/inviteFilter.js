@@ -1,6 +1,6 @@
 
 const { Client, Message, MessageEmbed } = require('discord.js');
-
+const AutoModeration = require('../modules/AutoModeration');
 const { Regex } = require('../utils/');
 
 /**
@@ -14,7 +14,7 @@ module.exports = (client, message) => {
             const strat = (status && (message.author.permLevel < 2) && message.content.match(Regex.discord.invite)) ? true : false;
             if (!strat) return resolve(false);
             if (message.deletable) message.delete();
-            await message.channel.send(`No Advertising! ${message.author}.`)
+            message.channel.send(`No Advertising! ${message.author}.`)
                 .then(msg => msg.delete({ timeout: 5000}));
             const mChannel = message.guild.channels.resolve(await message.guild.db.moderation('modLogChannel'));
             if (mChannel) {
@@ -25,6 +25,7 @@ module.exports = (client, message) => {
                     .setDescription(`Member: ${message.author.tag} / ${message.author.id}`)
                 );
             }
+            await AutoModeration(client, message);
             resolve(true);
         } catch (e) {
             reject(e);

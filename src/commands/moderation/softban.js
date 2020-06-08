@@ -82,7 +82,7 @@ module.exports = {
                 .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
                 .setTimestamp()
                 .setThumbnail(target.displayAvatarURL() || null)
-                .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : SoftBany\n**Reason** : ${_reason}`)
+                .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : SoftBan\n**Reason** : ${_reason}`)
             );
         }
         try {

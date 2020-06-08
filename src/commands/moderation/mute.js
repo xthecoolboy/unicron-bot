@@ -40,7 +40,7 @@ module.exports = {
             );
         }
         const MODERATION = await message.guild.db.moderation(true);
-        let role = message.guild.roles.cache.find((r) => { return r.name === 'Muted' }) || message.guild.roles.cache.get(await MODERATION.mutedRole);
+        let role = message.guild.roles.cache.get(await MODERATION.mutedRole) || message.guild.roles.cache.find((r) => { return r.name === 'Muted' });
         if (!role) {
             role = await message.guild.roles.create({
                 name: 'Muted'

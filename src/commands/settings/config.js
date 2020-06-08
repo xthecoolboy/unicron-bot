@@ -694,12 +694,12 @@ module.exports = {
         } else if (action === 'set') {
             switch (key) {
                 case 'autoModAction': {
-                    if (!['WARN', 'MUTE', 'KICK', 'BAN'].includes(value[0])) {
+                    if (!['MUTE', 'KICK', 'SOFTBAN','BAN'].includes(value[0])) {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RED')
                             .setTimestamp()
                             .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                            .setDescription('TypeError: Available Auto Mod Actions: \`WARN\`, \`MUTE\`, \`KICK\`, \`BAN\`\nCASE SENSITIVE')
+                            .setDescription('TypeError: Available Auto Mod Actions: \`MUTE\`, \`KICK\`, \`SOFTBAN\`,\`BAN\`\nCASE SENSITIVE')
                         );
                     }
                     if (value[0] === 'MUTE' && !await db.moderation('mutedRole')) {
