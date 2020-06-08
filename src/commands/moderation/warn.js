@@ -88,11 +88,6 @@ module.exports = {
         } catch (e) {
 
         }
-        const autoMod = await message.guild.db.moderation('autoModeration');
-        if (autoMod) {
-            const action = await message.guild.db.moderation('autoModAction');
-            const duration = await message.guild.db.moderation('warnActionExpiresOn');
-        }
     },
     config: {
         name: 'warn',

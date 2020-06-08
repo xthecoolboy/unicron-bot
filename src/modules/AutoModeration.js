@@ -20,6 +20,7 @@ const ms = require('ms');
 module.exports = (client, message) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if (!message.guild.me.permissions.has(['BAN_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS', 'KICK_MEMBERS'])) return;
             const g = new Guild(message.guild.id);
             const member = message.guild.member(message.author.id);
             const gdb = await g.moderation(true);
