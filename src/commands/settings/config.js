@@ -97,6 +97,7 @@ module.exports = {
                     const autoModeration = await db.moderation('autoModeration') ? 'ON' : 'OFF';
                     const autoModAction = `${await db.moderation('autoModAction')} MEMBER`;
                     const maxWarnTreshold = await db.moderation('maxWarnTreshold');
+                    const warnTresholdAction = `${await db.moderation('warnTresholdAction')} MEMBER`;
                     const warnActionExpiresOn = await db.moderation('warnActionExpiresOn') ? ms(await db.moderation('warnActionExpiresOn')) : '0s';
                     const warningExpiresOn = await db.moderation('warningExpiresOn') ? ms(await db.moderation('warningExpiresOn')) : '0s';
                     embed.addField('Key', `
@@ -108,6 +109,7 @@ module.exports = {
                     \`autoModeration\`
                     \`autoModAction\`
                     \`maxWarnTreshold\`
+                    \`warnTresholdAction\`
                     \`warnActionExpiresOn\`
                     \`warningExpiresOn\`
                     `, true)
@@ -120,6 +122,7 @@ module.exports = {
                     \`${autoModeration}\`
                     \`${autoModAction}\`
                     \`${maxWarnTreshold}\`
+                    \`${warnTresholdAction}\`
                     \`${warnActionExpiresOn}\`
                     \`${warningExpiresOn}\`
                     `, true).setFooter('Page 1 of 4', message.guild.iconURL() || client.user.displayAvatarURL());
@@ -693,13 +696,14 @@ module.exports = {
             }
         } else if (action === 'set') {
             switch (key) {
+                case 'warnTresholdAction':
                 case 'autoModAction': {
                     if (!['MUTE', 'KICK', 'SOFTBAN','BAN'].includes(value[0])) {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RED')
                             .setTimestamp()
                             .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                            .setDescription('TypeError: Available Auto Mod Actions: \`MUTE\`, \`KICK\`, \`SOFTBAN\`,\`BAN\`\nCASE SENSITIVE')
+                            .setDescription('TypeError: invalid type.\nActions: \`MUTE\`, \`KICK\`, \`SOFTBAN\`,\`BAN\`\nCASE SENSITIVE')
                         );
                     }
                     if (value[0] === 'MUTE' && !await db.moderation('mutedRole')) {
@@ -711,7 +715,7 @@ module.exports = {
                         );
                     }
                     const settings = await db.moderation(true);
-                    settings.autoModAction = value[0];
+                    settings[key] = value[0];
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RANDOM')

@@ -38,7 +38,7 @@ module.exports = (sequelize, DataType) => {
         autoModAction: {
             type: DataType.STRING,
             allowNull: false,
-            defaultValue: 'WARN',
+            defaultValue: 'MUTE',
         },
         maxWarnTreshold: {
             type: DataType.INTEGER,

@@ -16,5 +16,12 @@ module.exports = async (client, guild) => {
     } catch (err) {
         console.log(err);
     }
+    client.user.setPresence({
+        activity: { 
+            name: `${client.guilds.cache.size} guilds!`, 
+            type: 'LISTENING',
+        }, 
+        status: 'online',
+    });
     channel.send(`Unicron left \`${guild.name}\``);
 }

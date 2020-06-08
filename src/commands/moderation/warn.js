@@ -2,6 +2,7 @@
 const Discord = require('discord.js');
 const ms = require('ms');
 const Member = require('../../handlers/Member');
+const Warning = require('../../modules/Warning');
 
 module.exports = {
     /**
@@ -88,15 +89,16 @@ module.exports = {
         } catch (e) {
 
         }
+        await Warning(client, message);
     },
     config: {
         name: 'warn',
-        description: 'Warns the specified user. If warning threshold reaches for a user some action, specified by the `autoModAction` configuration, is taken.',
+        description: 'Warns the specified user. If warning threshold reaches for a user some action, specified by the `warnTresholdAction` configuration, is taken.',
         permission: 'Server Moderator',
     },
     options: {
         aliases: [],
-        clientPermissions: ['BAN_MEMBERS', 'KICK_MEMBERS', 'MANAGE_ROLES'],
+        clientPermissions: ['BAN_MEMBERS', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'],
         cooldown: 10,
         nsfwCommand: false,
         args: true,

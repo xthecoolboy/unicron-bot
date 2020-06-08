@@ -39,4 +39,11 @@ module.exports = async (client, guild) => {
     } catch (e) {
         console.log(e);
     }
+    client.user.setPresence({
+        activity: { 
+            name: `${client.guilds.cache.size} guilds!`, 
+            type: 'LISTENING',
+        }, 
+        status: 'online',
+    });
 }
