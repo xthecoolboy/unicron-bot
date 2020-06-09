@@ -975,6 +975,7 @@ module.exports = {
     },
     options: {
         aliases: ['conf'],
+        clientPermissions: ['BAN_MEMBERS', 'MANAGE_ROLES', 'MANAGE_MESSAGES', 'MANAGE_CHANNELS', 'KICK_MEMBERS'],
         cooldown: 3,
         nsfwCommand: false,
         args: true,

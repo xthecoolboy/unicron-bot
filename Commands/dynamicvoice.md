@@ -2,7 +2,7 @@
 ## Dynamic Voice
 
 ---
-#### dvconfig command
+#### dvconfig
 Dynamic Voice Configuration.
 
 Required Permissions:

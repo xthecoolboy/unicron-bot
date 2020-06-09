@@ -46,13 +46,13 @@ module.exports = {
             ITEMS[PAGE - 1].map(item => {
                 embed.addField(`${item.config.displayname} ─ __**${item.options.price}**__ Coins`, `• ${item.config.description}\nID : \`${item.config.id}\``, false);
             });
-            embed.setFooter(`Page ${PAGE} of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL);
+            embed.setFooter(`Page ${PAGE} of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL() || null);
             return message.channel.send(embed);
         }
         ITEMS[0].map(item => {
             embed.addField(`${item.config.displayname} ─ __**${item.options.price}**__ Coins`, `• ${item.config.description}\nID : \`${item.config.id}\``, false);
         });
-        embed.setFooter(`Page 1 of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL);
+        embed.setFooter(`Page 1 of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL() || null);
         return message.channel.send(embed);
     },
     config: {
