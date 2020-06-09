@@ -40,8 +40,8 @@ class Badges extends Base {
             let user = await UserProfile.findOne({ where: { user_id: this.id } });
             if (!user) user = await UserProfile.create({ user_id: this.id });
             if (!user.data) user.data = {};
-            if (!user.data['badges']) user.data['badges'];
-            user.save();
+            if (!user.data['badges']) user.data['badges'] = [];
+            await user.save();
             return resolve(user.data['badges'].includes(value) ? true : false);
         });
     }
