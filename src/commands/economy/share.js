@@ -10,11 +10,9 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
-        const input = message.content.slice(await message.guild.db.settings('prefix').length).trim();
-        const [, , commandArgs] = input.match(/(\w+)\s*([\s\S]*)/);
         const currentAmount = await message.author.db.coins.fetch();
-        let transferAmount = commandArgs.split(/ +/).find(arg => !/<@!?\d+>/.test(arg));
-        const target = message.mentions.users.first() || client.users.cache.get(args[1]) || client.users.cache.find((u) => u.tag === args[1] || args[0]);
+        let transferAmount = args[0]
+        const target = message.mentions.users.first() || client.users.cache.get(args[1]) || client.users.cache.find((u) => u.tag === args[1]);
         if (target.bot) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
@@ -88,7 +86,7 @@ module.exports = {
         cooldown: 180,
         nsfwCommand: false,
         args: true,
-        usage: 'share [UserMention|UserTag] [Amount]',
+        usage: 'share [Amount] [UserMention|UserID|UserTag]',
         donatorOnly: false,
     }
 }
