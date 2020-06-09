@@ -1,5 +1,6 @@
 
 const Discord = require('discord.js');
+const { Random } = require('../../utils')
 
 module.exports = {
     /**
@@ -9,7 +10,9 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
-        
+        const prize = Random.nextInt({ max: 700, min: 500 });
+        await message.author.db.coins.add(prize);
+        message.channel.send(`You have gotten **${prize}** coins!`);
     },
     config: {
         name: 'hourly',
@@ -19,7 +22,7 @@ module.exports = {
     options: {
         aliases: [],
         clientPermissions: [],
-        cooldown: 60000 * 60,
+        cooldown: 3600,
         nsfwCommand: false,
         args: false,
         usage: '',

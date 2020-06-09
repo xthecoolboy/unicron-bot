@@ -17,7 +17,7 @@ module.exports = {
                 .setColor('RANDOM')
                 .setTimestamp()
                 .setAuthor(target.tag, target.displayAvatarURL() || client.user.displayAvatarURL())
-                .setDescription('No marriage cerificate :P')
+                .setDescription('Not married to someone else, kek')
             );
         }
         return message.channel.send(new Discord.MessageEmbed()
