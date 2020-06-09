@@ -67,8 +67,8 @@ module.exports = {
             );
         }
         const transferTarget = new User(target.id);
-        message.author.db.coins.remove(transferAmount);
-        transferTarget.coins.add(transferAmount);
+        await message.author.db.coins.remove(transferAmount);
+        await transferTarget.coins.add(transferAmount);
         message.channel.send(new Discord.MessageEmbed()
             .setColor('LIME')
             .setFooter(message.author.tag, message.author.displayAvatarURL())

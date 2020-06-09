@@ -106,7 +106,7 @@ module.exports = {
     options: {
         aliases: [],
         clientPermissions: [],
-        cooldown: 60000 * 60,
+        cooldown: 60 * 60,
         nsfwCommand: false,
         args: true,
         usage: 'work [Job]',
