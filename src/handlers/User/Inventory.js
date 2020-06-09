@@ -8,7 +8,11 @@ class Inventory extends Base {
     }
     add(item) {
         return new Promise(async (resolve, reject) => {
-            const [useritem,] = await UserInventory.findOrCreate({ where: { user_id: this.id, item_id: item } });
+            let useritem = await UserInventory.findOne({ where: { user_id: this.id, item_id: item } });
+            if (!useritem) {
+                useritem = await UserInventory.create({ user_id: this.id, item_id: item, amount: 1 });
+                return resolve(true);
+            }
             useritem.amount += 1;
             useritem.save();
             return resolve(true);
