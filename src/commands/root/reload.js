@@ -33,7 +33,7 @@ module.exports = {
     config: {
         name: 'reload',
         description: 'Reloads a command that was modified background.',
-        permission: 'Bot Administrator',
+        permission: 'Bot Owner',
     },
     options: {
         cooldown: 3,
