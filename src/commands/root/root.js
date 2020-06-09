@@ -1,6 +1,6 @@
 
 const Discord = require('discord.js');
-
+const User = require('../../handlers/User');
 const { Admin } = require('../../database/database');
 const { token } = require('../../handlers/Unicron');
 const { Crypto } = require('../../utils/');
@@ -52,14 +52,14 @@ const evaluation = async function (client, message, [key, ...value]) {
                         return false;
                 }
             }
-            case 'moderator':
-            case 'admin':
+            case 'staff':
             case 'partner':
-            case 'tester':
+            case 'bug_hunter':
             case 'supporter': {
                 const table = message.flags[1];
                 const action = message.flags[2];
                 const id = key;
+                const USER = new User(id);
                 const reason = value.join(' ') || 'No reason provided.';
                 let model = await client.unicron.database(table, true);
                 if (!id) return false;
@@ -72,11 +72,13 @@ const evaluation = async function (client, message, [key, ...value]) {
                             reason: reason,
                             when: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
                         });
+                        if (!await USER.badges.has(message.flags[0])) await USER.badges.add(message.flags[0]);
                         await Admin.update({ data: model.data }, { where: { table: table } });
                         return true;
                     }
                     case 'remove': {
                         model.data = model.data.filter((item) => item.id !== id);
+                        if (await USER.badges.has(message.flags[0])) await USER.badges.remove(message.flags[0]);
                         await Admin.update({ data: mode.data }, { where: { table: table } });
                         return true;
                     }
@@ -115,17 +117,20 @@ module.exports = {
         message.channel.send(`\`Output:\`\n\`\`\`xl\n${await evaluation(client, message, args)}\n\`\`\`\n`);
     },
     /**
-        \`-setPresence [Status] [Activity] [...Message]\`
-        \`-moderator [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]\`
-        \`-admin [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]\`
-        \`-partner [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]\`
-        \`-tester [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]\`
-        \`-supporter [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]\`
-        \`-codes [-add|-remove|-fetch] [-user|-guild] [name]\`
+        
      */
     config: {
         name: 'root',
-        description: `Root Command.`,
+        description: `Root Command.
+        \`\`\`bash
+        $ root -setPresence [Status] [Activity] [...Message]
+        $ root -staff [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]
+        $ root -partner [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]
+        $ root -bug_hunter [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]
+        $ root -supporter [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]
+        $ root -codes [-add|-remove|-fetch] [-user|-guild] [name]\`
+        \`\`\`
+        `,
         permission: 'Bot Owner',
     },
     options: {

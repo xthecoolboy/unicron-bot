@@ -9,34 +9,34 @@ const Levels = [
     }, {
         name: 'Server Moderator',
         level: 2,
-        check: async function (client, message) {
-            const role = await message.guild.db.moderation('moderatorRole');
-            return role ? message.member.roles.cache.has(role) : false;
+        check: function (client, message) {
+            return new Promise(async (resolve, reject) => {
+                const role = await message.guild.db.moderation('moderatorRole');
+                return resolve(role ? message.member.roles.cache.has(role) : false);
+            });
         }
     }, {
         name: 'Server Administrator',
         level: 3,
-        check: async function (client, message) {
-            const role = await message.guild.db.moderation('adminRole');
-            return role ? message.member.roles.cache.has(role) : false;
+        check: function (client, message) {
+            return new Promise(async (resolve, reject) => {
+                const role = await message.guild.db.moderation('adminRole');
+                return resolve(role ? message.member.roles.cache.has(role) : false);
+            });
         }
     }, {
         name: 'Server Owner',
         level: 4,
-        check: async function (client, message) {
+        check: function (client, message) {
             return message.author.id === message.guild.ownerID;
         }
     }, {
-        name: 'Bot Moderator',
-        level: 8,
-        check: async function (client, message) {
-            return false;
-        }
-    }, {
-        name: 'Bot Administrator',
+        name: 'Bot Staff',
         level: 9,
-        check: async function (client, message) {
-            return false;
+        check: function (client, message) {
+            return new Promise(async (resolve, reject) => {
+                return resolve(await message.author.db.badges.has('staff'));
+            });
         }
     }, {
         name: 'Bot Owner',
@@ -56,7 +56,7 @@ module.exports = (client) => {
     client.permission.level = async function (client, message) {
         let num = 0;
         for await (const level of Levels) {
-            num = await level.check(client,message) ? level.level : num;
+            num = await level.check(client, message) ? level.level : num;
         }
         return num;
     };

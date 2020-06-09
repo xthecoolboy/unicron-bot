@@ -49,14 +49,16 @@ module.exports = {
     config: {
         name: 'blacklist',
         description: `Usages:
-        \`-user\` [UserID] [...reason]
-        \`-guild\` [GuildID] [...reason]
-        \`-pardon -user\` [UserID]
-        \`-pardon -guild\` [GuildID]
-        \`-fetch -user\` [UserID]
-        \`-fetch -guild\` [GuildID]
+        \`\`\`bash
+        $ blacklist -user\` [UserID] [...reason]
+        $ blacklist -guild\` [GuildID] [...reason]
+        $ blacklist -pardon -user\` [UserID]
+        $ blacklist -pardon -guild\` [GuildID]
+        $ blacklist -fetch -user\` [UserID]
+        $ blacklist -fetch -guild\` [GuildID]
+        \`\`\`
         `,
-        permission: 'Bot Moderator',
+        permission: 'Bot Staff',
     },
     options: {
         cooldown: 3,
