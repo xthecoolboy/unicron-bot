@@ -42,7 +42,7 @@ module.exports = {
             .addField('**Progress**', `**${level}** [${progress}](${client.unicron.serverInviteURL} 'O.o') **${level + 1}**\n**${req}** - remaining`, true)
             .addField('**Badges**', badgeText, true)
             .addField('\u200b', '\u200b', true)
-            .addField('**Coins**', `**${balance}** 💰`, true)
+            .addField('**Coins**', `**${balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}** 💰`, true)
             .addField('**Inventory**', `**${inventoryCount}** item(s)`, true)
         );
     },

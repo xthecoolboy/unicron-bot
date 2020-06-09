@@ -24,7 +24,7 @@ module.exports = {
             .setColor('RANDOM')
             .setAuthor(target.tag, target.displayAvatarURL())
             .setTimestamp()
-            .setDescription(`**${coins}** 💸`)
+            .setDescription(`**${coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}** 💸`)
         );
     },
     config: {
