@@ -21,6 +21,3 @@ A new Powerful Multi-purpose Discord Bot running with more than 80 commands.
 - Simple **Tag System** which allows you to create tags to speed up the support process with predefined messages.
 - Indeed very cool **Fun commands**.
 - **NSFW** commands :>
-
-#### License
-See [LICENSE](LICENSE)
