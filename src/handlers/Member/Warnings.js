@@ -74,7 +74,7 @@ class Warnings extends Base {
         return new Promise(async (resolve, reject) => {
             let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
             if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
-            if (!loser.data) return false;
+            if (!loser.data) return resolve([]);
             return resolve(loser.data['warnings'] ? loser.data['warnings'] : []);
         });
     }
