@@ -103,7 +103,7 @@ module.exports = {
         args = args.replace(/./g, x => `${morseCode[x]}\u2001`).trim();
         message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setDescription(`**${args}**`)
+            .setDescription(`\`${args}\``)
         );
     },
     config: {
