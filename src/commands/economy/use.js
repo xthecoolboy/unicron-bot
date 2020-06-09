@@ -11,19 +11,19 @@ module.exports = {
     run: async function (client, message, args) {
         const item = await client.shopitems.get(args[0]);
         if (!item) {
-            message.channel.send(new Discord.RichEmbed()
+            message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setDescription('That\'s an invalid item.'));
             return false;
         }
         if (!await message.author.db.inventory.has(item.config.id)) {
-            message.channel.send(new Discord.RichEmbed()
+            message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setDescription(`Sorry, but you don\'t have a ${item.config.displayname}.`));
             return false;
         }
         if (!item.options.usable) {
-            message.channel.send(new Discord.RichEmbed()
+            message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setDescription('Sorry, this item is cannot be use.'));
             return false;
