@@ -14,13 +14,13 @@ module.exports = {
         const [, , commandArgs] = input.match(/(\w+)\s*([\s\S]*)/);
         const currentAmount = await message.author.db.coins.fetch();
         let transferAmount = commandArgs.split(/ +/).find(arg => !/<@!?\d+>/.test(arg));
-        const target = message.mentions.users.first() || client.users.cache.get(args[0]) || client.users.cache.find((u) => u.tag === args[0]);
+        const target = message.mentions.users.first() || client.users.cache.get(args[1]) || client.users.cache.find((u) => u.tag === args[1] || args[0]);
         if (target.bot) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL())
-                .setDescription('Error: Cannot send coins to this bot user.')
+                .setDescription('Error: Cannot send coins to this user.')
             );
         }
         if (isNaN(transferAmount)) {
