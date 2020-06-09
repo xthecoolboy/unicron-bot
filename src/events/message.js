@@ -104,11 +104,12 @@ module.exports = async (client, message) => {
     const timestamps = cooldowns.get(command.config.name);
     let cooldownAmount = (command.options.cooldown || 3) * 1000;
     const bcd = cooldownAmount;
-    if (command.options.donatorOnly && ! await message.author.db.profile('premium')) {
+    const donator = await message.author.db.profile('premium');
+    if (command.options.donatorOnly && !donator) {
         return message.channel.send(new MessageEmbed()
             .setColor('RED')
             .setDescription(`Sorry, this command is limited only for [Donators](${message.unicron.serverInviteURL} 'Click me!').`));
-    } else if (await message.author.db.profile('premium')) {
+    } else if (donator) {
         cooldownAmount = Math.floor(cooldownAmount - (cooldownAmount * 0.35));
     }
     if (timestamps.has(message.author.id)) {
