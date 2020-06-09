@@ -52,7 +52,7 @@ module.exports = {
         ITEMS[0].map(item => {
             embed.addField(`${item.config.displayname} ─ __**${item.options.price}**__ Coins`, `• ${item.config.description}\nID : \`${item.config.id}\``, false);
         });
-        embed.setFooter(`Page 1 of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL() || null);
+        embed.setFooter(`Page 1 of ${pages} | ${message.author.tag} | buy [ItemID]`, message.author.displayAvatarURL() || null);
         return message.channel.send(embed);
     },
     config: {
