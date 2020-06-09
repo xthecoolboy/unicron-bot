@@ -51,7 +51,7 @@ module.exports = {
         switch (job) {
             case 'mailman': {
                 await message.author.db.coins.add(payout);
-                embed.setDescription(`You have worked as a ${job} and earn **${payout}** coins!`)
+                embed.setDescription(`You have worked as a ${job} and earned **${payout}** coins!`)
                 break;
             }
             case 'developer': {
@@ -61,7 +61,7 @@ module.exports = {
                     break;
                 }
                 await message.author.db.coins.add(payout);
-                embed.setDescription(`You have worked as a ${job} and earn **${payout}** coins!`)
+                embed.setDescription(`You have worked as a ${job} and earned **${payout}** coins!`)
                 break;
             }
             case 'carpenter': {
@@ -71,7 +71,7 @@ module.exports = {
                     break;
                 }
                 await message.author.db.coins.add(payout);
-                embed.setDescription(`You have worked as a ${job} and earn **${payout}** coins!`)
+                embed.setDescription(`You have worked as a ${job} and earned **${payout}** coins!`)
                 break;
             }
             case 'mechanic': {
@@ -81,7 +81,7 @@ module.exports = {
                     break;
                 }
                 await message.author.db.coins.add(payout);
-                embed.setDescription(`You have worked as a ${job} and earn **${payout}** coins!`)
+                embed.setDescription(`You have worked as a ${job} and earned **${payout}** coins!`)
                 break;
             }
             case 'police': {
@@ -91,7 +91,7 @@ module.exports = {
                     break;
                 }
                 await message.author.db.coins.add(payout);
-                embed.setDescription(`You have worked as a ${job} and earn **${payout}** coins!`)
+                embed.setDescription(`You have worked as a ${job} and earned **${payout}** coins!`)
                 break;
             }
         }
