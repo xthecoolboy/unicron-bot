@@ -7,7 +7,6 @@ const { Client, Message, MessageEmbed } = require('discord.js')
 module.exports = (client, message) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!message.guild.me.permissions.has(['BAN_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS', 'KICK_MEMBERS'])) return;
             const model = await message.guild.db.moderation(true);
             const maxTreshold = model.maxWarnTreshold;
             const member = message.guild.member(message.author.id);
