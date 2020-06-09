@@ -1,11 +1,7 @@
-# unicron-bot
-
-
-# Bot Description
 
 A new Powerful Multi-purpose Discord Bot running with more than 80 commands.
-built on Discord.js, A very powerful javascript library that allows you to interact with the Discord API
-making **Unicron Bot** having a good outstanding performance.
+
+[Support Server](https://discord.gg/CJ4z4xt)
 
 ### Features:
 - Simple **Moderation** commands to strict your server from rule breakers!
@@ -26,26 +22,4 @@ making **Unicron Bot** having a good outstanding performance.
 - Indeed very cool **Fun commands**.
 - **NSFW** commands :>
 
-
-# Server Description
-
-Welcome to **Unicron's Official Support Server Aka Unicron's Campus**.
-
-Where **Unicron Bot** is built!
-A new Powerful Multi-purpose Discord Bot running with more than 80 commands!
-
-The community is also for everyone who wants to talk, meet people, and play with friends online!
-
-- Join regular meet-ups.
-- Participate in various events and contests.
-- Enjoy giveaways and prizes
-- Unbiased and fair moderators.
-- Open for partnerships.
-- Have fun!
-
-the bot is built on Discord.js
-A very powerful javascript library that allows you to interact with the Discord API
-making **Unicron Bot** having a good performance
-
-Invite link:
-https://discord.gg/CJ4z4xt
+### Redirects
