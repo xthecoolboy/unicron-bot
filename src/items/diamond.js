@@ -11,7 +11,7 @@ module.exports = {
         description: 'Precious collectable item! _O.o_',
     },
     options: {
-        buyable: true,
+        buyable: false,
         sellable: true,
         usable: false,
         price: 1000000,

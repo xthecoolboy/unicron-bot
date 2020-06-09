@@ -2,7 +2,20 @@
 const Discord = require('discord.js');
 
 module.exports = {
+    /**
+     * 
+     * @param {Discord.Client} client 
+     * @param {Discord.Message} message 
+     */
     run: async function (client, message) {
+        await message.author.db.levelup(client, message, 20);
+        await message.author.db.inventory.remove(this.config.id);
+        return message.channel.send(new Discord.MessageEmbed()
+            .setColor('RANDOM')
+            .setTimestamp()
+            .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
+            .setDescription('Hmmmmm this tasty apple!')
+        );
     },
     config: {
         id: 'apple',
@@ -11,7 +24,7 @@ module.exports = {
     },
     options: {
         buyable: true,
-        sellable: false,
+        sellable: true,
         usable: true,
         price: 15,
         cost: Math.floor(15 * 0.3),
