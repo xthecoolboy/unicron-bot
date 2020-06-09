@@ -1,7 +1,7 @@
 
 A new Powerful Multi-purpose Discord Bot running with more than 80 commands.
 
-[Support Server](https://discord.gg/CJ4z4xt)
+**[Support Server](https://discord.gg/CJ4z4xt)**
 
 ### Features:
 - Simple **Moderation** commands to strict your server from rule breakers!
