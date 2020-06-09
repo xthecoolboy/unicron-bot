@@ -1,5 +1,6 @@
 
 const Discord = require('discord.js');
+const { Random } = require('../../utils');
 
 module.exports = {
     /**
@@ -8,12 +9,35 @@ module.exports = {
      * @param {Discord.Message} message Message
      * @param {Array} args Arguments
      */
-    run: async function (client, message, args) {
-
+    run: async function (client, message, [job,]) {
+        switch (job) {
+            case 'mailman': {
+                break;
+            }
+            case 'developer': {
+                break;
+            }
+            case 'carpenter': {
+                break;
+            }
+            case 'mechanic': {
+                break;
+            }
+            case 'police': {
+                break;
+            }
+            default: {
+                message.channel.send(new Discord.MessageEmbed()
+                    .setColor('RED')
+                    .setTimestamp()
+                    .setDescription(`Hey, that is not a valid job.\nAvailable Jobs:\nmailman, developer, carpenter, mechanic, police`)
+                );
+            }
+        }
     },
     config: {
         name: 'work',
-        description: 'Earn coins by working!_You need a laptop to use this command btw_',
+        description: 'Earn coins by working!\nJobs:\nmailman, developer, carpenter, mechanic, police',
         permission: 'User',
     },
     options: {
@@ -21,8 +45,8 @@ module.exports = {
         clientPermissions: [],
         cooldown: 60000 * 60,
         nsfwCommand: false,
-        args: false,
-        usage: '',
+        args: true,
+        usage: 'work [Job]',
         donatorOnly: false,
         premiumServer: false,
     }
