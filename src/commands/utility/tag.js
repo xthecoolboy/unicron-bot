@@ -1,7 +1,13 @@
 
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Client, Message } = require('discord.js');
 
 module.exports = {
+    /**
+     * 
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array} param2 
+     */
     run: async function (client, message, [action, key, ...value]) {
         if (message.author.permLevel >= 2) {
             switch (action) {
@@ -49,7 +55,10 @@ module.exports = {
                 const msg = await message.guild.db.tags();
                 return message.channel.send(new MessageEmbed()
                     .setColor('RANDOM')
+                    .setAuthor(message.guild.name, message.guild.iconURL() || null)
+                    .setTitle('Server Tags')
                     .setDescription(msg)
+                    .setTimestamp()
                 );
             }
             default: {

@@ -9,7 +9,7 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
-
+        
     },
     config: {
         name: 'hourly',
@@ -23,7 +23,7 @@ module.exports = {
         nsfwCommand: false,
         args: false,
         usage: '',
-        donatorOnly: false,
+        donatorOnly: true,
         premiumServer: false,
     }
 }

@@ -264,7 +264,7 @@ class Guild extends Base {
                 }
             }
             const taglist = await GuildTags.findAll({ where: { guild_id: this.id } });
-            return resolve(`\`${taglist.map(t => t.tag).join('\`, \`') || 'No tags set.'}\``);
+            return resolve(`\`${taglist.map(t => t.tag_name).join('\`, \`') || 'No tags set.'}\``);
         });
     }
 };
