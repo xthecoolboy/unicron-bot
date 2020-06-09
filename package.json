@@ -13,6 +13,7 @@
     "node-fetch": "^2.6.0",
     "query-string": "^6.12.1",
     "querystring": "^0.2.0",
+    "request-promise-native": "^1.0.8",
     "sequelize": "^5.21.10",
     "sqlite": "^3.0.3"
   },
