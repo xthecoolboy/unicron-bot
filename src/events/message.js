@@ -119,8 +119,7 @@ module.exports = async (client, message) => {
             const donCD = Math.floor(bcd - (bcd * 0.35));
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
-                .setDescription(` ${await client.getEmoji('slowmode', 'system')} Please wait **${ms(timeLeft)}** before reusing the command again.
-                            Default Cooldown is **${ms(bcd)}** and [Donators](${client.unicron.serverInviteURL} 'Suppport Server') will only have to wait **${ms(donCD)}**`)
+                .setDescription(` ${await client.getEmoji('slowmode', 'system')} Please wait **${ms(timeLeft)}** before reusing the command again.`)
             );
         }
     }

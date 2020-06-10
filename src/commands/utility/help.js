@@ -35,9 +35,7 @@ module.exports = {
                             .join(', ')}
                         `
                     );
-                } else {
-                    embed.addField('\u200b', '\u200b', false);
-                };
+                }
                 return message.channel.send(embed);
             }
             const name = args[0].toLowerCase();
@@ -66,17 +64,17 @@ module.exports = {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FFFF)
             .setTitle('Unicron\'s Commands')
-            .setDescription(`[Join here](${client.unicron.serverInviteURL} 'Support Server') if want a cool server to hangout in.`)
-            .setFooter(`help [category]`, client.user.displayAvatarURL())
-            .addField(`${await client.getEmoji('staff')} Moderation`, `\`moderation\``, true)
-            .addField(`${await client.getEmoji('settings')} Settings`, `\`settings\``, true)
-            .addField(`🎫 Ticket System`, `\`ticket\``, true)
-            .addField(`🎙️ Dynamic Voice`, `\`dynamicvoice\``, true)
-            .addField(`💰 Economy`, `\`economy\``, true)
-            .addField(`${await client.getEmoji('tools')} Utility`, `\`utility\``, true)
-            .addField(`${await client.getEmoji('yes')} Misc`, `\`misc\``, true)
-            .addField('😂 Fun', `\`fun\``, true)
-            .addField(`🔞 NSFW`, '\`nsfw\`', true)
+            .setDescription(`[Join here](${client.unicron.serverInviteURL} 'Support Server') if want a cool server to hangout in.\n\`help [Category]\``)
+            .setFooter(`Made by undefine#6084`, client.user.displayAvatarURL())
+            .addField(`${await client.getEmoji('staff')} Moderation`, `Category: \`moderation\``, true)
+            .addField(`${await client.getEmoji('settings')} Settings`, `Category: \`settings\``, true)
+            .addField(`🎫 Ticket System`, `Category: \`ticket\``, true)
+            .addField(`🎙️ Dynamic Voice`, `Category: \`dynamicvoice\``, true)
+            .addField(`💰 Economy`, `Category: \`economy\``, true)
+            .addField(`${await client.getEmoji('tools')} Utility`, `Category: \`utility\``, true)
+            .addField(`${await client.getEmoji('yes')} Misc`, `Category: \`misc\``, true)
+            .addField('😂 Fun', `Category: \`fun\``, true)
+            .addField(`🔞 NSFW`, 'Category: \`nsfw\`', true)
         );
     },
     config: {
