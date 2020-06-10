@@ -1,8 +1,6 @@
 ---
-description: Under construction. but its open for publicity
+description: Under construction.
 ---
 
 # Documentation
-
-Still
 
