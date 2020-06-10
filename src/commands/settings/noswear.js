@@ -11,7 +11,7 @@ module.exports = {
     run: async function (client, message, args) {
         const toggle = await message.guild.db.filters(true);
         toggle.swearFilter = !toggle.swearFilter;
-        toggle.save();
+        await toggle.save();
         message.channel.send(`No Swear has been ${toggle.inviteFilter ? 'enabled' : 'disabled'}`);
     },
     config: {

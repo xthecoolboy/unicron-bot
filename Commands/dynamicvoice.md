@@ -7,11 +7,11 @@ Dynamic Voice Configuration.
 
 Required Permissions:
 - User Permission : `Server Administrator`
-- Bot Permissions : `MANAGE_CHANNELS` | `MOVE_MEMBERS`
+- Bot Permissions : `MANAGE_CHANNELS`, `MOVE_MEMBERS`
 
 Keys:
-- `category` ; Channel Category where Dynamic Voice Channels are gonna be created.
-- `waitingRoom` ; The Voice Channel where users can join to create a Dynamic Voice Channel for themselves.
+- `category` - Channel Category where Dynamic Voice Channels are gonna be created.
+- `waitingRoom` - The Voice Channel where users can join to create a Dynamic Voice Channel for themselves.
 
 Usage:
 ```bash
@@ -30,7 +30,7 @@ Dynamic Voice Interactive Setup.
 
 Required Permissions:
 - User Permission : `Server Administrator`
-- Bot Permissions : `MANAGE_CHANNELS` | `MOVE_MEMBERS`
+- Bot Permissions : `MANAGE_CHANNELS`, `MOVE_MEMBERS`
 
 ![Example](../../assets/dvsetup.png)
 

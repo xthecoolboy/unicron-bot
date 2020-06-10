@@ -571,53 +571,6 @@ module.exports = {
                     });
                     break;
                 }
-                case 'ticketSystem': {
-                    const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
-                    if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.ticket(true);
-                    settings.enabled = false;
-                    Promise.all([await settings.save()]).then(() => {
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RANDOM')
-                            .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    }).catch(e => {
-                        client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RED')
-                            .setDescription(`An error occured while reseting.`)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    });
-                    break;
-                }
-                case 'ticketCategory': {
-                    const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
-                    if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.ticket(true);
-                    settings.enabled = false;
-                    settings.category = '';
-                    Promise.all([await settings.save()]).then(() => {
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RANDOM')
-                            .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    }).catch(e => {
-                        client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RED')
-                            .setDescription(`An error occured while reseting.`)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    });
-                    break;
-                }
                 case 'inviteFilter': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
