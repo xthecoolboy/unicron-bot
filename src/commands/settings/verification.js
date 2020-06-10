@@ -48,7 +48,7 @@ module.exports = {
         if (!response3) return message.channel.send(`No response... Exiting setup...`);
         if (response3.content === 'cancel') return message.channel.send(`Exiting setup...`);
         if (!['discrim', 'captcha', 'react'].includes(response3.content)) return message.channel.send(`Invalid Type... Exiting setup...Try again...`);
-
+/** 
         if (!channel.permissionOverwrites.get(message.guild.id)) {
             await channel.overwritePermissions(message.guild.id, {
                 SEND_MESSAGES: true,
@@ -63,7 +63,7 @@ module.exports = {
                 });
             }
         }
-
+*/
         const model = await message.guild.db.verification(true);
         model.channel = channel.id;
         model.type = response3.content;

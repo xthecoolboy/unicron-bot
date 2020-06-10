@@ -56,8 +56,8 @@ const evaluation = async function (client, message, [key, ...value]) {
             case 'partner':
             case 'bug_hunter':
             case 'supporter': {
-                const table = message.flags[1];
-                const action = message.flags[2];
+                const table = message.flags[0];
+                const action = message.flags[1];
                 const id = key;
                 const USER = new User(id);
                 const reason = value.join(' ') || 'No reason provided.';
@@ -79,13 +79,13 @@ const evaluation = async function (client, message, [key, ...value]) {
                     case 'remove': {
                         model.data = model.data.filter((item) => item.id !== id);
                         if (await USER.badges.has(message.flags[0])) await USER.badges.remove(message.flags[0]);
-                        await Admin.update({ data: mode.data }, { where: { table: table } });
+                        await Admin.update({ data: model.data }, { where: { table: table } });
                         return true;
                     }
                     case 'fetch': {
                         const data = model.data.find((item) => { return item.id === id });
                         if (!data) return false;
-                        return `User: ${await client.users.resolve(id).tag} / ${id}\nReason: ${data.reason}\nDate: ${date.when}`;
+                        return `User: ${await client.users.resolve(id).tag} / ${id}\nReason: ${data.reason}\nDate: ${data.when}`;
                     }
                     case 'fetchAll': {
                         let msg = '';
