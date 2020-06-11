@@ -37,7 +37,7 @@ module.exports = {
         cooldown: 3,
         nsfwCommand: false,
         args: false,
-        usage: 'balance [User]',
+        usage: 'balance [UserMention|UserID]',
         donatorOnly: false,
     }
 }

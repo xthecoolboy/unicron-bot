@@ -1,4 +1,6 @@
-const { Client, Message, MessageEmbed } = require('discord.js');
+const { Client, Message, MessageEmbed, Collection } = require('discord.js');
+
+
 
 /**
  * @param {Client} client
@@ -8,14 +10,21 @@ module.exports = async (client, message) => {
     const args = message.content.split(/ +/);
     const commandName = args.shift().toLowerCase();
     try {
+        let embed = new MessageEmbed()
+            .setColor('RANDOM')
+            .setTimestamp()
+            .setFooter(message.author.tag, message.author.displayAvatarURL() || null);
         switch (commandName) {
             case 'help': {
+                embed.setTitle('Help Command')
+                    .setDescription(`help - shows this help command`)
                 break;
             }
             default: {
-                break;
+                return;
             }
         }
+        message.channel.send(embed);
     } catch (e) {
         message.channel.send(new MessageEmbed()
             .setColor('RED')

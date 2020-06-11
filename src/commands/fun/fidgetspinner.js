@@ -1,12 +1,18 @@
 
 const Discord = require('discord.js');
 
+const gateway = [
+    'https://i.imgur.com/KJJxVi4.gif',
+    'https://media.giphy.com/media/1Ubrzxvik2puE/giphy.gif',
+    'https://media.giphy.com/media/l1KVaE9P0XcwJMwrC/giphy.gif'
+]
+
 module.exports = {
     run: async function (client, message, args) {
         let spinning = await message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setDescription(`${message.author.tag} is spinning a fidget spinner...`)
-            .setImage('https://i.imgur.com/KJJxVi4.gif')
+            .setImage(gateway.random())
         );
 
         let timeout = (Math.random() * (60 - 5 + 1)) + 5;

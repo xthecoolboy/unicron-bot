@@ -11,7 +11,9 @@ const answers = [
     'no but yes',
     'yep',
     'nope',
-    'i don\'t think so'
+    'i don\'t think so',
+    'well yes but actually no',
+    'well no but actually yes',
 ]
 
 

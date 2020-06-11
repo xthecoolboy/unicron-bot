@@ -25,7 +25,7 @@ module.exports = {
     },
     config: {
         name: 'cat',
-        description: 'Cat pictures <3 _from reddit_',
+        description: 'Random Cat <3',
         permission: 'User',
     },
     options: {

@@ -61,7 +61,7 @@ module.exports = {
     },
     options: {
         aliases: [],
-        clientPermissions: ['MANAGE_ROLES'],
+        clientPermissions: ['MANAGE_ROLES', 'MANAGE_CHANNELS'],
         cooldown: 10,
         nsfwCommand: false,
         args: true,

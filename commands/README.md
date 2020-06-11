@@ -1,8 +1,0 @@
----
-description: Commands
----
-
-# Commands
-
-Commands
-

@@ -26,7 +26,7 @@ module.exports = async (client, message) => {
     if (await Blacklist(client, message)) return;
 
     if (message.channel.type === 'dm') {
-        client.emit('directMessage', message);
+        await client.emit('directMessage', message);
         return;
     }
 

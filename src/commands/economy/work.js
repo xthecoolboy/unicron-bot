@@ -109,7 +109,7 @@ module.exports = {
         cooldown: 60 * 60,
         nsfwCommand: false,
         args: true,
-        usage: 'work [Job]',
+        usage: 'work [Job]\nJobs:\n- mailman\n- developer\n- carpenter\n- mechanic\n- police',
         donatorOnly: false,
         premiumServer: false,
     }

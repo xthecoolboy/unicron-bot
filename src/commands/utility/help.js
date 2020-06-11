@@ -12,7 +12,7 @@ category.set('settings', 'Fully **Customizable** Configurations. including simpl
 category.set('nsfw', `**NSFW** commands made too cool:>`);
 category.set('dynamicvoice', '**Dynamic Voice System!** Which Allows users to create their own voice Channels to enhance your community environment as your users continue to meet new people.');
 category.set('ticket', 'Wonderful **Ticket System** for ease of server management.');
-category.set('root', 'Bot Staff Commands ONLY!');
+category.set('staff', 'Bot Staff Commands ONLY!');
 
 module.exports = {
     run: async function (client, message, args) {

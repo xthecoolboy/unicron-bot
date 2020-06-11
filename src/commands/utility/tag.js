@@ -12,10 +12,10 @@ module.exports = {
         if (message.author.permLevel >= 2) {
             switch (action) {
                 case 'create': {
-                    if (action === key || 'edit' === key || 'delete' === key) {
+                    if (action === key || 'edit' === key || 'delete' === key || 'list' === key) {
                         return message.channel.send(new MessageEmbed()
                             .setColor('RED')
-                            .setDescription('Sorry, you can\'t create a tag named \`create\`, \`edit\` or \`delete\`.'))
+                            .setDescription('Sorry, you can\'t create a tag named \`create\`, \`edit\`, \`list\` or \`delete\`.'))
                     }
                     const msg = await message.guild.db.tags({ action: 'create', name: key, value: value.join(' ') });
                     return message.channel.send(new MessageEmbed()

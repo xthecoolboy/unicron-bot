@@ -26,7 +26,7 @@ module.exports = {
         nsfwCommand: false,
         args: false,
         usage: '',
-        donatorOnly: true,
+        donatorOnly: false,
         premiumServer: false,
     }
 }
