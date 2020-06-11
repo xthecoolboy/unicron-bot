@@ -14,7 +14,7 @@ module.exports = {
         const { image } = await response.json();
         message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setDescription('[Random Fox](https://randomfox.ca/)')
+            .setDescription('https://randomfox.ca/')
             .setImage(image)
         );
     },

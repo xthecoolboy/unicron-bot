@@ -1,9 +1,6 @@
 
 const Discord = require('discord.js');
-const gateway = [
-    'https://cataas.com/cat',
-    'https://cataas.com/cat/gif'
-]
+const fetch = require('node-fetch')
 
 module.exports = {
     /**
@@ -14,10 +11,12 @@ module.exports = {
      */
     run: async function (client, message, args) {
         try {
+            const response = await fetch('https://aws.random.cat/meow');
+            const { file } = await response.json();
             message.channel.send(new Discord.MessageEmbed()
-                .setImage(gateway.random())
-                .setTitle('Cats <3')
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setColor('RANDOM')
+                .setImage(file)
+                .setDescription('https://random.cat/')
             );
         } catch (e) {
             throw e;
