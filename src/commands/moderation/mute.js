@@ -39,14 +39,11 @@ module.exports = {
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
             );
         }
-        const MODERATION = await message.guild.db.moderation(true);
-        let role = message.guild.roles.cache.get(await MODERATION.mutedRole) || message.guild.roles.cache.find((r) => { return r.name === 'Muted' });
+        let role = message.guild.roles.cache.find((r) => { return r.name === 'Muted' });
         if (!role) {
             role = await message.guild.roles.create({
                 name: 'Muted'
             });
-            MODERATION.mutedRole = role.id;
-            await MODERATION.save();
         }
         const duration = reason[0] ? ms(reason[0]) : false;
         if (duration) reason.shift();

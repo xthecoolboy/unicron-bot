@@ -90,9 +90,6 @@ module.exports = {
                 case '1':
                 default: {
                     const prefix = await db.settings('prefix');
-                    const moderatorRole = await db.moderation('moderatorRole') ? `<@&${await db.moderation('moderatorRole')}>` : '\`none\`';
-                    const adminRole = await db.moderation('adminRole') ? `<@&${await db.moderation('adminRole')}>` : '\`none\`';
-                    const mutedRole = await db.moderation('mutedRole') ? `<@&${await db.moderation('mutedRole')}>` : '\`none\`';
                     const modLogChannel = await db.moderation('modLogChannel') ? `<#${await db.moderation('modLogChannel')}>` : '\`none\`';
                     const autoModeration = await db.moderation('autoModeration') ? 'ON' : 'OFF';
                     const autoModAction = `${await db.moderation('autoModAction')} MEMBER`;
@@ -102,9 +99,6 @@ module.exports = {
                     const warningExpiresOn = await db.moderation('warningExpiresOn') ? ms(await db.moderation('warningExpiresOn')) : '0s';
                     embed.addField('Key', `
                     \`prefix\`
-                    \`moderatorRole\`
-                    \`adminRole\`
-                    \`mutedRole\`
                     \`modLogChannel\`
                     \`autoModeration\`
                     \`autoModAction\`
@@ -115,9 +109,6 @@ module.exports = {
                     `, true)
                         .addField('Value', `
                     \`${prefix}\`
-                    ${moderatorRole}
-                    ${adminRole}
-                    ${mutedRole}
                     ${modLogChannel}
                     \`${autoModeration}\`
                     \`${autoModAction}\`
@@ -275,75 +266,6 @@ module.exports = {
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
                     const settings = await db.moderation(true);
                     settings.modLogChannel = '';
-                    Promise.all([await settings.save()]).then(() => {
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RANDOM')
-                            .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    }).catch(e => {
-                        client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RED')
-                            .setDescription(`An error occured while reseting.`)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    });
-                    break;
-                }
-                case 'moderatorRole': {
-                    const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
-                    if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.moderation(true);
-                    settings.moderatorRole = '';
-                    Promise.all([await settings.save()]).then(() => {
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RANDOM')
-                            .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    }).catch(e => {
-                        client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RED')
-                            .setDescription(`An error occured while reseting.`)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    });
-                    break;
-                }
-                case 'adminRole': {
-                    const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
-                    if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.moderation(true);
-                    settings.adminRole = '';
-                    Promise.all([await settings.save()]).then(() => {
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RANDOM')
-                            .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    }).catch(e => {
-                        client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RED')
-                            .setDescription(`An error occured while reseting.`)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    });
-                    break;
-                }
-                case 'mutedRole': {
-                    const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
-                    if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.moderation(true);
-                    settings.mutedRole = '';
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RANDOM')
@@ -651,7 +573,7 @@ module.exports = {
             switch (key) {
                 case 'warnTresholdAction':
                 case 'autoModAction': {
-                    if (!['MUTE', 'KICK', 'SOFTBAN','BAN'].includes(value[0])) {
+                    if (!['MUTE', 'KICK', 'SOFTBAN', 'BAN'].includes(value[0])) {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RED')
                             .setTimestamp()
@@ -702,38 +624,6 @@ module.exports = {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${value[0]}\`.`)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    }).catch(e => {
-                        client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RED')
-                            .setDescription(`An error occured while setting \`${key}\`.`)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    });
-                    break;
-                }
-                case 'moderatorRole':
-                case 'adminRole':
-                case 'mutedRole': {
-                    const role = message.mentions.roles.first() || message.guild.roles.cache.get(value[0]) || message.guild.roles.cache.find(r => r.name === value[0]);
-                    if (!role) {
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RED')
-                            .setDescription(`Incorrect Arguments: Use \`config set ${key} [RoleMention|RoleID|RoleName]\``)
-                            .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        );
-                    }
-                    const settings = await db.moderation(true);
-                    settings[key] = role.id;
-                    Promise.all([await settings.save()]).then(() => {
-                        return message.channel.send(new Discord.MessageEmbed()
-                            .setColor('RANDOM')
-                            .setDescription(`Successfully set \`${key}\` to <@&${role.id}>.`)
                             .setTimestamp()
                             .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );

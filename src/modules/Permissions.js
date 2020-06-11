@@ -10,19 +10,13 @@ const Levels = [
         name: 'Server Moderator',
         level: 2,
         check: function (client, message) {
-            return new Promise(async (resolve, reject) => {
-                const role = await message.guild.db.moderation('moderatorRole');
-                return resolve(role ? message.member.roles.cache.has(role) : false);
-            });
+            return message.member.permissions.has(['BAN_MEMBERS', 'KICK_MEMBERS', 'MANAGE_MESSAGES']);
         }
     }, {
         name: 'Server Administrator',
         level: 3,
         check: function (client, message) {
-            return new Promise(async (resolve, reject) => {
-                const role = await message.guild.db.moderation('adminRole');
-                return resolve(role ? message.member.roles.cache.has(role) : false);
-            });
+            return message.member.permissions.has(['MANAGE_SERVER']);
         }
     }, {
         name: 'Server Owner',
@@ -32,7 +26,7 @@ const Levels = [
         }
     }, {
         name: 'Bot Staff',
-        level: 9,
+        level: 8,
         check: function (client, message) {
             return new Promise(async (resolve, reject) => {
                 return resolve(await message.author.db.badges.has('staff'));

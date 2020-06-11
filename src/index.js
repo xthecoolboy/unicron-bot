@@ -27,7 +27,7 @@ const Discord = require('discord.js');
 const { Unicron } = require('./handlers/Unicron');
 
 const client = new Discord.Client({
-    partials: ['MESSAGE', 'CHANNEL', 'REACTION']
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
 
 client.unicron = new Unicron({
