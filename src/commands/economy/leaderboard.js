@@ -11,12 +11,8 @@ module.exports = {
      */
     run: async function (client, message, args) {
         const Cache = await UserProfile.findAll();
-        const guildOnly = !message.flags.has('global');
         const UserCache = Cache.filter((item) => {
-            if (guildOnly) {
-                return message.guild.members.cache.has(item.user_id) ? true : false;
-            }
-            return true;
+            return message.guild.members.cache.has(item.user_id);
         });
         const rich = message.flags.includes('exp') ? false : true;
         const type = rich ? 'balance' : 'experience';
@@ -62,7 +58,7 @@ module.exports = {
         cooldown: 3,
         nsfwCommand: false,
         args: false,
-        usage: `leaderboard [Flags: -global, -exp] [Page]`,
+        usage: `leaderboard [Flags: -exp] [Page]`,
         donatorOnly: false,
     }
 }
