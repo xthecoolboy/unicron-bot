@@ -10,21 +10,17 @@ module.exports = {
      * @param {Array} args Arguments
      */
     run: async function (client, message, args) {
-        try {
-            const response = await fetch('https://dog.ceo/api/breeds/image/random');
-            const { message: attachment } = await response.json();
-            message.channel.send(new Discord.MessageEmbed()
-                .setColor('RANDOM')
-                .setDescription('https://dog.ceo/')
-                .setImage(attachment)
-            );
-        } catch (e) {
-            throw e;
-        }
+        const response = await fetch('https://random-d.uk/api/v1/random');
+        const { url: attachment } = await response.json();
+        message.channel.send(new Discord.MessageEmbed()
+            .setColor('RANDOM')
+            .setDescription('https://random-d.uk/')
+            .setImage(attachment)
+        );
     },
     config: {
-        name: 'dog',
-        description: 'Random Dogs',
+        name: 'duck',
+        description: 'Random pictures of a duck!',
         permission: 'User',
     },
     options: {
