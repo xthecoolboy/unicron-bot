@@ -739,23 +739,21 @@ module.exports = {
                 }
                 case 'warningExpiresOn':
                 case 'warnActionExpiresOn': {
-                    const num = value[0];
-                    const suffix = value[1];
-                    if (isNaN(num) || !['s', 'm', 'h', 'd'].includes(suffix)) {
+                    const num = ms(value[0]);
+                    if (isNaN(num)) {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RED')
-                            .setDescription(`Incorrect Arguments: Use \`config set ${key} [Number] [s|m|h|d]\``)
+                            .setDescription(`Incorrect or Invalid Arguments: Use \`config set ${key} [Duration]\``)
                             .setTimestamp()
                             .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
                     }
-                    const time = ms(`${num}${suffix}`);
                     const settings = await db.moderation(true);
-                    settings[key] = time;
+                    settings[key] = num;
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RANDOM')
-                            .setDescription(`Successfully set \`${key}\` to \`${ms(time)}\`.`)
+                            .setDescription(`Successfully set \`${key}\` to \`${ms(num)}\`.`)
                             .setTimestamp()
                             .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
                         );
