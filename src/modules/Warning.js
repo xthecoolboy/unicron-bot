@@ -27,14 +27,18 @@ module.exports = (client, message, user_id, member) => {
                         });
                     }
                     await member.roles.add(role, reason);
-                    for (let channel of message.guild.channels.cache.filter(channel => channel.type === 'text' && channel.viewable)) {
-                        channel = channel[1];
-                        if (!channel.permissionOverwrites.get(role.id)) {
-                            await channel.overwritePermissions(role, {
-                                SEND_MESSAGES: false,
-                                ADD_REACTIONS: false
-                            });
+                    try {
+                        for (let channel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
+                            channel = channel[1];
+                            if (!channel.permissionOverwrites.get(role.id)) {
+                                await channel.overwritePermissions(role, {
+                                    SEND_MESSAGES: false,
+                                    ADD_REACTIONS: false
+                                }).catch(e => { throw e });
+                            }
                         }
+                    } catch (e) {
+            
                     }
                     if (duration && !isNaN(duration)) {
                         try {

@@ -35,7 +35,6 @@ async function safeEval(code) {
                 this[key].constructor = undefined;
             });
         })();
-        process = undefined;
         ${code}
     `);
 }

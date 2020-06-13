@@ -12,5 +12,6 @@ module.exports = (client) => {
         }, 
         status: 'online',
     });
+    client.BotListPoster.startInterval();
     client.logger.cmd(`Bot ready as \'${client.user.tag}\', \'${client.user.id}\' with ${client.commands.size} commands.`);
 }

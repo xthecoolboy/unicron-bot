@@ -29,14 +29,18 @@ module.exports = (client, message, member) => {
                     let role = message.guild.roles.cache.find((r) => { return r.name === 'Muted' });
                     if (!role) role = await message.guild.roles.create({ name: 'Muted' });
                     await member.roles.add(role, reason);
-                    for (let channel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
-                        channel = channel[1];
-                        if (!channel.permissionOverwrites.get(role.id)) {
-                            await channel.overwritePermissions(role, {
-                                SEND_MESSAGES: false,
-                                ADD_REACTIONS: false
-                            });
+                    try {
+                        for (let channel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
+                            channel = channel[1];
+                            if (!channel.permissionOverwrites.get(role.id)) {
+                                await channel.overwritePermissions(role, {
+                                    SEND_MESSAGES: false,
+                                    ADD_REACTIONS: false
+                                }).catch(e => { throw e });
+                            }
                         }
+                    } catch (e) {
+            
                     }
                     if (duration && !isNaN(duration)) {
                         try {

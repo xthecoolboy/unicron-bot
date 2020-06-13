@@ -1,7 +1,6 @@
 
 module.exports = {
     run: async function (client, message, args) {
-        console.log(client.permission);
         const friendly = client.permission[`${message.author.permLevel}`];
         return message.reply(`Your permission level is: ${message.author.permLevel} - ${friendly}`);
     },

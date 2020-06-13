@@ -31,6 +31,7 @@ module.exports = {
         aliases: ['dict', 'urban-dict'],
         cooldown: 12,
         args: true,
+        nsfwCommand: true,
         usage: 'urban [search item]',
         donatorOnly: false,
     }
