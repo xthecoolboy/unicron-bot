@@ -19,11 +19,11 @@ module.exports = (client) => {
     };
 
     client.clean = async (client, text) => {
-        if (text && text.constructor.name == 'Promise') text = await text;
-        if (typeof evaled !== 'string') text = require('util').inspect(text, { depth: 1 });
+        if (text && text.constructor && text.constructor.name == 'Promise') text = await text;
+        if (typeof text !== 'string') text = require('util').inspect(text, { depth: 1 });
         text = text.replace(/`/g, '`' + String.fromCharCode(8203))
             .replace(/@/g, '@' + String.fromCharCode(8203))
-            .replace(client.token, token());
+            .replace(client.token, 'no no no no');
         return text;
     };
 

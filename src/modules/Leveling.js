@@ -1,41 +1,40 @@
+const { Collection } = require('discord.js');
 const LvlChart = [];
 const ReqLvlChart = [];
-
-for (var i = 0; i < 101; i++) {
-    ReqLvlChart.push(2 * (i * i) + (50 * i) + 69);
-}
-for (var i = 0; i < 101; i++) {
-    if (i === 0) {
-        LvlChart.push(i);
-        continue;
-    } else if (i === 1) {
-        LvlChart.push(ReqLvlChart[0]);
-        continue;
-    } else if (i === 2) {
-        const cur = ReqLvlChart[0] + ReqLvlChart[1];
-        LvlChart.push(cur);
-        continue;
-    }
-    const cur = LvlChart[i - 1] + ReqLvlChart[i - 1];
-    LvlChart.push(cur);
-};
-
-const { Collection } = require('discord.js');
-
 const graph = new Collection();
 
-graph.set(0, '□□□□□□□□□□');
-graph.set(1, '■□□□□□□□□□');
-graph.set(2, '■■□□□□□□□□');
-graph.set(3, '■■■□□□□□□□');
-graph.set(4, '■■■■□□□□□□');
-graph.set(5, '■■■■■□□□□□');
-graph.set(6, '■■■■■■□□□□');
-graph.set(7, '■■■■■■■□□□');
-graph.set(8, '■■■■■■■■□□');
-graph.set(9, '■■■■■■■■■□');
+(function () {
+    for (var i = 0; i < 101; i++) {
+        ReqLvlChart.push(2 * (i * i) + (50 * i) + 69);
+    }
+    for (var i = 0; i < 101; i++) {
+        if (i === 0) {
+            LvlChart.push(i);
+            continue;
+        } else if (i === 1) {
+            LvlChart.push(ReqLvlChart[0]);
+            continue;
+        } else if (i === 2) {
+            const cur = ReqLvlChart[0] + ReqLvlChart[1];
+            LvlChart.push(cur);
+            continue;
+        }
+        const cur = LvlChart[i - 1] + ReqLvlChart[i - 1];
+        LvlChart.push(cur);
+    };
+    graph.set(0, '□□□□□□□□□□');
+    graph.set(1, '■□□□□□□□□□');
+    graph.set(2, '■■□□□□□□□□');
+    graph.set(3, '■■■□□□□□□□');
+    graph.set(4, '■■■■□□□□□□');
+    graph.set(5, '■■■■■□□□□□');
+    graph.set(6, '■■■■■■□□□□');
+    graph.set(7, '■■■■■■■□□□');
+    graph.set(8, '■■■■■■■■□□');
+    graph.set(9, '■■■■■■■■■□');
+})();
 
-module.exports = Leveling = {
+module.exports = {
     LevelChart: LvlChart,
     RequiredLevelChart: ReqLvlChart,
     ProgressBar: function (percent) {
