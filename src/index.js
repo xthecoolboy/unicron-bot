@@ -41,6 +41,7 @@ client.unicron = new Unicron({
     inviteURL: process.env.BOT_SERVER_URL
 });
 
+require('./api/botlist')(client);
 require('./bot')(client);
 
 client.login(process.env.BOT_TOKEN);
