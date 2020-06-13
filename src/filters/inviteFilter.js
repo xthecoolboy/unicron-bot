@@ -25,8 +25,8 @@ module.exports = (client, message) => {
                     .setDescription(`Member: ${message.author.tag} / ${message.author.id}`)
                 );
             }
-            await AutoModeration(client, message);
-            resolve(true);
+            await AutoModeration(client, message, message.member);
+            return resolve(true);
         } catch (e) {
             reject(e);
         }

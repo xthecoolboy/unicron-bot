@@ -89,7 +89,7 @@ module.exports = {
         } catch (e) {
 
         }
-        await Warning(client, message);
+        await Warning(client, message, target.id, member);
     },
     config: {
         name: 'warn',

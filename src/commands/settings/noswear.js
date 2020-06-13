@@ -12,7 +12,7 @@ module.exports = {
         const toggle = await message.guild.db.filters(true);
         toggle.swearFilter = !toggle.swearFilter;
         await toggle.save();
-        message.channel.send(`No Swear has been ${toggle.inviteFilter ? 'enabled' : 'disabled'}`);
+        message.channel.send(`No Swear has been ${toggle.swearFilter ? 'enabled' : 'disabled'}`);
     },
     config: {
         name: 'noswear',

@@ -39,15 +39,15 @@ module.exports = {
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
             );
         }
+        const duration = reason[0] ? ms(reason[0]) : false;
+        if (duration) reason.shift();
+        const _reason = reason ? reason.join(' ') : 'No reason provided.';
         let role = message.guild.roles.cache.find((r) => { return r.name === 'Muted' });
         if (!role) {
             role = await message.guild.roles.create({
                 name: 'Muted'
-            });
+            }, 'Mute');
         }
-        const duration = reason[0] ? ms(reason[0]) : false;
-        if (duration) reason.shift();
-        const _reason = reason ? reason.join(' ') : 'No reason provided.';
         await member.roles.add(role, _reason);
         for (let channel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
             channel = channel[1];
@@ -97,7 +97,7 @@ module.exports = {
     },
     options: {
         aliases: [],
-        clientPermissions: ['MANAGE_ROLES'],
+        clientPermissions: ['MANAGE_ROLES', 'MANAGE_CHANNELS'],
         cooldown: 10,
         nsfwCommand: false,
         args: true,

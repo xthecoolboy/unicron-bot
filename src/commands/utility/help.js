@@ -26,7 +26,7 @@ module.exports = {
                         `${client.commands.filter(command => command.config.category.includes(args[0]) && !command.options.donatorOnly)
                             .map(command => `\`${command.config.name}\``)
                             .join(', ')}` || `\u200b`)
-                    .setFooter(`You can do 'help [Command]' to get a specific information about that command.`)
+                    .setFooter(`You can do 'help [Command]' to get a specific information about a command!`)
                 if (client.commands.filter(command => command.config.category.includes(args[0]) && command.options.donatorOnly).map(command => `\`${command.config.name}\``).length) {
                     embed.addField(`\u200b`,
                         `[Premium Commands](${client.unicron.serverInviteURL} 'These commands are only exclusive to donators')
@@ -64,7 +64,7 @@ module.exports = {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FFFF)
             .setTitle('Unicron\'s Commands')
-            .setDescription(`[Join here](${client.unicron.serverInviteURL} 'Support Server') if want a cool server to hangout in.\n\`help [Category]\``)
+            .setDescription(`[Join here](${client.unicron.serverInviteURL} 'Support Server') if want a cool server to hangout in.\n\`help [Category]\`\nDefault Prefix for this server is \`${prefix}\``)
             .setFooter(`Made by undefine#6084`, client.user.displayAvatarURL())
             .addField(`${await client.getEmoji('staff')} Moderation`, `\`moderation\``, true)
             .addField(`${await client.getEmoji('settings')} Settings`, `\`settings\``, true)

@@ -16,7 +16,7 @@ const Levels = [
         name: 'Server Administrator',
         level: 3,
         check: function (client, message) {
-            return message.member.permissions.has(['MANAGE_SERVER']);
+            return message.member.permissions.has(['MANAGE_GUILD']);
         }
     }, {
         name: 'Server Owner',

@@ -70,7 +70,7 @@ module.exports = {
         await message.author.db.coins.remove(transferAmount);
         await transferTarget.coins.add(transferAmount);
         message.channel.send(new Discord.MessageEmbed()
-            .setColor('LIME')
+            .setColor(0x00FF00)
             .setFooter(message.author.tag, message.author.displayAvatarURL())
             .setTimestamp()
             .setDescription(`Successfully transferred **${transferAmount}**💰 to ${target}.\nYour balance is now **${await message.author.db.coins.fetch()}**💰`)  

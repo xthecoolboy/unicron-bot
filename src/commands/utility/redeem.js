@@ -37,15 +37,15 @@ module.exports = {
                     .setColor('RED')
                     .setTimestamp()
                     .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                    .setDescription('You can\'t redeem a VIP Code when your are already a VIP :P')
+                    .setDescription('You can\'t redeem a VIP Code when you are already a VIP :P')
                 );
             }
             const response = await client.awaitReply(message, 'This is a VIP Code, are you sure to redeem it? yes/no', 15000);
             if (!response || response !== 'yes') {
                 return message.channel.send('i guess not.');
             }
+            await message.author.db.badges.add('vip');
             const model = await message.author.db.profile(true);
-            message.author.db.badges.add('vip');
             model.premium = true;
             await model.save();
             await Admin.update({ data: removeItemOnce(dbUser.data, code) }, { where: { table: 'user' } });
@@ -71,8 +71,8 @@ module.exports = {
             }
             const model = await message.author.db.profile(true);
             const gmodel = await message.guild.db.settings(true);
+            if (!await message.author.db.badges.has('vip')) await message.author.db.badges.add('vip');
             gmodel.premium = true;
-            message.author.db.badges.add('vip');
             model.premium = true;
             await model.save();
             await gmodel.save();
@@ -81,7 +81,7 @@ module.exports = {
                 .setColor(0x00FF00)
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                .setDescription('You have redeemed your VIP Server code now you can access to all VIP Server COMMANDS!')
+                .setDescription('You have redeemed your VIP Server code, now you can access to all VIP Server COMMANDS!')
             );
         } else {
             return message.channel.send(new Discord.MessageEmbed()

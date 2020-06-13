@@ -1,45 +1,33 @@
 
-const { Client, Message, MessageEmbed } = require('discord.js');
+const { Client, Message, MessageEmbed, GuildMember } = require('discord.js');
 const Guild = require('../handlers/Guild');
 const Member = require('../handlers/Member');
 const ms = require('ms');
 
 /** Example
  * ```js
- * await autoMod(client, message, {
- *      guild_id: 1231312313213131
- *      user_id: 1231241252617546
- * });
+ * await autoMod(client, message, member);
  * ```
  * 
  * @param {Client} client
- * @param {Message} Message
- * @param {JSON} data
+ * @param {Message} message
+ * @param {GuildMember} member
  * 
  */
-module.exports = (client, message) => {
+module.exports = (client, message, member) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!message.guild.me.permissions.has(['BAN_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS', 'KICK_MEMBERS'])) return;
-            const g = new Guild(message.guild.id);
-            const member = message.guild.member(message.author.id);
-            const gdb = await g.moderation(true);
-            const strat = gdb.autoModeration;
-            const act = gdb.autoModAction;
+            const g = message.guild.db;
+            const strat = await g.moderation('autoModeration');
+            const act = await g.moderation('autoModAction');
             const action = act.toLowerCase();
-            if (!strat || !act) return resolve(false);
+            if (!strat) return resolve(false);
             const duration = await g.moderation('warnActionExpiresOn');
             const reason = 'Auto Moderation';
             switch (act) {
                 case 'MUTE': {
-                    let role = message.guild.roles.cache.get(gdb.mutedRole) || message.guild.roles.cache.find((r) => { return r.name === 'Muted' });
-                    if (!role) {
-                        role = await message.guild.roles.create({
-                            name: 'Muted'
-                        });
-                        gdb.mutedRole = role.id;
-                        await gdb.save();
-                    }
+                    let role = message.guild.roles.cache.find((r) => { return r.name === 'Muted' });
+                    if (!role) role = await message.guild.roles.create({ name: 'Muted' });
                     await member.roles.add(role, reason);
                     for (let channel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
                         channel = channel[1];
@@ -98,7 +86,7 @@ module.exports = (client, message) => {
                 default:
                     return resolve(false);
             }
-            const modchannel = await client.channels.fetch(gdb.modLogChannel);
+            const modchannel = await client.channels.fetch(await g.moderation('modLogChannel'));
             if (modchannel && modchannel.type === 'text') {
                 modchannel.send(new MessageEmbed()
                     .setColor('RANDOM')
@@ -119,7 +107,7 @@ module.exports = (client, message) => {
             } catch (e) {
                 //
             }
-            resolve(true);
+            return resolve(true);
         } catch (e) {
             console.log(e);
             resolve(false);

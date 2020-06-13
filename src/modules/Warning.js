@@ -1,30 +1,30 @@
-const { Client, Message, MessageEmbed } = require('discord.js')
+const { Client, Message, MessageEmbed, GuildMember } = require('discord.js');
+
+const Member = require('../handlers/Member');
 
 /**
  * @param {Client} client
  * @param {Message} message
+ * @param {GuildMember} member
  */
-module.exports = (client, message) => {
+module.exports = (client, message, user_id, member) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const model = await message.guild.db.moderation(true);
-            const maxTreshold = model.maxWarnTreshold;
-            const member = message.guild.member(message.author.id);
-            const action = model.warnTresholdAction;
+            const db = new Member(user_id, message.guild.id);
+            const maxTreshold = await message.guild.db.moderation('maxWarnTreshold');
+            const action = await message.guild.db.moderation('warnTresholdAction');
+            const duration = await message.guild.db.moderation('warnActionExpiresOn');
+            const warns = await db.warnings.fetchAll();
             const faction = action.toLowerCase();
-            const duration = model.warnActionExpiresOn;
-            const warns = await message.member.db.warnings.fetchAll();
-            const reason = 'Warn Treshold Reached!';
-            if (!maxTreshold || !action || maxTreshold < warns) return resolve(false);
+            const reason = 'Maximum Warn Threshold Reached!';
+            if (maxTreshold === 0 || maxTreshold >= warns.size) return resolve(false);
             switch (action) {
                 case 'MUTE': {
-                    let role = message.guild.roles.cache.get(model.mutedRole) || message.guild.roles.cache.find((r) => { return r.name === 'Muted' });
+                    let role = message.guild.roles.cache.find((r) => { return r.name === 'Muted' });
                     if (!role) {
                         role = await message.guild.roles.create({
-                            name: 'Muted'
+                            name: 'Muted',
                         });
-                        model.mutedRole = role.id;
-                        await model.save();
                     }
                     await member.roles.add(role, reason);
                     for (let channel of message.guild.channels.cache.filter(channel => channel.type === 'text' && channel.viewable)) {
@@ -84,7 +84,7 @@ module.exports = (client, message) => {
                 default:
                     return resolve(false);
             }
-            const modchannel = await client.channels.fetch(model.modLogChannel);
+            const modchannel = await client.channels.fetch(await message.guild.db.moderation('modLogChannel'));
             if (modchannel && modchannel.type === 'text') {
                 modchannel.send(new MessageEmbed()
                     .setColor('RANDOM')
