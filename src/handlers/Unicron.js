@@ -9,7 +9,7 @@ const token = function () {
 class Unicron {
     /**
      * 
-     * @param {JSON} options Options
+     * @param {Object} options Options
      */
     constructor(options) {
         this.owner = options.owner;

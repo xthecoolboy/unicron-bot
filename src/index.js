@@ -25,9 +25,13 @@ require('./prototypes/String');
 
 const Discord = require('discord.js');
 const { Unicron } = require('./handlers/Unicron');
+const dbots = require('dbots');
 
 const client = new Discord.Client({
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+    fetchAllMembers: false,
+    messageCacheMaxSize: 100,
+    messageSweepInterval: 30,
 });
 
 client.unicron = new Unicron({
@@ -41,7 +45,27 @@ client.unicron = new Unicron({
     inviteURL: process.env.BOT_SERVER_URL
 });
 
-require('./api/botlist')(client);
+const poster = new dbots.Poster({
+    client,
+    apiKeys: {
+        glennbotlist: process.env.GLENN_TOKEN,
+        arcane: process.env.ARCANE_TOKEN,
+        mythicalbots: process.env.MYTHICAL_TOKEN,
+        listmybots: process.env.LMB_TOKEN,
+        discordboats: process.env.BOAT_TOKEN,
+        botsfordiscord: process.env.BFD_TOKEN,
+        topgg: process.env.TOPGG_TOKEN,
+        botsondiscord: process.env.BOD_TOKEN,
+        discordbotsgg: process.env.DBG_TOKEN,
+        discordbotlist: process.env.DBL_TOKEN,
+    },
+    clientLibrary: 'discord.js',
+    clientID: '634908645896880128',
+});
+
 require('./bot')(client);
 
-client.login(process.env.BOT_TOKEN);
+client.login(process.env.BOT_TOKEN).then(()=> {
+    poster.startInterval();
+});
+
