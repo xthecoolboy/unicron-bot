@@ -17,8 +17,6 @@ class Unicron {
         this.serverInviteURL = options.inviteURL;
         this.channel = options.channel;
         this.modChannel = options.modChannel;
-        this.moderatorRole = options.moderatorRole;
-        this.adminRole = options.adminRole;
         this.host = options.hostURL;
     }
     database(table, model) {

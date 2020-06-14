@@ -1,23 +1,23 @@
 
-const { token } = require('../handlers/Unicron');
+const { Collection } = require('discord.js');
 
-module.exports = (client) => {
+module.exports = async (client) => {
 
-    client.awaitReply = async (msg, question, limit = 60000, raw = false) => {
+    client.commands = new Collection();
+    client.events = new Collection();
+    client.shopitems = new Collection();
+
+    client.awaitReply = async (msg, question, limit = 60000, obj = false) => {
         const filter = m => m.author.id === msg.author.id;
         await msg.channel.send(question);
         try {
             const collected = await msg.channel.awaitMessages(filter, { max: 1, time: limit, errors: ['time'] });
-            if (raw) return collected.first();
+            if (obj) return collected.first();
             return collected.first().content;
         } catch (e) {
             return false;
         }
     };
-    client.awaitReaction = async (msg, question, limit = 60000) => {
-
-    };
-
     client.clean = async (client, text) => {
         if (text && text.constructor && text.constructor.name == 'Promise') text = await text;
         if (typeof text !== 'string') text = require('util').inspect(text, { depth: 1 });
@@ -26,13 +26,9 @@ module.exports = (client) => {
             .replace(client.token, 'no no no no');
         return text;
     };
-
     client.loadItem = (itemName) => {
         try {
             const props = require(`../items/${itemName}`);
-            if (props.init) {
-                props.init(client);
-            }
             client.shopitems.set(`${props.config.id}`, props);
         } catch (e) {
             return `Unable to load item ${itemName}: ${e}`;
@@ -42,9 +38,6 @@ module.exports = (client) => {
         const item = client.shopitems.get(itemName);
         if (!item) return `The item \`${itemName}\` doesn\'t seem to exists. Try again!`;
         client.shopitems.delete(itemName);
-        if (item.shutdown) {
-            await item.shutdown(client);
-        }
         const mod = require.cache[require.resolve(`../items/${item.config.id}`)];
         delete require.cache[require.resolve(`../items/${item.config.id}.js`)];
         for (let i = 0; i < mod.parent.children.length; i++) {

@@ -22,7 +22,7 @@ module.exports = {
             .addField('Memory', `${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} MB RSS
                                 ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB Heap`, true)
             .addField('Node', `${process.version} on ${process.platform} ${process.arch}`, true)
-            .addField('Discord.js', `${discordjsVersion}`)
+            .addField('Discord.js', `${discordjsVersion}`, true)
             .setTimestamp()
             );
     },

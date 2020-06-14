@@ -61,26 +61,26 @@ const GuildDynamicVoice = GuildDB.import('../models/guild/dynamicVoice');
 const GuildMember = GuildDB.import('../models/guild/member');
 
 const SyncDatabase = async function () {
-    Logger.log('Connecting to databases...', 'log');
+    Logger.info('Connecting to databases...');
     const auth = [
         await UnicronDB.authenticate().then(() => {
-            Logger.log('Unicron Administrative Database synced!', 'log');
+            Logger.info('Unicron Administrative Database synced!');
         }).catch(err => {
             Logger.error(`Unable to connect to the database: ${err} ${JSON.stringify(err)}`);
         }),
         await UserDB.authenticate().then(() => {
-            Logger.log('User Database synced!', 'log');
+            Logger.info('User Database synced!');
         }).catch(err => {
             Logger.error(`Unable to connect to the database: ${err} ${JSON.stringify(err)}`);
         }),
         await GuildDB.authenticate().then(() => {
-            Logger.log('Guild Database synced!', 'log');
+            Logger.info('Guild Database synced!');
         }).catch(err => {
             Logger.error(`Unable to connect to the database: ${err} ${JSON.stringify(err)}`);
         }),
     ];
     Promise.all(auth).then(() => {
-        Logger.log('Database connection established!', 'log');
+        Logger.info('Database connection established!');
     }).catch(err => {
         return Logger.error(`Error occured on connecting to database : ${err} ${JSON.stringify(err)}`);
     })

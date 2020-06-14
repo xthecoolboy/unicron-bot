@@ -1,16 +1,10 @@
 
 const Emotes = require('../../assets/Emotes.json');
 
-const { Client } = require('discord.js');
-
-/**
- * @param {Client} client
-*/
-module.exports = (client) => {
-    /**
-     * @param {String} name Name
-     */
-    client.getEmoji = async function(name) {
+module.exports = async (client) => {
+    await client.logger.info('Loading Custom Emojis...');
+    client.getEmoji = function (name) {
         return client.emojis.cache.get(Emotes[name]);
     }
+    await client.logger.info('Custom Emojis loaded.')
 }

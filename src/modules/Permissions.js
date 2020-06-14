@@ -41,7 +41,8 @@ const Levels = [
     },
 ];
 
-module.exports = (client) => {
+module.exports = async (client) => {
+    await client.logger.info('Loading Permission System....');
     client.permission = {};
     Levels.forEach((l) => {
         client.permission[l.level] = l.name;
@@ -54,4 +55,5 @@ module.exports = (client) => {
         }
         return num;
     };
+    await client.logger.info('Permission System loaded');
 }
