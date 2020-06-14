@@ -1,5 +1,7 @@
 
-const { Guild, Client, MessageEmbed } = require('discord.js');
+const { Guild, MessageEmbed } = require('discord.js');
+
+const Client = require('../classes/Unicron');
 
 const {
     GuildSettings,

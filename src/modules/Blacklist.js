@@ -1,4 +1,10 @@
+const Client = require('../classes/Unicron');
+const { Message } = require('discord.js');
 
+/**
+ * @param {Client} client
+ * @param {Message} message
+ */
 module.exports = (client, message) => {
     return new Promise(async (resolve, reject) => {
         try {

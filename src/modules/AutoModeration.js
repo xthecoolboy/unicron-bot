@@ -1,7 +1,6 @@
 
-const { Client, Message, MessageEmbed, GuildMember } = require('discord.js');
-const Guild = require('../handlers/Guild');
-const Member = require('../handlers/Member');
+const { Message, MessageEmbed, GuildMember } = require('discord.js');
+const Client = require('../classes/Unicron');
 const ms = require('ms');
 
 /** Example

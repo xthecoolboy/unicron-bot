@@ -2,7 +2,15 @@
 const Discord = require('discord.js');
 
 const { Admin } = require('../../database/database');
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 
+/**
+ * 
+ * @param {Client} client Client
+ * @param {Message} message Message
+ * @param {Array<String>} args Arguments
+ */
 const evaluation = async function (client, message, args) {
     try {
         const pardon = message.flags.includes('pardon');
@@ -39,9 +47,9 @@ const evaluation = async function (client, message, args) {
 module.exports = {
     /**
      * 
-     * @param {Discord.Client} client Client
-     * @param {Discord.Message} message Message
-     * @param {Array} args Arguments
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
      */
     run: async function (client, message, args) {
         message.channel.send(`\`Output:\`\n\`\`\`xl\n${await evaluation(client, message, args)}\n\`\`\`\n`);

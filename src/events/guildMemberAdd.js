@@ -1,7 +1,8 @@
-const { Client, GuildMember, MessageEmbed } = require('discord.js');
+const { GuildMember, MessageEmbed } = require('discord.js');
 
 const Guild = require('../handlers/Guild');
 const Member = require('../handlers/Member');
+const Client = require('../classes/Unicron');
 
 /**
  * @param {Client} client

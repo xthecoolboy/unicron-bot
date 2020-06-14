@@ -2,6 +2,8 @@
 const Discord = require('discord.js');
 const User = require('../../handlers/User');
 const { Random } = require('../../utils');
+const { Message }= require('discord.js');
+const Client = require('../../classes/Unicron');
 
 const Offense = {
     car: 25,
@@ -46,15 +48,16 @@ const getDefense = function (user) {
     });
 };
 
+
 module.exports = {
     /**
      * 
-     * @param {Discord.Client} client Client
-     * @param {Discord.Message} message Message
-     * @param {Array} args Arguments
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
      */
     run: async function (client, message, args) {
-        const utarget = message.mentions.users.first() || await client.users.fetch(args[0]) || await client.users.cache.find((u) => u.tag === args[0]);
+        const utarget = message.mentions.users.first() || await client.users.fetch(args[0]) || client.users.cache.find((u) => u.tag === args[0]);
         if (!utarget || utarget.bot) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')

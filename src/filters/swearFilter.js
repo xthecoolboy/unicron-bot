@@ -1,9 +1,8 @@
 
-const { Client, Message, MessageEmbed } = require('discord.js');
+const { Message, MessageEmbed } = require('discord.js');
 const AutoModeration = require('../modules/AutoModeration');
 const fs = require('fs');
-const reEscape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-
+const Client = require('../classes/Unicron');
 /**
  * @param {Client} client
  * @param {Message} message
@@ -15,7 +14,7 @@ module.exports = (client, message) => {
             const status = await message.guild.db.filters('swearFilter');
             const strat = (status && !message.channel.nsfw && message.author.permLevel < 3 &&
                 (
-                    message.content.match(new RegExp(swearWords.map(reEscape).join('|'), 'gi'))
+                    message.content.match(new RegExp(swearWords.map(client.escapeRegex).join('|'), 'gi'))
                 )
             ) ? true : false;
             if (!strat) return resolve(false);

@@ -1,11 +1,8 @@
-
 const Discord = require('discord.js');
-
 const Guild = require('../handlers/Guild');
-
-
+const Client = require('../classes/Unicron');
 /**
- * @param {Discord.Client} client
+ * @param {Client} client
  * @param {Discord.Guild} guild
  */
 module.exports = async (client, guild) => {

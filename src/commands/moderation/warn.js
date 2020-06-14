@@ -3,13 +3,15 @@ const Discord = require('discord.js');
 const ms = require('ms');
 const Member = require('../../handlers/Member');
 const Warning = require('../../modules/Warning');
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 
 module.exports = {
     /**
      * 
-     * @param {Discord.Client} client Client
-     * @param {Discord.Message} message Message
-     * @param {Array} args Arguments
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
      */
     run: async function (client, message, [user, ...reason]) {
         let target;

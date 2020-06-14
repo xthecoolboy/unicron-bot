@@ -1,13 +1,12 @@
-
-const Discord = require('discord.js');
-const { Random } = require('../../utils')
+const { Message }= require('discord.js');
+const Client = require('../../classes/Unicron');
 
 module.exports = {
     /**
      * 
-     * @param {Discord.Client} client Client
-     * @param {Discord.Message} message Message
-     * @param {Array} args Arguments
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
      */
     run: async function (client, message, args) {
         const prize = Random.nextInt({ max: 700, min: 500 });

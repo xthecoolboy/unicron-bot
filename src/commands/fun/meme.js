@@ -6,8 +6,16 @@ const url = [
     'https://www.reddit.com/r/dankmemes/hot/.json?limit=100',
     'https://www.reddit.com/r/memes/hot/.json?limit=100',
 ];
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 
 module.exports = {
+    /**
+     * 
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
+     */
     run: async function (client, message, args) {
         https.get(url.random(), (result) => {
             let body = '';

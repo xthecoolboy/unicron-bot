@@ -1,9 +1,17 @@
 
 const Discord = require('discord.js');
 const { Random } = require('../../utils/');
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 
 module.exports = {
-    run: async function (client, message, args, guild, user) {
+    /**
+     * 
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
+     */
+    run: async function (client, message, args) {
         let target;
         if (message.mentions.users.size) {
             target = message.mentions.users.first();

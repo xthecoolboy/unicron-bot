@@ -1,12 +1,13 @@
 
 const { MessageEmbed, Client, Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 
 module.exports = {
     /**
      * 
-     * @param {Client} client 
-     * @param {Message} message 
-     * @param {Array} param2 
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
      */
     run: async function (client, message, [action, key, ...value]) {
         if (message.author.permLevel >= 2) {

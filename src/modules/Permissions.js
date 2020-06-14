@@ -40,9 +40,13 @@ const Levels = [
         }
     },
 ];
+const Client = require('../classes/Unicron');
 
+/**
+ * @param {Client} client
+ */
 module.exports = async (client) => {
-    await client.logger.info('Loading Permission System....');
+    client.logger.info('Loading Permission System....');
     client.permission = {};
     Levels.forEach((l) => {
         client.permission[l.level] = l.name;
@@ -55,5 +59,5 @@ module.exports = async (client) => {
         }
         return num;
     };
-    await client.logger.info('Permission System loaded');
+    client.logger.info('Permission System loaded');
 }

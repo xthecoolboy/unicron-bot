@@ -3,8 +3,16 @@ const Discord = require('discord.js');
 const ms = require('ms');
 const { version } = require('../../../package.json');
 const { version: discordjsVersion } = require('discord.js');
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 
 module.exports = {
+    /**
+     * 
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
+     */
     run: async function (client, message, args) {
         const OWNER = await client.users.fetch(client.unicron.owner);
         message.channel.send(new Discord.MessageEmbed()

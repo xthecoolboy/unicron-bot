@@ -2,13 +2,15 @@
 const Discord = require('discord.js');
 
 const trim = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 
 module.exports = {
     /**
      * 
-     * @param {Discord.Client} client Client
-     * @param {Discord.Message} message Message
-     * @param {Array} args Arguments
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
      */
     run: async function (client, message, args) {
         if (message.flags.includes('json')) {

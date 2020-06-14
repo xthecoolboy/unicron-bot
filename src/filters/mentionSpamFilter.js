@@ -1,6 +1,7 @@
 
-const { Client, Message, MessageEmbed } = require('discord.js');
+const { Message, MessageEmbed } = require('discord.js');
 const AutoModeration = require('../modules/AutoModeration');
+const Client = require('../classes/Unicron');
 /**
  * @param {Client} client
  * @param {Message} message

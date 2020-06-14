@@ -5,9 +5,13 @@ require('./prototypes/String');
 
 const http = require('http');
 const express = require('express');
+const Client = require('./classes/Unicron');
 
+/**
+ * @param {Client} client
+ */
 module.exports = async (client) => {
-    await client.logger.info('Initializing Unicron...');
+    client.logger.info('Initializing Unicron...');
     if (process.env.BOT_HOST_URL) {
         const app = express();
         app.get('/', (request, response) => {
@@ -19,11 +23,6 @@ module.exports = async (client) => {
             http.get(process.env.BOT_HOST_URL);
         }, 280000);
     }
-    await client.logger.info('Loading functions...');
-    await require('./utils/functions')(client);
-    await client.logger.info('Functions loaded.');
-    await client.logger.info('Loading modules...');
     await require('./modules/')(client);
-    await client.logger.info('Modules loaded.');
     await require('./database/database.js').SyncDatabase();
 }

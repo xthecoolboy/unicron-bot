@@ -1,5 +1,7 @@
 
 const Discord = require('discord.js');
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 const ms = require('ms');
 
 const category = new Discord.Collection();
@@ -15,6 +17,12 @@ category.set('ticket', 'Wonderful **Ticket System** for ease of server managemen
 category.set('staff', 'Bot Staff Commands ONLY!');
 
 module.exports = {
+    /**
+     * 
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
+     */
     run: async function (client, message, args) {
         const prefix = await message.guild.db.settings('prefix');
         if (args.length) {

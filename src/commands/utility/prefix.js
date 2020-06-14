@@ -1,7 +1,15 @@
 
 const Discord = require('discord.js');
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 
 module.exports = {
+    /**
+     * 
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
+     */
     run: async function (client, message, args) {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FFFF)

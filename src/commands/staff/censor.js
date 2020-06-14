@@ -1,7 +1,15 @@
 
 const Discord = require('discord.js');
 const fs = require('fs');
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 
+/**
+ * 
+ * @param {Client} client Client
+ * @param {Message} message Message
+ * @param {Array<String>} args Arguments
+ */
 const evaluation = function (client, message, args) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -9,7 +17,7 @@ const evaluation = function (client, message, args) {
                 case 'add': {
                     if (!args.join(' ')) return resolve(false);
                     const data = `\r\n${args.join(' ')}`;
-                    fs.appendFile('assets/swearWords.txt', data, function(err) {
+                    fs.appendFile('assets/swearWords.txt', data, function (err) {
                         if (err) throw err;
                         return resolve(true);
                     });
@@ -42,9 +50,9 @@ const evaluation = function (client, message, args) {
 module.exports = {
     /**
      * 
-     * @param {Discord.Client} client Client
-     * @param {Discord.Message} message Message
-     * @param {Array} args Arguments
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
      */
     run: async function (client, message, args) {
         message.channel.send(`\`Output:\`\n\`\`\`xl\n${await evaluation(client, message, args)}\n\`\`\`\n`);

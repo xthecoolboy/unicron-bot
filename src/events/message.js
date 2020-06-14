@@ -1,6 +1,7 @@
 
 const ms = require('ms');
-const { Collection, MessageEmbed, Message, Client } = require('discord.js');
+const { Collection, MessageEmbed, Message } = require('discord.js');
+const Client = require('../classes/Unicron');
 const cooldowns = new Collection();
 const LevelingCD = new Collection();
 
@@ -31,7 +32,7 @@ module.exports = async (client, message) => {
     }
 
     if (!message.member) message.member.fetch();
-
+    
     message.guild.db = new Guild(message.guild.id);
     message.author.db = new User(message.author.id);
     message.member.db = new Member(message.author.id, message.guild.id);

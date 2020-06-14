@@ -1,5 +1,13 @@
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 
 module.exports = {
+    /**
+     * 
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
+     */
     run: async function (client, message, args, guild, user) {
         return message.channel.send("Ping?").then(msg => {
             msg.edit(`Pong! Latency is \`${msg.createdTimestamp - message.createdTimestamp}\`ms.\nAPI Latency is \`${Math.round(client.ws.ping)}ms\``);

@@ -5,8 +5,16 @@ const https = require('https');
 const url = [
     'https://www.reddit.com/r/hentai/hot/.json?limit=100',
 ];
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 
 module.exports = {
+    /**
+     * 
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
+     */
     run: async function (client, message) {
         https.get(url.random(), (result) => {
             let body = '';

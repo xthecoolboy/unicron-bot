@@ -6,8 +6,16 @@ const gateway = [
     'https://media.giphy.com/media/1Ubrzxvik2puE/giphy.gif',
     'https://media.giphy.com/media/l1KVaE9P0XcwJMwrC/giphy.gif'
 ]
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 
 module.exports = {
+    /**
+     * 
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
+     */
     run: async function (client, message, args) {
         let spinning = await message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')

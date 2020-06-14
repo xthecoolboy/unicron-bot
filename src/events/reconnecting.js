@@ -1,4 +1,4 @@
 
 module.exports = (client) => {
-    client.logger.log(`[NOTICE] ReconnectAction: Reconnecting to Discord...`);
+    client.logger.info(`[NOTICE] ReconnectAction: Reconnecting to Discord...`);
 }

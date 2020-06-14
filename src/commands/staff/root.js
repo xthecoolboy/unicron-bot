@@ -1,6 +1,8 @@
 
 const Discord = require('discord.js');
 const User = require('../../handlers/User');
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
 const { Admin } = require('../../database/database');
 const { token } = require('../../handlers/Unicron');
 const { Crypto } = require('../../utils/');
@@ -14,9 +16,15 @@ function removeItemOnce(arr, value) {
 }
 
 function encrypt(str) {
-    return Crypto({ text: str, hash: 'sha256', salt: 'oadpoaw'});
+    return Crypto({ text: str, hash: 'sha256', salt: 'oadpoaw' });
 }
 
+/**
+ * 
+ * @param {Client} client Client
+ * @param {Message} message Message
+ * @param {Array<String>} args Arguments
+ */
 const evaluation = async function (client, message, [key, ...value]) {
     try {
         switch (message.flags[0]) {
@@ -109,9 +117,9 @@ const evaluation = async function (client, message, [key, ...value]) {
 module.exports = {
     /**
      * 
-     * @param {Discord.Client} client Client
-     * @param {Discord.Message} message Message
-     * @param {Array} args Arguments
+     * @param {Client} client Client
+     * @param {Message} message Message
+     * @param {Array<String>} args Arguments
      */
     run: async function (client, message, args) {
         message.channel.send(`\`Output:\`\n\`\`\`xl\n${await evaluation(client, message, args)}\n\`\`\`\n`);

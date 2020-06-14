@@ -1,7 +1,8 @@
-const { Client, GuildMember } = require('discord.js');
+const { GuildMember } = require('discord.js');
 
 const Guild = require('../handlers/Guild');
 const Member = require('../handlers/Member');
+const Client = require('../classes/Unicron');
 
 /**
  * @param {Client} client
@@ -10,7 +11,7 @@ const Member = require('../handlers/Member');
 module.exports = async (client, member) => {
     if (member.user.bot) return;
     const tmp = new Member(member.user.id, member.guild.id);
-    tmp.captcha.regenerate();
+    await tmp.captcha.regenerate();
     const guild = new Guild(member.guild.id);
     const channel_id = await guild.leaver('channel');
     const message = await guild.leaver('message');

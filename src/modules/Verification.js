@@ -1,5 +1,6 @@
 
-const { Client, Message, MessageEmbed } = require('discord.js');
+const { Message, MessageEmbed } = require('discord.js');
+const Client = require('../classes/Unicron');
 
 /**
  * @param {Client} client
