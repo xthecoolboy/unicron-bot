@@ -1,12 +1,5 @@
 
-const { Collection } = require('discord.js');
-
 module.exports = async (client) => {
-
-    client.commands = new Collection();
-    client.events = new Collection();
-    client.shopitems = new Collection();
-
     client.awaitReply = async (msg, question, limit = 60000, obj = false) => {
         const filter = m => m.author.id === msg.author.id;
         await msg.channel.send(question);
@@ -79,7 +72,6 @@ module.exports = async (client) => {
         return false;
     };
     client.escapeRegex = (str) => { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') };
-
     client.chunk = function (array = [], chunkSize = 0) {
         return array.reduce(function (previous, current) {
             let chunk;

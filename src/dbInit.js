@@ -52,22 +52,22 @@ GuildDB.import('./models/guild/dynamicVoice');
 GuildDB.import('./models/guild/member');
 
 const force = process.argv.includes('--force') || process.argv.includes('-f');
-Logger.log('Connecting to databases...', 'log');
+Logger.info('Connecting to databases...');
 if (process.argv.includes('-all') || process.argv.includes('-unicron')) {
 	UnicronDB.sync({ force }).then(() => {
-		Logger.log('Unicron Database Synced!', 'log');
+		Logger.info('Unicron Database Synced!');
 		UnicronDB.close();
 	}).catch(Logger.error);
 }
 if (process.argv.includes('-all') || process.argv.includes('-user')) {
 	UserDB.sync({ force }).then(() => {
-		Logger.log('User Database Synced!', 'log');
+		Logger.info('User Database Synced!');
 		UserDB.close();
 	}).catch(Logger.error);
 }
 if (process.argv.includes('-all') || process.argv.includes('-guild')) {
 	GuildDB.sync({ force }).then(() => {
-		Logger.log('Guild Database Synced!', 'log');
+		Logger.info('Guild Database Synced!');
 		GuildDB.close();
 	}).catch(Logger.error);
 }
