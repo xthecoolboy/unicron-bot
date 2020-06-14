@@ -7,7 +7,7 @@ module.exports = class extends Client {
     constructor(options) {
         super(options.clientOptions);
         this.unicron = new Unicron(options.unicron)
-        //this.poster = new Poster(options.botlisting);
+        this.poster = new Poster(options.botlisting);
         this.commands = new Collection();
         this.events = new Collection();
         this.shopitems = new Collection();
