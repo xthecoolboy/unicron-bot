@@ -7,7 +7,7 @@ module.exports = class extends Client {
     constructor(options) {
         super(options.clientOptions);
         this.unicron = new Unicron(options.unicron)
-        this.poster = new Poster(options.botlisting);
+        //this.poster = new Poster(options.botlisting);
         this.commands = new Collection();
         this.events = new Collection();
         this.shopitems = new Collection();
@@ -60,7 +60,7 @@ module.exports = class extends Client {
     loadItem(itemName) {
         try {
             const props = require(`../items/${itemName}`);
-            client.shopitems.set(`${props.config.id}`, props);
+            this.shopitems.set(`${props.config.id}`, props);
             return false;
         } catch (e) {
             return `Unable to load item ${itemName}: ${e}`;
@@ -71,9 +71,9 @@ module.exports = class extends Client {
      * @param {String} itemName 
      */
     unloadItem(itemName) {
-        const item = client.shopitems.get(itemName);
+        const item = this.shopitems.get(itemName);
         if (!item) return `The item \`${itemName}\` doesn\'t seem to exists. Try again!`;
-        client.shopitems.delete(itemName);
+        this.shopitems.delete(itemName);
         const mod = require.cache[require.resolve(`../items/${item.config.id}`)];
         delete require.cache[require.resolve(`../items/${item.config.id}.js`)];
         for (let i = 0; i < mod.parent.children.length; i++) {
@@ -93,7 +93,7 @@ module.exports = class extends Client {
         try {
             const props = require(`../commands/${category}/${commandName}`);
             props.config.category = category;
-            client.commands.set(props.config.name, props);
+            this.commands.set(props.config.name, props);
             return false;
         } catch (e) {
             return `Unable to load command ${commandName}: ${e}`;
@@ -104,9 +104,9 @@ module.exports = class extends Client {
      * @param {String} commandName 
      */
     unloadCommand(commandName) {
-        const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.options.aliases && cmd.options.aliases.includes(commandName));
+        const command = this.commands.get(commandName) || this.commands.find(cmd => cmd.options.aliases && cmd.options.aliases.includes(commandName));
         if (!command) return `The command \`${commandName}\` doesn\`t seem to exist, nor is it an alias. Try again!`;
-        client.commands.delete(command.config.name);
+        this.commands.delete(command.config.name);
         const mod = require.cache[require.resolve(`../commands/${command.config.category}/${command.config.name}`)];
         delete require.cache[require.resolve(`../commands/${command.config.category}/${command.config.name}.js`)];
         for (let i = 0; i < mod.parent.children.length; i++) {

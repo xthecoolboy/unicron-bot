@@ -1,5 +1,5 @@
 
-const { MessageEmbed, Client, Message } = require('discord.js');
+const { MessageEmbed, Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 
 module.exports = {

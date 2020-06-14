@@ -26,5 +26,6 @@ module.exports = {
             discordbotlist: process.env.DBL_TOKEN,
         },
         clientLibrary: 'discord.js',
+        clientID: '634908645896880128',
     }
 }

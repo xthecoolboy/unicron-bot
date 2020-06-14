@@ -1,7 +1,14 @@
 
 const Discord = require('discord.js');
+const { Message }= require('discord.js');
+const Client = require('../classes/Unicron');
 
 module.exports = {
+    /**
+     * 
+     * @param {Client} client Client
+     * @param {Message} message Message
+     */
     run: async function(client, message) {
         await message.author.db.levelup(client, message, 40);
         await message.author.db.inventory.remove(this.config.id);

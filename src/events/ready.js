@@ -12,6 +12,6 @@ module.exports = (client) => {
         }, 
         status: 'online',
     });
-    if (client.poster) client.poster.startInterval();
+    if (client.poster && client.poster.options.clientID) client.poster.startInterval();
     client.logger.info(`Bot Ready! ${client.user.tag} / ${client.user.id}`);
 }

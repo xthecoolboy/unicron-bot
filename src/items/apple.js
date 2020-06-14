@@ -1,11 +1,13 @@
 
 const Discord = require('discord.js');
+const { Message }= require('discord.js');
+const Client = require('../classes/Unicron');
 
 module.exports = {
     /**
      * 
-     * @param {Discord.Client} client 
-     * @param {Discord.Message} message 
+     * @param {Client} client Client
+     * @param {Message} message Message
      */
     run: async function (client, message) {
         await message.author.db.levelup(client, message, 20);
