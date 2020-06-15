@@ -1,31 +1,36 @@
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'ping',
+                description: 'Checks Bot\'s ping and API Latency',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['botping'],
+                cooldown: 3,
+                args: false,
+                usage: '',
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args, guild, user) {
-        return message.channel.send("Ping?").then(msg => {
+    async run(client, message, args) {
+        return message.channel.send('Ping?').then(msg => {
             msg.edit(`Pong! Latency is \`${msg.createdTimestamp - message.createdTimestamp}\`ms.\nAPI Latency is \`${Math.round(client.ws.ping)}ms\``);
-        }).catch(e => {
+        }).catch((e) => {
             client.logger.error(`Error : ${e}`);
             return false;
         });
-    },
-    config: {
-        name: 'ping',
-        description: 'Checks Bot\'s ping and API Latency',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['botping'],
-        cooldown: 3,
-        args: false,
-        usage: '',
-        donatorOnly: false,
     }
 }

@@ -17,7 +17,7 @@
     "querystring": "^0.2.0",
     "request-promise-native": "^1.0.8",
     "sequelize": "^5.21.10",
-    "sqlite": "^3.0.3"
+    "sqlite3": "^4.2.0"
   },
   "devDependencies": {
     "eslint-config-standard": "^14.1.1",
@@ -35,7 +35,7 @@
     "reset-unicron": "node src/dbInit.js -f -unicron"
   },
   "engines": {
-    "node": "12.x"
+    "node": "12.16.3"
   },
   "keywords": [
     "discordjs",

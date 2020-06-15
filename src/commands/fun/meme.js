@@ -1,22 +1,36 @@
 
 const Discord = require('discord.js');
 const https = require('https');
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
 const url = [
     'https://www.reddit.com/r/dankmemes/hot/.json?limit=100',
     'https://www.reddit.com/r/memes/hot/.json?limit=100',
 ];
-const { Message } = require('discord.js');
-const Client = require('../../classes/Unicron');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'meme',
+                description: 'Meme Generator 101',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['dankmeme'],
+                cooldown: 6,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         https.get(url.random(), (result) => {
             let body = '';
             result.on('data', (chunk) => {
@@ -43,14 +57,5 @@ module.exports = {
                 return false;
             });
         });
-    },
-    config: {
-        name: 'meme',
-        description: 'Meme Generator 101',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['dankmeme'],
-        cooldown: 6,
     }
 }

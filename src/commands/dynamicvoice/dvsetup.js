@@ -1,14 +1,34 @@
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'dvsetup',
+                description: 'Interactive Dynamic Voice Setup!',
+                permission: 'Server Administrator',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS'],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: false,
+                usage: '',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const response = await client.awaitReply(message, 'Please select a name for the category of which to setup the dynamic voice channels in\n\nType `cancel` to cancel this command', 20000, true) //Asks for a category to set DVC In
         if (!response) return message.channel.send('No response was given, Exiting setup...'); //Stops execution if no response
         if (response.content === 'cancel') return message.channel.send('Command was canceled...'); //Stops execution if command cancel is run
@@ -22,21 +42,6 @@ module.exports = {
         model.waitingRoom = chan.id;
         model.enabled = true;
         await model.save();
-        message.channel.send('Dynamic Voice setup, success!');
-    },
-    config: {
-        name: 'dvsetup',
-        description: 'Interactive Dynamic Voice Setup!',
-        permission: 'Server Administrator',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS'],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: false,
-        usage: '',
-        donatorOnly: false,
-        premiumServer: false,
+        return message.channel.send('Dynamic Voice setup, success!');
     }
 }

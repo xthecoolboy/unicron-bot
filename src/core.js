@@ -11,7 +11,7 @@ const Client = require('./classes/Unicron');
  * @param {Client} client
  */
 module.exports = async (client) => {
-    client.logger.info('Initializing Unicron...');
+    client.logger.info('Loading Libraries...');
     if (process.env.BOT_HOST_URL) {
         const app = express();
         app.get('/', (request, response) => {

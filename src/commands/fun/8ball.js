@@ -14,29 +14,36 @@ const answers = [
     'i don\'t think so',
     'well yes but actually no',
     'well no but actually yes',
+    'omg yes!',
+    'nooooo'
 ]
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: '8ball',
+                description: '8Ball command which replies to a yes or no question',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['8-ball'],
+                cooldown: 10,
+                args: true,
+                usage: '8ball [question]',
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         return message.channel.send(answers.random());
-    },
-    config: {
-        name: '8ball',
-        description: '8Ball command which replies to a yes or no question',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['8-ball'],
-        cooldown: 10,
-        args: true,
-        usage: '8ball [question]',
     }
 }

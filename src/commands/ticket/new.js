@@ -2,15 +2,35 @@
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'new',
+                description: 'Creates a new ticket!',
+                permission: 'User',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: ['MANAGE_CHANNELS', 'VIEW_CHANNEL', 'MANAGE_ROLES'],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: true,
+                usage: 'new <...Topic>',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const stat = await message.guild.db.ticket('enabled');
         const strat = await message.guild.db.ticket('category');
         if (!stat || !strat) {
@@ -59,30 +79,20 @@ module.exports = {
             .setTimestamp()
             .setAuthor('Unicron Ticket System')
         );
-        if (message.guild.roles.cache.find(r => r.name.toLowerCase() === 'support team')) channel.overwritePermissions(message.guild.cache.roles.find(r => r.name.toLowerCase() === 'support team').id)
-        if (await message.guild.db.moderation('moderatorRole')) channel.overwritePermissions(await message.guild.db.moderation('moderatorRole'));
-        if (await message.guild.db.moderation('adminRole')) channel.overwritePermissions(await message.guild.db.moderation('adminRole'));
-        channel.send(new Discord.MessageEmbed()
+        if (message.guild.roles.cache.find(r => r.name.toLowerCase() === 'support team')) {
+            channel.overwritePermissions(message.guild.cache.roles.find(r => r.name.toLowerCase() === 'support team'), {
+                VIEW_CHANNEL: true,
+                MANAGE_CHANNELS: true,
+                MANAGE_MESSAGES: true,
+            });
+        }
+        await channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .addField('Subject', `${args.join(' ')}`)
-            .addField('Explain', "Describe your problem so it could be resolved faster!")
+            .addField('Explain', "Describe your topic so it could be resolved faster!")
             .addField('Ticket by', message.author.tag)
             .setDescription(`Thank you for creating a ticket.\nThe support team will assist you soon!`)
         );
-    },
-    config: {
-        name: 'new',
-        description: 'Creates a new ticket!',
-        permission: 'User',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: ['MANAGE_CHANNELS', 'VIEW_CHANNEL', 'MANAGE_ROLES'],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: true,
-        usage: 'new [...Topic]',
-        donatorOnly: false,
-        premiumServer: false,
+        return true;
     }
 }

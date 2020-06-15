@@ -1,5 +1,4 @@
-const Discord = require('discord.js');
-const fetch = require('node-fetch');
+
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
@@ -8,8 +7,8 @@ module.exports = class extends BaseCommand {
     constructor() {
         super({
             config: {
-                name: 'fox',
-                description: 'Random pictures of a fox',
+                name: '',
+                description: '',
                 permission: 'User',
             },
             options: {
@@ -31,12 +30,6 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const response = await fetch('https://randomfox.ca/floof/');
-        const { image } = await response.json();
-        message.channel.send(new Discord.MessageEmbed()
-            .setColor('RANDOM')
-            .setDescription('https://randomfox.ca/')
-            .setImage(image)
-        );
+
     }
 }

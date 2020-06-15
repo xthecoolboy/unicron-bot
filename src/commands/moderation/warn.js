@@ -5,18 +5,37 @@ const Member = require('../../handlers/Member');
 const Warning = require('../../modules/Warning');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'warn',
+                description: 'Warns the specified user. If warning threshold reaches for a user some action, specified by the `warnTresholdAction` configuration, is taken.',
+                permission: 'Server Moderator',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: ['BAN_MEMBERS', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: true,
+                usage: 'warn <UserMention|UserID> [...Reason]\nwarn <UserMention|UserID> [Duration] [...Reason]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, [user, ...reason]) {
-        let target;
-        if (message.mentions.users.size) target = message.mentions.users.first();
-        else if (user) target = await client.users.fetch(user);
+    async run(client, message, args) {
+        const [user, ...reason] = args;
+        let target = message.mentions.users.first() || await client.users.fetch(user);
         if (!target || target.bot) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
@@ -92,20 +111,5 @@ module.exports = {
 
         }
         await Warning(client, message, target.id, member);
-    },
-    config: {
-        name: 'warn',
-        description: 'Warns the specified user. If warning threshold reaches for a user some action, specified by the `warnTresholdAction` configuration, is taken.',
-        permission: 'Server Moderator',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: ['BAN_MEMBERS', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: true,
-        usage: 'warn [UserMention|UserID] [Duration](Optional) [...Reason](Optional)',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

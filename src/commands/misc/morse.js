@@ -1,5 +1,8 @@
 
 const Discord = require('discord.js');
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
 const dit = '.';
 const dah = '–';
@@ -90,37 +93,38 @@ const morseCode = {
     'ż': dah + dah + dit + dit + dah,
     ' ': '\u2007'
 };
-const { Message } = require('discord.js');
-const Client = require('../../classes/Unicron');
-
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'morse',
+                description: 'Encodes the given text into Morse Code',
+                permission: 'User',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: [],
+                cooldown: 3,
+                nsfwCommand: false,
+                args: true,
+                usage: 'morse <...Text>',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         args = args.join(' ').toLowerCase();
         args = args.replace(/./g, x => `${morseCode[x]}\u2001`).trim();
         message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setDescription(`\`${args}\``)
         );
-    },
-    config: {
-        name: 'morse',
-        description: 'Encodes the given text into Morse Code',
-        permission: 'User',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: [],
-        cooldown: 3,
-        nsfwCommand: false,
-        args: true,
-        usage: 'morse [...Text]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

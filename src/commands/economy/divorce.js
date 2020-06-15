@@ -2,22 +2,41 @@
 const Discord = require('discord.js');
 
 const User = require('../../handlers/User');
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'divorce',
+                description: 'File a divorce to your husband/wife',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['breakup'],
+                cooldown: 1200,
+                nsfwCommand: false,
+                args: false,
+                usage: 'divorce',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         if (!await message.author.db.profile('married_id')) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
                 .setDescription(`You can't file a divorce when you are not married to someone ;p`)
             );
         }
@@ -31,22 +50,8 @@ module.exports = {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FFFF)
             .setTimestamp()
-            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+            .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
             .setDescription(`${message.author} and <@${waifu.id}> has gotten a divorce :<`)
         );
-    },
-    config: {
-        name: 'divorce',
-        description: 'File a divorce to your husband/wife',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['breakup'],
-        cooldown: 1200,
-        nsfwCommand: false,
-        args: false,
-        usage: 'divorce',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

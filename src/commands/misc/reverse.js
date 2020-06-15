@@ -1,16 +1,34 @@
-
-const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'reverse',
+                description: 'Reverses the given text.',
+                permission: 'User',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: [],
+                cooldown: 3,
+                nsfwCommand: false,
+                args: true,
+                usage: 'reverse <...Text>',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const content = args
             .join(' ')
             .split('')
@@ -19,20 +37,5 @@ module.exports = {
             .replace(/`/g, '`' + String.fromCharCode(8203))
             .replace(/@/g, '@' + String.fromCharCode(8203))
         message.channel.send(content);
-    },
-    config: {
-        name: 'reverse',
-        description: 'Reverse the given text.',
-        permission: 'User',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: [],
-        cooldown: 3,
-        nsfwCommand: false,
-        args: true,
-        usage: 'reverse [...Text]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

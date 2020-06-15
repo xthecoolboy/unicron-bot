@@ -1,19 +1,22 @@
+
+const Client = require('../classes/Unicron');
+const { Message } = require('discord.js');
 const BaseItem = require('../classes/BaseItem');
 
 module.exports = class extends BaseItem {
     constructor() {
         super({
             config: {
-                id: 'diamond',
-                displayname: '💠 Diamond',
-                description: 'Precious collectable item! _O.o_',
+                id: '',
+                displayname: '',
+                description: '',
             },
             options: {
-                buyable: false,
+                buyable: true,
                 sellable: true,
-                usable: false,
-                price: 1000000,
-                cost: Math.floor(1000000 * 0.3),
+                usable: true,
+                price: 50,
+                cost: Math.floor(50 * 0.3),
             }
         });
     }

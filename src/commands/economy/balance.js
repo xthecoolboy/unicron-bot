@@ -2,17 +2,35 @@
 const Discord = require('discord.js');
 
 const User = require('../../handlers/User');
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'balance',
+                description: 'Shows User Balance',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['bal'],
+                cooldown: 3,
+                nsfwCommand: false,
+                args: false,
+                usage: 'balance [UserMention|UserID]',
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const target = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
         if (!target) target = message.author;
         if (target.bot) {
@@ -26,20 +44,7 @@ module.exports = {
             .setColor('RANDOM')
             .setAuthor(target.tag, target.displayAvatarURL())
             .setTimestamp()
-            .setDescription(`**${coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}** 💸`)
+            .setDescription(`**${coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}** 💸`)
         );
-    },
-    config: {
-        name: 'balance',
-        description: 'Shows User Balance',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['bal'],
-        cooldown: 3,
-        nsfwCommand: false,
-        args: false,
-        usage: 'balance [UserMention|UserID]',
-        donatorOnly: false,
     }
 }

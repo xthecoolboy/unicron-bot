@@ -68,17 +68,29 @@ const emojis = [
     '| (• ◡•)| (❍ᴥ❍ʋ)',
 ];
 
-module.exports = {
-    run: async function (client, message, args) {
+const BaseCommand = require('../../classes/BaseCommand');
+
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'emoji',
+                description: 'Get a random Emoji',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['moji'],
+                cooldown: 15,
+            }
+        });
+    }
+    /**
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
+     */
+    async run(client, message, args) {
         return message.channel.send(emojis.random());
-    },
-    config: {
-        name: 'emoji',
-        description: 'Get a random Emoji',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['moji'],
-        cooldown: 15,
     }
 }

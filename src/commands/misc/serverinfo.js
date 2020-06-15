@@ -2,15 +2,35 @@
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'serverinfo',
+                description: 'Shows this server\'s information.',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['guildinfo'],
+                clientPermissions: [],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: false,
+                usage: '',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         message.guild.emojis.cache.size
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
@@ -27,20 +47,5 @@ module.exports = {
             .addField('Voice Channels', message.guild.channels.cache.filter(channel => channel.type === 'voice').size, true)
             .setTimestamp()
         );
-    },
-    config: {
-        name: 'serverinfo',
-        description: 'Shows this server\'s information.',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['guildinfo'],
-        clientPermissions: [],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: false,
-        usage: '',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

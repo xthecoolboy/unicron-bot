@@ -1,22 +1,43 @@
 
 const Discord = require('discord.js');
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'shop',
+                description: 'Shows buyable items from the shop!',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['market', 'store'],
+                clientPermissions: [],
+                cooldown: 3,
+                nsfwCommand: false,
+                args: false,
+                usage: 'shop view <Item>\nshop [Page]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, [action, key]) {
+    async run(client, message, args) {
+        const [action, key] = args;
         if (action === 'view') {
             if (!key) {
                 return message.channel.send(new Discord.MessageEmbed()
                     .setColor(`RED`)
                     .setDescription(`You didn\'t provide any arguments at \`[item]\`
-                                Usage: \`${await message.guild.db.settings('prefix')}shop view [item]\`
+                                Usage: \`${await message.guild.db.settings('prefix')}shop view <Item ID>\`
                                 Example: \`${await message.guild.db.settings('prefix')}shop view bread\``));
             }
             const item = client.shopitems.get(key.toLowerCase());
@@ -56,20 +77,5 @@ module.exports = {
         });
         embed.setFooter(`Page 1 of ${pages} | ${message.author.tag} | buy [ItemID]`, message.author.displayAvatarURL() || null);
         return message.channel.send(embed);
-    },
-    config: {
-        name: 'shop',
-        description: 'Shows buyable items from the shop!',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['market', 'shopee', 'amazon', 'store'],
-        clientPermissions: [],
-        cooldown: 3,
-        nsfwCommand: false,
-        args: false,
-        usage: 'shop view [Item]\nshop [Page]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

@@ -1,16 +1,35 @@
-
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'farewell',
+                description: 'Farewell configuration module!',
+                permission: 'Server Administrator',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: [],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: true,
+                usage: 'farewell -interactive\nfarewell channel [ChannelMention]\nfarewell message [...Message]\n\`^(Must include {user} placeholder for this to work!)^\`\nfarewell [enable|disable]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         if (message.flags.includes('interactive')) {
             await message.channel.send('Interactive Farewell setup...');
 
@@ -29,7 +48,7 @@ module.exports = {
             const model = await message.guild.db.leaver(true);
             model.channel = channel.id;
             model.message = response2.content.replace(/`/g, '`' + String.fromCharCode(8203))
-                                            .replace(/@/g, '@' + String.fromCharCode(8203));
+                .replace(/@/g, '@' + String.fromCharCode(8203));
             model.enabled = true;
             await model.save();
             message.channel.send('Setup complete! Testing it now...')
@@ -73,20 +92,5 @@ module.exports = {
                     .setDescription('Error: Invalid Key provided, Please try again.')
                 );
         }
-    },
-    config: {
-        name: 'farewell',
-        description: 'Farewell configuration module!',
-        permission: 'Server Administrator',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: [],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: true,
-        usage: 'farewell -interactive\nfarewell channel [ChannelMention]\nfarewell message [...Message]\n\`^(_Must include {user} placeholder for this to work!_)^\`\nfarewell [enable|disable]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

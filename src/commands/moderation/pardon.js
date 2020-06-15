@@ -2,14 +2,35 @@ const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 
-module.exports = {
+const BaseCommand = require('../../classes//BaseCommand');
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'pardon',
+                description: 'Pardon/unban someone from the server!',
+                permission: 'Server Moderator',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: ['BAN_MEMBERS'],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: true,
+                usage: 'pardon <UserID> [Reason]',
+                donatorOnly: false,
+                premiumServer: false,
+            },
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, [user_id, ...reason]) {
+    async run(client, message, args) {
+        const [user_id, ...reason] = args;
         try {
             const member = await message.guild.fetchBan(user_id);
             try {
@@ -32,20 +53,5 @@ module.exports = {
         catch (e) {
             message.channel.send('That user is not banned from this server or its an Unknown Ban');
         }
-    },
-    config: {
-        name: 'pardon',
-        description: 'Pardon/unban someone from the server!',
-        permission: 'Server Moderator',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: ['BAN_MEMBERS'],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: true,
-        usage: 'pardon [UserID] [Reason](Optional)',
-        donatorOnly: false,
-        premiumServer: false,
-    },
-};
+    }
+}

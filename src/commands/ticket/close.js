@@ -2,15 +2,35 @@
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'close',
+                description: 'Close a ticket!',
+                permission: 'User',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: ['MANAGE_CHANNELS', 'VIEW_CHANNEL', 'MANAGE_ROLES'],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: false,
+                usage: 'close [...Reason]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const stat = await message.guild.db.ticket('enabled');
         const strat = await message.guild.db.ticket('category');
         if (!stat || !strat) {
@@ -42,20 +62,5 @@ module.exports = {
             );
         }
         await message.channel.delete('Ticket closed.');
-    },
-    config: {
-        name: 'close',
-        description: 'Close a ticket!',
-        permission: 'User',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: ['MANAGE_CHANNELS', 'VIEW_CHANNEL', 'MANAGE_ROLES'],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: false,
-        usage: 'close [...Reason](_Optional_)',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

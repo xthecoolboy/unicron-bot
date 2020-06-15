@@ -1,15 +1,42 @@
 
 const { MessageEmbed, Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'tag',
+                description: `Create a tag, delete a tag, edit a tag, show a tag, list all tags
+Creating/Removing/Editing a tag requires permission level \`Server Moderator\`
+\`\`\`bash
+$ tag <Tag Name>
+$ <Tag Name>
+$ tag list
+$ tag <create|edit> <Tag Name> <...Value>
+$ tag delete <Tag Name>
+\`\`\`
+`,
+                permission: 'User',
+            },
+            options: {
+                aliases: ['tags'],
+                cooldown: 3,
+                args: true,
+                usage: `tag <Tag name>\ntag <create|edit|delete|list> <Tag name> <...value>`,
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, [action, key, ...value]) {
+    async run(client, message, args) {
+        const [action, key, ...value] = args;
         if (message.author.permLevel >= 2) {
             switch (action) {
                 case 'create': {
@@ -74,18 +101,5 @@ module.exports = {
 
             }
         }
-    },
-    config: {
-        name: 'tag',
-        description: `Create a tag, delete a tag, edit a tag, show a tag, list all tags
-                    Creating/Removing/Editing a tag requires Moderator Permissions`,
-        permission: 'User',
-    },
-    options: {
-        aliases: ['tags'],
-        cooldown: 3,
-        args: true,
-        usage: `tag [name]\ntag [create/edit/delete/list] [key/name] [...value]\ntag list\ntag create Test Wonderful Wonderful\ntag edit Test New Value asdnasd\ntag delete Test`,
-        donatorOnly: false,
     }
 }

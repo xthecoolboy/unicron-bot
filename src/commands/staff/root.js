@@ -6,6 +6,7 @@ const Client = require('../../classes/Unicron');
 const { Admin } = require('../../database/database');
 const { token } = require('../../handlers/Unicron');
 const { Crypto } = require('../../utils/');
+const BaseCommand = require('../../classes/BaseCommand');
 
 function removeItemOnce(arr, value) {
     var index = arr.indexOf(value);
@@ -18,7 +19,6 @@ function removeItemOnce(arr, value) {
 function encrypt(str) {
     return Crypto({ text: str, hash: 'sha256', salt: 'oadpoaw' });
 }
-
 /**
  * 
  * @param {Client} client Client
@@ -113,41 +113,41 @@ const evaluation = async function (client, message, [key, ...value]) {
         return e;
     }
 }
-
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'root',
+                description: `Root Command.
+\`\`\`bash
+$ root -setPresence [Status] [Activity] [...Message]
+$ root -staff [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]
+$ root -partner [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]
+$ root -bug_hunter [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]
+$ root -supporter [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]
+$ root -codes [-add|-remove|-fetch] [-user|-guild] [name]\`
+\`\`\`
+`,
+                permission: 'Bot Owner',
+            },
+            options: {
+                aliases: ['dev'],
+                cooldown: 3,
+                nsfwCommand: false,
+                args: true,
+                usage: 'root [Flags] [...values]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
-        message.channel.send(`\`Output:\`\n\`\`\`xl\n${await evaluation(client, message, args)}\n\`\`\`\n`);
-    },
-    /**
-        
-     */
-    config: {
-        name: 'root',
-        description: `Root Command.
-        \`\`\`bash
-        $ root -setPresence [Status] [Activity] [...Message]
-        $ root -staff [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]
-        $ root -partner [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]
-        $ root -bug_hunter [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]
-        $ root -supporter [-add|-remove|-fetch|-fetchAll] [UserID] [...Reason]
-        $ root -codes [-add|-remove|-fetch] [-user|-guild] [name]\`
-        \`\`\`
-        `,
-        permission: 'Bot Owner',
-    },
-    options: {
-        aliases: ['dev'],
-        cooldown: 3,
-        nsfwCommand: false,
-        args: true,
-        usage: 'root [Flags] [...values]',
-        donatorOnly: false,
-        premiumServer: false,
+    async run(client, message, args) {
+        return message.channel.send(`\`Output:\`\n\`\`\`xl\n${await evaluation(client, message, args)}\n\`\`\`\n`);
     }
 }

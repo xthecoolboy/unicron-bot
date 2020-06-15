@@ -1,8 +1,10 @@
 require('dotenv').config();
-const UnicronClient = require('./classes/Unicron');
-const options = require('./options');
-const Unicron = new UnicronClient(options);
+const Unicron = require('./Unicron');
+const client = new Unicron.Client();
 (async function () {
-    await Unicron.require('../system.js');
-    await Unicron.login(process.env.BOT_TOKEN);
+    await client.register();
+    await client.registerItems('../items/');
+    await client.registerCommands('../commands/');
+    await client.registerEvents('../events/');
+    await client.login(process.env.BOT_TOKEN);
 })();

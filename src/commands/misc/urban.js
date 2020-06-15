@@ -2,18 +2,35 @@
 const Discord = require('discord.js');
 const querystring = require('querystring');
 const fetch = require('node-fetch');
-const trim = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'urban',
+                description: 'Urban Dictionary 101',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['dict', 'urban-dict'],
+                cooldown: 12,
+                args: true,
+                nsfwCommand: true,
+                usage: 'urban <Word>',
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const query = querystring.stringify({ term: args.join(' ') });
         const { list } = await fetch(`https://api.urbandictionary.com/v0/define?${query}`).then(response => response.json());
         if (!list.length) {
@@ -26,21 +43,9 @@ module.exports = {
             .setColor('RANDOM')
             .setTitle(answer.word)
             .setURL(answer.permalink)
-            .addField('Definition', trim(answer.definition, 1024), false)
+            .addField('Definition', client.trim(answer.definition, 1024), false)
             .addField('Example', trim(answer.example, 1024), false)
-            .setFooter(`Rating: ${answer.thumbs_up - answer.thumbs_down} Upvotes.`));
-    },
-    config: {
-        name: 'urban',
-        description: 'Urban Dictionary 101',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['dict', 'urban-dict'],
-        cooldown: 12,
-        args: true,
-        nsfwCommand: true,
-        usage: 'urban [search item]',
-        donatorOnly: false,
+            .setFooter(`Rating: ${answer.thumbs_up - answer.thumbs_down} Upvotes.`)
+        );
     }
 }

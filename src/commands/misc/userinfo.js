@@ -2,18 +2,38 @@
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'userinfo',
+                description: 'Shows information about a user!',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['whois'],
+                clientPermissions: [],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: false,
+                usage: '',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         let user = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
         if (!user) user = message.author;
-        let member = message.guild.members.cache.get(user.id);
+        const member = message.guild.member(user);
         let nick = member.nickname;
         if (!nick) nick = '-';
         let status = user.presence.status;
@@ -35,7 +55,7 @@ module.exports = {
                 break;
             }
         }
-        let roles = member.roles.cache.map(r => `<@&${r.id}>`).slice(1).join(', ').replace(new RegExp(`<@&${message.guild.id}>`, 'g'), '');
+        let roles = member.roles.cache.map(r => `<@&${r.id}>`).join(', ').replace(new RegExp(`<@&${message.guild.id}>`, 'g'), '');
         if (roles.length === 0) roles = '-';
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
@@ -43,26 +63,11 @@ module.exports = {
             .addField(`${user.bot ? 'Bot' : 'User'} Info`, `${user.tag} / ${user.id}`)
             .addField(`Joined Server`, member.joinedAt.toUTCString(), true)
             .addField(`Created At`, user.createdAt.toUTCString(), true)
-            .addField('\u200b', '\u200b',true)
+            .addField('\u200b', '\u200b', true)
             .addField(`Status`, status, true)
             .addField(`Nickname`, nick, true)
             .addField(`Roles`, roles)
             .setTimestamp()
         );
-    },
-    config: {
-        name: 'userinfo',
-        description: 'Shows information about a user!',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['whois'],
-        clientPermissions: [],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: false,
-        usage: '',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

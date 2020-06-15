@@ -1,17 +1,38 @@
 
 const Discord = require('discord.js');
 
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'dvconfig',
+                description: 'Dynamic Voice Configuration',
+                permission: 'Server Administrator',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS'],
+                cooldown: 3,
+                nsfwCommand: false,
+                args: true,
+                usage: 'dvconfig <view|set|enable|disable> <key> [value]\n\nExamples:\ndvconfig set category 1426249876277277 (CHANNEL_ID)',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, [action, key, ...value]) {
+    async run(client, message, args) {
+        const [action, key, ...value] = args;
         const db = message.guild.db;
         switch (action) {
             case 'view': {
@@ -68,7 +89,7 @@ module.exports = {
                 const model = await db.dynamicVoice(true);
                 model.enabled = bo;
                 await model.save();
-                message.channel.send(`Dynamic Voice has been ${bo ? 'enabled': 'disabled'}`);
+                message.channel.send(`Dynamic Voice has been ${bo ? 'enabled' : 'disabled'}`);
                 break;
             }
             default: {
@@ -80,20 +101,5 @@ module.exports = {
                 );
             }
         }
-    },
-    config: {
-        name: 'dvconfig',
-        description: 'Dynamic Voice Configuration',
-        permission: 'Server Administrator',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS'],
-        cooldown: 3,
-        nsfwCommand: false,
-        args: true,
-        usage: 'dvconfig [view|set|enable|disable] [key] [value]\n\nExamples:\ndvconfig set category 1426249876277277 (CHANNEL_ID)',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

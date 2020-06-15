@@ -2,41 +2,37 @@
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'avatar',
+                description: 'Check user avatar',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['av'],
+                cooldown: 3,
+                args: false,
+                usage: `avatar [user]`,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
-        let target;
-        if (message.mentions.users.size) {
-            target = message.mentions.users.first();
-        } else if (args.length) {
-            target = await client.users.fetch(args[0]);
-        } else {
-            target = message.author;
-        }
-        if (!target) {
-            target = message.author;
-        }
+    async run(client, message, args) {
+        let target = message.mentions.users.first() || await client.users.fetch(args[0]) || message.author;
+        if (!target) target = message.author;
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setAuthor(target.tag, target.displayAvatarURL())
             .setImage(`${target.displayAvatarURL()}`)
         );
-    },
-    config: {
-        name: 'avatar',
-        description: 'Check user avatar',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['av'],
-        cooldown: 3,
-        args: false,
-        usage: `avatar [user]`,
     }
 }

@@ -1,17 +1,35 @@
 
 const Discord = require('discord.js');
 const User = require('../../handlers/User');
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'profile',
+                description: 'Check user Profile',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['stats'],
+                cooldown: 5,
+                nsfwCommand: false,
+                args: false,
+                usage: 'profile [User]',
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const target = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
         if (!target) target = message.author;
         if (target.bot) {
@@ -40,24 +58,11 @@ module.exports = {
             .setColor('RANDOM')
             .setTimestamp()
             .setAuthor(target.tag, target.displayAvatarURL() || client.user.displayAvatarURL())
-            .addField('**Progress**', `**${level}** [${progress}](${client.unicron.serverInviteURL} 'O.o') **${level + 1}**\n**${req}** - remaining`, true)
+            .addField('**Progress**', `**${level}** [${progress}](${client.unicron.serverInviteURL}) **${level + 1}**\n**${req}** - remaining`, true)
             .addField('**Badges**', badgeText, true)
             .addField('\u200b', '\u200b', true)
-            .addField('**Coins**', `**${balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}** 💰`, true)
+            .addField('**Coins**', `**${balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}** 💰`, true)
             .addField('**Inventory**', `**${inventoryCount}** item(s)`, true)
         );
-    },
-    config: {
-        name: 'profile',
-        description: 'Check user Profile',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['stats'],
-        cooldown: 5,
-        nsfwCommand: false,
-        args: false,
-        usage: 'profile [User]',
-        donatorOnly: false,
     }
 }

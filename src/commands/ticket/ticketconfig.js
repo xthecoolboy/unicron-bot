@@ -2,15 +2,35 @@
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'ticketconfig',
+                description: 'Ticket System Configuration!',
+                permission: 'Server Administrator',
+            },
+            options: {
+                aliases: ['ticketconf'],
+                clientPermissions: ['SEND_MESSAGES', 'MANAGE_CHANNELS', 'VIEW_CHANNEL'],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: true,
+                usage: 'ticketconfig -interactive\nticketconfig -category [Category ID]\nticketconfig [-enable|-disable]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         if (message.flags.includes('interactive')) {
             await message.channel.send('Interactive Ticket System setup...');
             const response1 = await client.awaitReply(message, 'Enter Ticket Category ID:\nEx: \`12345678906942069\`\n\nType \`cancel\` to exit this setup', 20000, true);
@@ -50,27 +70,11 @@ module.exports = {
                     return message.channel.send(new Discord.MessageEmbed()
                         .setColor('RED')
                         .setTimestamp()
-                        .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                        .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
                         .setDescription('Error: Invalid Key provided, Please try again.')
                     );
                 }
             }
         }
-
-    },
-    config: {
-        name: 'ticketconfig',
-        description: 'Ticket System Configuration!',
-        permission: 'Server Administrator',
-    },
-    options: {
-        aliases: ['ticketconf'],
-        clientPermissions: ['SEND_MESSAGES', 'MANAGE_CHANNELS', 'VIEW_CHANNEL'],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: true,
-        usage: 'ticketconfig -interactive\nticketconfig category [Category ID]\nticketconfig [-enable|-disable]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

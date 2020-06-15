@@ -3,22 +3,49 @@ const Discord = require('discord.js');
 const ms = require('ms');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'mute',
+                description: 'Mute a member from the server!',
+                permission: 'Server Moderator',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: ['MANAGE_ROLES', 'MANAGE_CHANNELS'],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: true,
+                usage: 'mute <UserMention|UserID> [...Reason]\nmute <UserMention|UserID> [Duration] [...Reason]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, [user, ...reason]) {
-        let target;
-        if (message.mentions.users.size) target = message.mentions.users.first();
-        else if (user) target = await client.users.fetch(user);
+    async run(client, message, args) {
+        const [user, ...reason] = args;
+        let target = message.mentions.users.first() || await client.users.fetch(user);
         if (!target) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setDescription(`Incorrect Usage, the correct usages are:\n\`${this.options.usage}\``)
+                .setTimestamp()
+                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+            );
+        }
+        if (target.equals(message.author)) {
+            return message.channel.send(new Discord.MessageEmbed()
+                .setColor('RED')
+                .setDescription(`Hey there, You mute kick yourself :P`)
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
             );
@@ -81,7 +108,7 @@ module.exports = {
                 .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
                 .setTimestamp()
                 .setThumbnail(target.displayAvatarURL() || null)
-                .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : Mute\n${duration ? `**Length** : ${ms(duration)}` : ''}\n**Reason** : ${_reason}`)
+                .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : Mute\n**Reason** : ${_reason}\n${duration ? `**Length** : ${ms(duration)}` : ''}`)
             );
         }
         try {
@@ -95,20 +122,5 @@ module.exports = {
         } catch (e) {
             //
         }
-    },
-    config: {
-        name: 'mute',
-        description: 'Mute a member from the server!',
-        permission: 'Server Moderator',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: ['MANAGE_ROLES', 'MANAGE_CHANNELS'],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: true,
-        usage: 'mute [UserMention|UserID] [...Reason]\nmute [UserMention|UserID] [Duration] [...Reason]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

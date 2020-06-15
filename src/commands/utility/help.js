@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const ms = require('ms');
+const BaseCommand = require('../../classes/BaseCommand');
 
 const category = new Discord.Collection();
 category.set('fun', 'Indeed very cool **Fun commands**.');
@@ -16,25 +17,42 @@ category.set('dynamicvoice', '**Dynamic Voice System!** Which Allows users to cr
 category.set('ticket', 'Wonderful **Ticket System** for ease of server management.');
 category.set('staff', 'Bot Staff Commands ONLY!');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'help',
+                description: 'List all of my commands or show information about a specific command.',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['commands'],
+                cooldown: 3,
+                args: false,
+                usage: 'help [command | category]',
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const prefix = await message.guild.db.settings('prefix');
+        const OWNER = await client.users.fetch(client.unicron.owner);
         if (args.length) {
             if (category.has(args[0])) {
                 let embed = new Discord.MessageEmbed()
                     .setColor('RANDOM')
-                    .setDescription(`${category.get(args[0])}.`)
+                    .setTimestamp()
+                    .setDescription(`${category.get(args[0])}\n\`\`\`xl\nhelp [Command]\n\`\`\``)
                     .addField(`Commands:`,
                         `${client.commands.filter(command => command.config.category.includes(args[0]) && !command.options.donatorOnly)
                             .map(command => `\`${command.config.name}\``)
-                            .join(', ')}` || `\u200b`)
-                    .setFooter(`You can do 'help [Command]' to get a specific information about a command!`)
+                            .join(', ')}` || `\u200b`);
                 if (client.commands.filter(command => command.config.category.includes(args[0]) && command.options.donatorOnly).map(command => `\`${command.config.name}\``).length) {
                     embed.addField(`\u200b`,
                         `[Premium Commands](${client.unicron.serverInviteURL} 'These commands are only exclusive to donators')
@@ -43,6 +61,8 @@ module.exports = {
                             .join(', ')}
                         `
                     );
+                } else {
+                    embed.addField(`\u200b`, '\u200b');
                 }
                 return message.channel.send(embed);
             }
@@ -58,12 +78,14 @@ module.exports = {
                     .addField(`Category`, `• ${command.config.category}`, true)
                     .addField(`Cooldown`, `${ms(command.options.cooldown * 1000)}`, true)
                     ;
-                if (command.options.aliases)
-                    embed.addField(`Aliases`, `• ${command.options.aliases.join(', ')}`, true);
-                if (command.options.usage)
-                    embed.addField(`Usage`, `\`${command.options.usage}\``, true);
+                if (command.options.aliases && command.options.aliases.length !== 0)
+                    embed.addField(`Aliases`, `${command.options.aliases.join(', ')}`, true);
                 if (command.config.permission)
-                    embed.addField(`Required Permission`, `• \`${command.config.permission}\``, true);
+                    embed.addField(`Required Permission`, `\`\`\`xl\n${command.config.permission}\n\`\`\``, false);
+                if (command.options.clientPermissions && command.options.clientPermissions.length !== 0)
+                    embed.addField(`Required Bot Permissions`, `\`\`\`xl\n${command.options.clientPermissions.join(' ')}\n\`\`\``, false)
+                if (command.options.usage)
+                    embed.addField(`Usage`, `\`\`\`xl\n${command.options.usage}\n\`\`\``, false);
                 if (command.options.donatorOnly)
                     embed.setFooter('This command is exclusive only to donators');
                 return message.channel.send(embed);
@@ -72,8 +94,8 @@ module.exports = {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FFFF)
             .setTitle('Unicron\'s Commands')
-            .setDescription(`[Join here](${client.unicron.serverInviteURL} 'Support Server') if want a cool server to hangout in.\n\`help [Category]\`\nDefault Prefix for this server is \`${prefix}\``)
-            .setFooter(`Made by undefine#6084`, client.user.displayAvatarURL())
+            .setDescription(`Join our [Support Server](${client.unicron.serverInviteURL}) for help and updates!\n\`\`\`xl\n${prefix}help [Category]\n\`\`\``)
+            .setFooter(`Made by ${OWNER.tag}`, OWNER.displayAvatarURL())
             .addField(`${await client.getEmoji('staff')} Moderation`, `\`moderation\``, true)
             .addField(`${await client.getEmoji('settings')} Settings`, `\`settings\``, true)
             .addField(`🎫 Ticket System`, `\`ticket\``, true)
@@ -83,18 +105,7 @@ module.exports = {
             .addField(`${await client.getEmoji('yes')} Misc`, `\`misc\``, true)
             .addField('😂 Fun', `\`fun\``, true)
             .addField(`🔞 NSFW`, '\`nsfw\`', true)
+            .setTimestamp()
         );
-    },
-    config: {
-        name: 'help',
-        description: 'List all of my commands or show information about a specific command.',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['commands'],
-        cooldown: 3,
-        args: false,
-        usage: 'help [command | category]',
-        donatorOnly: false,
     }
 }

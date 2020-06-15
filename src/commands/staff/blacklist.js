@@ -1,10 +1,7 @@
-
-const Discord = require('discord.js');
-
 const { Admin } = require('../../database/database');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
-
+const BaseCommand = require('../../classes/BaseCommand');
 /**
  * 
  * @param {Client} client Client
@@ -43,37 +40,40 @@ const evaluation = async function (client, message, args) {
         return e;
     }
 }
-
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'blacklist',
+                description: `Usages:
+\`\`\`bash
+$ blacklist -user\` [UserID] [...reason]
+$ blacklist -guild\` [GuildID] [...reason]
+$ blacklist -pardon -user\` [UserID]
+$ blacklist -pardon -guild\` [GuildID]
+$ blacklist -fetch -user\` [UserID]
+$ blacklist -fetch -guild\` [GuildID]
+\`\`\`
+`,
+                permission: 'Bot Staff',
+            },
+            options: {
+                cooldown: 3,
+                nsfwCommand: false,
+                args: false,
+                usage: 'blacklist [flags] [a] [b]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
-        message.channel.send(`\`Output:\`\n\`\`\`xl\n${await evaluation(client, message, args)}\n\`\`\`\n`);
-    },
-    config: {
-        name: 'blacklist',
-        description: `Usages:
-        \`\`\`bash
-        $ blacklist -user\` [UserID] [...reason]
-        $ blacklist -guild\` [GuildID] [...reason]
-        $ blacklist -pardon -user\` [UserID]
-        $ blacklist -pardon -guild\` [GuildID]
-        $ blacklist -fetch -user\` [UserID]
-        $ blacklist -fetch -guild\` [GuildID]
-        \`\`\`
-        `,
-        permission: 'Bot Staff',
-    },
-    options: {
-        cooldown: 3,
-        nsfwCommand: false,
-        args: false,
-        usage: 'blacklist [flags] [a] [b]',
-        donatorOnly: false,
-        premiumServer: false,
+    async run(client, message, args) {
+        return message.channel.send(`\`Output:\`\n\`\`\`xl\n${await evaluation(client, message, args)}\n\`\`\`\n`);
     }
 }

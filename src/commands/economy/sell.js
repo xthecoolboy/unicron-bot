@@ -1,17 +1,37 @@
 
 const Discord = require('discord.js');
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'sell',
+                description: 'Sells an item from your inventory!',
+                permission: 'User',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: [],
+                cooldown: 3,
+                nsfwCommand: false,
+                args: true,
+                usage: 'sell <Item ID>',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
-        const item = await client.shopitems.get(args[0].toLowerCase());
+    async run(client, message, args) {
+        const item = client.shopitems.get(args[0].toLowerCase());
         if (!item) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
@@ -31,22 +51,7 @@ module.exports = {
         await message.author.db.inventory.remove(item.config.id);
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('0x00FF00')
-            .setDescription(`You've sold **${item.config.displayname}**, for the price of **${item.options.cost}** Coins`)
+            .setDescription(`You've sold **${item.config.displayname}**, for the price of **${item.options.cost}** Coins!`)
         );
-    },
-    config: {
-        name: 'sell',
-        description: 'Sells an item from your inventory!',
-        permission: 'User',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: [],
-        cooldown: 3,
-        nsfwCommand: false,
-        args: true,
-        usage: 'sell [Item ID]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

@@ -3,28 +3,33 @@ const Discord = require('discord.js');
 const fortune = require('../../../assets/fortuneCookies.json');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'fortune',
+                description: 'Shows you a fortune from a fortune cookie.',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['cookie'],
+                cooldown: 15,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message) {
-        await message.channel.send(new Discord.MessageEmbed()
+    async run(client, message, args) {
+        return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTitle('Your fortune says...')
-            .setDescription(fortune.random()))
-            ;
-    },
-    config: {
-        name: 'fortune',
-        description: 'Shows you a fortune from a fortune cookie.',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['cookie'],
-        cooldown: 15,
+            .setDescription(fortune.random())
+        );
     }
 }

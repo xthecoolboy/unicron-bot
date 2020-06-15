@@ -1,16 +1,35 @@
-
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'welcomer',
+                description: 'Welcomer configuration module!',
+                permission: 'Server Administrator',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: [],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: true,
+                usage: 'welcomer -interactive\nwelcomer channel <ChannelMention>\nwelcomer message <...Message>\n\`^(Must include {user} for this to work!)^\`\nwelcomer [enable|disable]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         if (message.flags.includes('interactive')) {
             await message.channel.send('Interactive Welcomer setup...');
 
@@ -73,20 +92,5 @@ module.exports = {
                     .setDescription('Error: Invalid Key provided, Please try again.')
                 );
         }
-    },
-    config: {
-        name: 'welcomer',
-        description: 'Welcomer configuration module!',
-        permission: 'Server Administrator',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: [],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: true,
-        usage: 'welcomer -interactive\nwelcomer channel [ChannelMention]\nwelcomer message [...Message]\n\`^(_Must include {user} for this to work!_)^\`\nwelcomer [enable|disable]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

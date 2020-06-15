@@ -2,18 +2,37 @@
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes//BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'unmute',
+                description: 'Unmute a muted member from the server!',
+                permission: 'Server Moderator',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: ['MANAGE_ROLES', 'MANAGE_CHANNELS'],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: true,
+                usage: 'unmute <UserMention|UserID> [...Reason]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, [user, ...reason]) {
-        let target;
-        if (message.mentions.users.size) target = message.mentions.users.first();
-        else if (user) target = await client.users.fetch(user);
+    async run(client, message, args) {
+        const [user, ...reason] = args;
+        const target = message.mentions.users.first() || await client.users.fetch(user);
         if (!target) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
@@ -45,9 +64,7 @@ module.exports = {
         if (!role) {
             role = await message.guild.roles.create({
                 name: 'Muted'
-            });
-            MODERATION.mutedRole = role.id;
-            await MODERATION.save();
+            }, 'Mute');
         }
         try {
             member.roles.remove(role, reason.join(' '));
@@ -55,20 +72,5 @@ module.exports = {
         } catch (e) {
             message.channel.send(`Error occured on unmuting ${target}`);
         }
-    },
-    config: {
-        name: 'unmute',
-        description: 'Unmute a muted member from the server!',
-        permission: 'Server Moderator',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: ['MANAGE_ROLES', 'MANAGE_CHANNELS'],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: true,
-        usage: 'unmute [UserMention|UserID]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

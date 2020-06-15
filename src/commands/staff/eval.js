@@ -23,7 +23,7 @@
   return ex;
 })()
 */
-async function safeEval(code) {
+async function safeEval(code, client) {
     return eval(`
         (function () {
             Function = undefined;
@@ -34,23 +34,39 @@ async function safeEval(code) {
                 if (typeof item.constructor !== 'function') return;
                 this[key].constructor = undefined;
             });
+            ${code}
         })();
-        ${code}
     `);
 }
 
 const { MessageEmbed, Message } = require('discord.js');
-const trim = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'eval',
+                description: 'Evaluates Arbitary javascript.',
+                permission: 'Bot Owner',
+            },
+            options: {
+                cooldown: 3,
+                nsfwCommand: false,
+                args: true,
+                usage: 'eval [...code]',
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const content = args.join(' ');
         if (!/```js[a-z]*[\s\S]*?```/.test(content)) {
             return message.channel.send(new MessageEmbed()
@@ -61,34 +77,21 @@ module.exports = {
         }
         try {
             const code = content.replace(/```js/, '').replace(/```/, '');
-            const output = safeEval(code);
+            const output = safeEval(code, client);
             const clean = await client.clean(client, output);
             message.channel.send(new MessageEmbed()
                 .setColor('GREEN')
                 .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
-                .addField('Code', `${trim(content, 512)}`)
-                .addField('Output', `\`\`\`xl\n${trim(clean, 1000)}\n\`\`\``)
+                .addField('Code', `${client.trim(content, 512)}`)
+                .addField('Output', `\`\`\`xl\n${client.trim(clean, 1000)}\n\`\`\``)
             );
         } catch (err) {
-            const clean = client.clean(client, err);
+            const clean = await client.clean(client, err);
             message.channel.send(new MessageEmbed()
                 .setColor('RED')
                 .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
-                .addField('Output', `\`\`\`xl\n${trim(clean, 1000)}\n\`\`\``)
+                .addField('Output', `\`\`\`xl\n${client.trim(clean, 1000)}\n\`\`\``)
             );
         }
-
-    },
-    config: {
-        name: 'eval',
-        description: 'Evaluates Arbitary javascript.',
-        permission: 'Bot Owner',
-    },
-    options: {
-        cooldown: 3,
-        nsfwCommand: false,
-        args: true,
-        usage: 'eval [...code]',
-        donatorOnly: false,
     }
 }

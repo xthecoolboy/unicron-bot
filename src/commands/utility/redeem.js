@@ -16,15 +16,35 @@ function removeItemOnce(arr, value) {
 function encrypt(str) {
     return Crypto({ text: str, hash: 'sha256', salt: 'oadpoaw' });
 }
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'redeem',
+                description: 'Redeem using a super secret code ^_^',
+                permission: 'User',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: [],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: true,
+                usage: 'redeem [Code]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const code = encrypt(args[0]);
         const dbUser = await client.unicron.database('user', true);
         const dbGuilds = await client.unicron.database('guild', true);
@@ -82,7 +102,7 @@ module.exports = {
                 .setColor(0x00FF00)
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                .setDescription('You have redeemed your VIP Server code, now you can access to all VIP Server COMMANDS!')
+                .setDescription('You have redeemed your VIP Server code, now everyone in the server can access to all VIP Server COMMANDS!')
             );
         } else {
             return message.channel.send(new Discord.MessageEmbed()
@@ -92,20 +112,5 @@ module.exports = {
                 .setDescription('Error: This code is invalid or already expired, please try another.')
             );
         }
-    },
-    config: {
-        name: 'redeem',
-        description: 'Redeem using a super secret code ^_^',
-        permission: 'User',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: [],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: true,
-        usage: 'redeem [Code]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

@@ -1,16 +1,37 @@
 
 const Discord = require('discord.js');
 const User = require('../../handlers/User');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'inventory',
+                description: 'Shows user\'s inventory!',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['inv'],
+                clientPermissions: [],
+                cooldown: 8,
+                nsfwCommand: false,
+                args: false,
+                usage: 'inventory [UserMention] [Page]\ninventory [Page]\binventory page <Page>',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Discord.Client} client Client
-     * @param {Discord.Message} message Message
-     * @param {Array} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, [action, paging]) {
-        const target = message.mentions.members.first() || message.guild.members.cache.get(action) ||  message.author;
+    async run(client, message, args) {
+        const [action, paging] = args;
+        const target = message.mentions.members.first() || message.guild.members.cache.get(action) || message.author;
         const userp = new User(target.id);
         const items = await userp.inventory.fetch();
         if (!items.length) {
@@ -41,20 +62,5 @@ module.exports = {
         });
         embed.setFooter(`Page 1 of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL);
         return message.channel.send(embed);
-    },
-    config: {
-        name: 'inventory',
-        description: 'Shows user\'s inventory!',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['inv'],
-        clientPermissions: [],
-        cooldown: 8,
-        nsfwCommand: false,
-        args: false,
-        usage: 'inventory [UserMention](_Optional_) [Page]\ninventory page [Page]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

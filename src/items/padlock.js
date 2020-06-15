@@ -1,20 +1,29 @@
 
-const Discord = require('discord.js');
+const BaseItem = require('../classes/BaseItem');
 
-module.exports = {
-    run: async function(client, message) {
+module.exports = class extends BaseItem {
+    constructor() {
+        super({
+            config: {
+                id: 'padlock',
+                displayname: '🔒 Padlock',
+                description: 'Increase the protection of your coins by buying this awesome padlock!',
+            },
+            options: {
+                buyable: true,
+                sellable: true,
+                usable: true,
+                price: 3400,
+                cost: Math.floor(3400 * 0.3),
+            }
+        });
+    }
+    /**
+     * @returns {Promise<Boolean|Message>}
+     * @param {Client} client 
+     * @param {Message} message 
+     */
+    async run(client, message) {
 
-    },
-    config: {
-        id: 'padlock',
-        displayname: '🔒 Padlock',
-        description: 'Increase the protection of your coins by buying this awesome padlock!',
-    },
-    options: {
-        buyable: true,
-        sellable: true,
-        usable: true,
-        price: 3400,
-        cost: Math.floor(3400 * 0.3),
     }
 }

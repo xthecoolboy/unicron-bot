@@ -1,17 +1,35 @@
 
 const Discord = require('discord.js');
 const User = require('../../handlers/User');
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'share',
+                description: 'Share coins to a user!',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['transfer', 'give'],
+                cooldown: 180,
+                nsfwCommand: false,
+                args: true,
+                usage: 'share <Amount> <UserMention|UserID|UserTag>',
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const currentAmount = await message.author.db.coins.fetch();
         let transferAmount = args[0]
         const target = message.mentions.users.first() || client.users.cache.get(args[1]) || client.users.cache.find((u) => u.tag === args[1]);
@@ -32,8 +50,8 @@ module.exports = {
                     .setColor('RED')
                     .setTimestamp()
                     .setFooter(message.author.tag, message.author.displayAvatarURL())
-                    .setDescription(`Sorry, that's an invalid amount.`))
-                    ;
+                    .setDescription(`Sorry, that's an invalid amount.`)
+                );
             }
         }
         if (!target) {
@@ -75,20 +93,7 @@ module.exports = {
             .setColor(0x00FF00)
             .setFooter(message.author.tag, message.author.displayAvatarURL())
             .setTimestamp()
-            .setDescription(`Successfully transferred **${transferAmount}**💰 to ${target}.\nYour balance is now **${await message.author.db.coins.fetch()}**💰`)  
+            .setDescription(`Successfully transferred **${transferAmount}**💰 to ${target}.\nYour balance is now **${await message.author.db.coins.fetch()}**💰`)
         );
-    },
-    config: {
-        name: 'share',
-        description: 'Share coins to a user!',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['transfer', 'give'],
-        cooldown: 180,
-        nsfwCommand: false,
-        args: true,
-        usage: 'share [Amount] [UserMention|UserID|UserTag]',
-        donatorOnly: false,
     }
 }

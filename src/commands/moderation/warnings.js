@@ -3,26 +3,38 @@ const Discord = require('discord.js');
 const Member = require('../../handlers/Member');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'warnings',
+                description: 'View warnings of a server member!',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['warns'],
+                clientPermissions: [],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: false,
+                usage: 'warnings <UserMention|UserID> [Page]\nwarnings [Page]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, [user, page, ...values]) {
-        let target;
-        if (message.mentions.users.size) {
-            target = message.mentions.users.first();
-        } else if (user) {
-            target = await client.users.fetch(user);
-        } else {
-            target = message.author;
-        }
-        if (!target || target.bot) {
-            target = message.author;
-        }
+    async run(client, message, args) {
+        const [user, page, ...values] = args;
+        let target = message.mentions.users.first() || await client.users.fetch(user) || message.author;
+        if (!target || target.bot) target = message.author;
         let embed = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setAuthor(`${target.tag} / ${target.id}`, target.displayAvatarURL() || null)
@@ -49,20 +61,5 @@ module.exports = {
         });
         embed.setFooter(`Page 1 of ${num_of_pages}`);
         return message.channel.send(embed);
-    },
-    config: {
-        name: 'warnings',
-        description: 'View warnings of a server member!',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['warns'],
-        clientPermissions: [],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: false,
-        usage: 'warnings [UserMention|UserID] [Page](Optional)\nwarnings [Page]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

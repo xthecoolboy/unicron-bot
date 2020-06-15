@@ -1,27 +1,36 @@
-const { Message } = require('discord.js');
+const { Message, MessageEmbed } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'permissions',
+                description: 'Tells you your permission level for the current message guild location.',
+                permission: 'User',
+            },
+            options: {
+                cooldown: 3,
+                nsfwCommand: false,
+                args: false,
+                usage: '',
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
-        const friendly = client.permission[`${message.author.permLevel}`];
-        return message.reply(`Your permission level is: ${message.author.permLevel} - ${friendly}`);
-    },
-    config: {
-        name: 'permissions',
-        description: 'Tells you your permission level for the current message guild location.',
-        permission: 'User',
-    },
-    options: {
-        cooldown: 3,
-        nsfwCommand: false,
-        args: false,
-        usage: '',
-        donatorOnly: false,
+    async run(client, message, args) {
+        const friendly = client.permission[message.author.permLevel];
+        return message.channel.send(new MessageEmbed()
+            .setColor('RANDOM')
+            .setAuthor(message.author.id, message.author.displayAvatarURL() || null)
+            .setDescription(`Permission Level : ${message.author.permLevel} - ${friendly}`)
+        );
     }
 }

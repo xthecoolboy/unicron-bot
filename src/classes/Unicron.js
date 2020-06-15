@@ -1,32 +1,47 @@
-
-const { Client, Collection, Message } = require('discord.js');
+const fs = require('fs').promises;
+const path = require('path');
+const { inspect, promisify } = require('util');
+const { Client, Collection, Message, MessageEmbe, Emoji } = require('discord.js');
+const Emotes = require('../../assets/Emotes.json');
 const { Poster } = require('dbots');
 const Unicron = require('../handlers/Unicron').Unicron;
+const BaseCommand = require('../classes/BaseCommand');
+const BaseItem = require('../classes/BaseItem');
+const BaseEvent = require('../classes/BaseEvent');
+const options = require('../options');
 
 module.exports = class extends Client {
-    constructor(options) {
+    constructor() {
         super(options.clientOptions);
         this.unicron = new Unicron(options.unicron)
         this.poster = new Poster(options.botlisting);
         this.commands = new Collection();
         this.events = new Collection();
         this.shopitems = new Collection();
-        this.logger = require('../utils/').Logger;
-        this.wait = require('util').promisify(setTimeout)
+        this.utils = require('../utils/');
+        this.logger = this.utils.Logger;
+        this.wait = promisify(setTimeout);
     }
     /**
      * @brief Attach something to the client
      * @param {String} path 
      */
-    async require(path) {
-        await require(path)(this);
+    async register() {
+        await require('../core')(this);
+    }
+    /**
+     * @returns {Promise<Emoji>}
+     * @param {String} name 
+     */
+    async getEmoji(name) {
+        return this.emojis.cache.get(Emotes[name]);
     }
     /**
      * 
      * @param {Message} message 
-     * @param {String} question 
+     * @param {String|MessageEmbed} question 
      * @param {Number} limit millieseconds
-     * @param {Boolean} obj Put `true` to return the message class instead of returning message content
+     * @param {Boolean} obj Put `true` to return the message class instead of returning the message content
      * 
      * @returns {Promise<Boolean|String|Message>}
      */
@@ -47,7 +62,7 @@ module.exports = class extends Client {
      */
     async clean(text) {
         if (text && text.constructor && text.constructor.name == 'Promise') text = await text;
-        if (typeof text !== 'string') text = require('util').inspect(text, { depth: 1 });
+        if (typeof text !== 'string') text = inspect(text, { depth: 1 });
         text = text.replace(/`/g, '`' + String.fromCharCode(8203))
             .replace(/@/g, '@' + String.fromCharCode(8203))
             .replace(this.token, '12u32i1h32 FUCK YOU 12h3i1ih32');
@@ -57,20 +72,33 @@ module.exports = class extends Client {
      * @returns {Boolean|String} if an error occured
      * @param {String} itemName 
      */
-    loadItem(itemName) {
+    registerItem(dir) {
         try {
-            const props = require(`../items/${itemName}`);
-            this.shopitems.set(`${props.config.id}`, props);
+            const Item = require(dir);
+            if (Item.prototype instanceof BaseItem) {
+                const props = new Item();
+                this.shopitems.set(props.config.id, props);
+            }
             return false;
         } catch (e) {
-            return `Unable to load item ${itemName}: ${e}`;
+            return `Unable to load item ${dir}: ${e}`;
+        }
+    }
+    async registerItems(dir) {
+        const filePath = path.join(__dirname, dir);
+        const files = await fs.readdir(filePath);
+        for (const file of files) {
+            if (file.endsWith('.js')) {
+                const response = this.registerItem(path.join(filePath, file));
+                if (response) this.logger.error(response);
+            }
         }
     }
     /**
      * @returns {Boolean|String}
      * @param {String} itemName 
      */
-    unloadItem(itemName) {
+    unregisterItem(itemName) {
         const item = this.shopitems.get(itemName);
         if (!item) return `The item \`${itemName}\` doesn\'t seem to exists. Try again!`;
         this.shopitems.delete(itemName);
@@ -86,24 +114,44 @@ module.exports = class extends Client {
     }
     /**
      * @returns {String|Boolean}
-     * @param {String} commandName 
-     * @param {String} category 
+     * @param {String} dir
      */
-    loadCommand(commandName, category) {
+    registerCommand(dir, category) {
         try {
-            const props = require(`../commands/${category}/${commandName}`);
-            props.config.category = category;
-            this.commands.set(props.config.name, props);
+            const Command = require(dir);
+            if (Command.prototype instanceof BaseCommand) {
+                const props = new Command();
+                props.config.category = category;
+                this.commands.set(props.config.name, props);
+            }
             return false;
         } catch (e) {
-            return `Unable to load command ${commandName}: ${e}`;
+            return `Unable to load command ${dir}: ${e}`;
+        }
+    }
+    /**
+     * 
+     * @param {String} dir 
+     */
+    async registerCommands(dir) {
+        const filePath = path.join(__dirname, dir);
+        const files = await fs.readdir(filePath);
+        for (const file of files) {
+            const filesPath = path.join(filePath, file);
+            const commands = await fs.readdir(filesPath);
+            for (const command of commands) {
+                if (command.endsWith('.js')) {
+                    const response = this.registerCommand(path.join(filesPath, command), file);
+                    if (response) this.logger.error(response);
+                }
+            }
         }
     }
     /**
      * @returns {Boolean|String}
      * @param {String} commandName 
      */
-    unloadCommand(commandName) {
+    unregisterCommand(commandName) {
         const command = this.commands.get(commandName) || this.commands.find(cmd => cmd.options.aliases && cmd.options.aliases.includes(commandName));
         if (!command) return `The command \`${commandName}\` doesn\`t seem to exist, nor is it an alias. Try again!`;
         this.commands.delete(command.config.name);
@@ -125,15 +173,21 @@ module.exports = class extends Client {
         return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
     /**
-     * @returns {Array}
+     * @returns {String}
+     * @param {String} str 
+     */
+    trim(str, max) {
+        return (str.length > max) ? `${str.slice(0, max - 3)}...` : str;
+    }
+    /**
+     * @returns {Array<Array<Any>>}
      * @param {Array} array 
      * @param {Number} chunkSize 
      */
     chunk(array, chunkSize = 0) {
         return array.reduce(function (previous, current) {
             let chunk;
-            if (previous.length === 0 ||
-                previous[previous.length - 1].length === chunkSize) {
+            if (previous.length === 0 || previous[previous.length - 1].length === chunkSize) {
                 chunk = [];
                 previous.push(chunk);
             }
@@ -143,5 +197,18 @@ module.exports = class extends Client {
             chunk.push(current);
             return previous;
         }, []);
+    }
+    async registerEvents(dir) {
+        const filePath = path.join(__dirname, dir);
+        const files = await fs.readdir(filePath);
+        for (const file of files) {
+            if (file.endsWith('.js')) {
+                const Event = require(path.join(filePath, file));
+                if (Event.prototype instanceof BaseEvent) {
+                    const instance = new Event();
+                    this.on(instance.eventName.split('.')[0], instance.run.bind(instance, this));
+                }
+            }
+        }
     }
 }

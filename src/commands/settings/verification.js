@@ -2,15 +2,35 @@
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'verification',
+                description: 'Member Verification module configuration.',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['verifier'],
+                clientPermissions: ['SEND_MESSAGES', 'ADD_REACTIONS', 'MANAGE_CHANNELS', 'MANAGE_MESSAGES', 'MANAGE_ROLES'],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: false,
+                usage: 'verification (Interactive Setup)\nverification [-enable|-disable]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         if (message.flags[0]) {
             switch (message.flags[0]) {
                 case 'enable':
@@ -26,7 +46,7 @@ module.exports = {
                         .setColor('RED')
                         .setTimestamp()
                         .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
-                        .setDescription('Error: Invalid Key provided, Please try again.')
+                        .setDescription('Error: Invalid flag provided, Please try again.')
                     );
                 }
             }
@@ -50,22 +70,31 @@ module.exports = {
         if (!response3) return message.channel.send(`No response... Exiting setup...`);
         if (response3.content === 'cancel') return message.channel.send(`Exiting setup...`);
         if (!['discrim', 'captcha', 'react'].includes(response3.content)) return message.channel.send(`Invalid Type... Exiting setup...Try again...`);
-/** 
-        if (!channel.permissionOverwrites.get(message.guild.id)) {
-            await channel.overwritePermissions(message.guild.id, {
-                SEND_MESSAGES: true,
-                VIEW_CHANNEL: true,
-            });
-        }
-        for (const Schannel of message.guild.channels.cache) {
-            if (!Schannel.permissionOverwrites.get(role.id)) {
-                await Schannel.overwritePermissions(role, {
-                    SEND_MESSAGES: false,
-                    VIEW_CHANNEL: false,
-                });
+
+        try {
+            if (!channel.permissionOverwrites.get(message.guild.id)) {
+                await channel.overwritePermissions(message.guild.id, {
+                    SEND_MESSAGES: true,
+                    VIEW_CHANNEL: true,
+                }).catch(e => { throw e });
             }
+            for (let channels of message.guild.channels.cache.filter((c) => c.type === 'text')) {
+                channels = channels[1];
+                if (!channels.permissionOverwrites.get(message.guild.id)) {
+                    await channels.overwritePermissions(message.guild.id, {
+                        VIEW_CHANNEL: false,
+                    }).catch(e => { throw e });
+                }
+            }
+            if (!channel.permissionOverwrites.get(role.id)) {
+                await channel.overwritePermissions(role, {
+                    VIEW_CHANNEL: false,
+                }).catch(e => { throw e });
+            }
+        } catch (e) {
+
         }
-*/
+
         const model = await message.guild.db.verification(true);
         model.channel = channel.id;
         model.type = response3.content;
@@ -82,20 +111,5 @@ module.exports = {
             m.react(await client.getEmoji('yes'));
         }
         message.channel.send('Setup complete!');
-    },
-    config: {
-        name: 'verification',
-        description: 'Member Verification module configuration.',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['verifier'],
-        clientPermissions: ['SEND_MESSAGES', 'ADD_REACTIONS', 'MANAGE_CHANNELS', 'MANAGE_MESSAGES', 'MANAGE_ROLES'],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: false,
-        usage: 'verification (Interactive Setup)\nverification [-enable|-disable]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

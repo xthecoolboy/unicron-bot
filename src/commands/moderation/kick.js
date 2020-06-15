@@ -2,18 +2,37 @@
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'kick',
+                description: 'Kick a member from the server!',
+                permission: 'Server Moderator',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: ['KICK_MEMBERS'],
+                cooldown: 10,
+                nsfwCommand: false,
+                args: true,
+                usage: 'kick <UserMention|UserID> [...Reason]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, [user, ...reason]) {
-        let target;
-        if (message.mentions.users.size) target = message.mentions.users.first();
-        else if (user) target = await client.users.fetch(user);
+    async run(client, message, args) {
+        const [user, ...reason] = args;
+        let target = message.mentions.users.first() || await client.users.fetch(user);
         if (!target) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
@@ -90,20 +109,5 @@ module.exports = {
         } catch (e) {
 
         }
-    },
-    config: {
-        name: 'kick',
-        description: 'Kick a member from the server!',
-        permission: 'Server Moderator',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: ['KICK_MEMBERS'],
-        cooldown: 10,
-        nsfwCommand: false,
-        args: true,
-        usage: 'kick [UserMention|UserID] [...Reason](Optional)',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
-
+const BaseCommand = require('../../classes/BaseCommand');
 /**
  * 
  * @param {Client} client Client
@@ -46,36 +46,39 @@ const evaluation = function (client, message, args) {
         }
     })
 }
-
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'censor',
+                description: `Adds/remove/fetch a word to the censored word list.
+\`\`\`bash
+$ censor -add this
+$ censor -remove this
+$ censor -fetch this
+\`\`\`
+`,
+                permission: 'Bot Staff',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: [],
+                cooldown: 3,
+                nsfwCommand: false,
+                args: true,
+                usage: 'censor [-add|-remove|-fetch] [word]',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
-        message.channel.send(`\`Output:\`\n\`\`\`xl\n${await evaluation(client, message, args)}\n\`\`\`\n`);
-    },
-    config: {
-        name: 'censor',
-        description: `Adds/remove/fetch a word to the censored word list.
-        \`\`\`bash
-        $ censor -add this
-        $ censor -remove this
-        $ censor -fetch this
-        \`\`\`
-        `,
-        permission: 'Bot Staff',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: [],
-        cooldown: 3,
-        nsfwCommand: false,
-        args: true,
-        usage: 'censor [-add|-remove|-fetch] [word]',
-        donatorOnly: false,
-        premiumServer: false,
+    async run(client, message, args) {
+        return message.channel.send(`\`Output:\`\n\`\`\`xl\n${await evaluation(client, message, args)}\n\`\`\``);
     }
 }

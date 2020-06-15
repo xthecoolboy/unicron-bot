@@ -1,6 +1,9 @@
 
 const Discord = require('discord.js');
 const { Random } = require('../../utils');
+const { Message } = require('discord.js');
+const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
 const salary = {
     mailman: {
@@ -24,24 +27,41 @@ const salary = {
         min: 2700 - 500,
     }
 }
-const { Message }= require('discord.js');
-const Client = require('../../classes/Unicron');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'work',
+                description: 'Earn coins by working!\nJobs:\nmailman, developer, carpenter, mechanic, police',
+                permission: 'User',
+            },
+            options: {
+                aliases: [],
+                clientPermissions: [],
+                cooldown: 60 * 60,
+                nsfwCommand: false,
+                args: true,
+                usage: 'work <Job>\nJobs:\n- mailman\n- developer\n- carpenter\n- mechanic\n- police',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         let embed = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
             .setFooter(message.author.tag, message.author.displayAvatarURL() || null);
         let status = true;
         const job = args[0];
-        if (!job || !['mailman', 'developer', 'carpenter', 'mechanic', 'police'].includes(job)) {
+        if (!job || !['mailman', 'developer', 'carpenter', 'mechanic', 'police'].includes(job.toLowerCase())) {
             message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
@@ -99,20 +119,5 @@ module.exports = {
         }
         message.channel.send(embed);
         return status;
-    },
-    config: {
-        name: 'work',
-        description: 'Earn coins by working!\nJobs:\nmailman, developer, carpenter, mechanic, police',
-        permission: 'User',
-    },
-    options: {
-        aliases: [],
-        clientPermissions: [],
-        cooldown: 60 * 60,
-        nsfwCommand: false,
-        args: true,
-        usage: 'work [Job]\nJobs:\n- mailman\n- developer\n- carpenter\n- mechanic\n- police',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

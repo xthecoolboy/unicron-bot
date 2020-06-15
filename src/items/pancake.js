@@ -1,15 +1,32 @@
 
 const Discord = require('discord.js');
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../classes/Unicron');
+const BaseItem = require('../classes/BaseItem');
 
-module.exports = {
+module.exports = class extends BaseItem {
+    constructor() {
+        super({
+            config: {
+                id: 'pancake',
+                displayname: '🥞 Pancakes',
+                description: 'It\'s a cake made from a frying pan!',
+            },
+            options: {
+                buyable: true,
+                sellable: false,
+                usable: true,
+                price: 350,
+                cost: Math.floor(350 * 0.3),
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
+     * @returns {Promise<Boolean|Message>}
+     * @param {Client} client 
+     * @param {Message} message 
      */
-    run: async function (client, message, user) {
+    async run(client, message) {
         await message.author.db.levelup(client, message, 20);
         await message.author.db.inventory.remove(this.config.id);
         return message.channel.send(new Discord.MessageEmbed()
@@ -18,17 +35,5 @@ module.exports = {
             .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
             .setDescription('Ay yes... PANCAKES')
         );
-    },
-    config: {
-        id: 'pancake',
-        displayname: '🥞 Pancakes',
-        description: 'It\'s a cake made from a frying pan!',
-    },
-    options: {
-        buyable: true,
-        sellable: false,
-        usable: true,
-        price: 350,
-        cost: Math.floor(350 * 0.3),
     }
 }

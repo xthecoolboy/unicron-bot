@@ -1,17 +1,34 @@
 
+const BaseCommand = require('../../classes/BaseCommand');
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'terms',
+                description: 'Read Unicron\'s Terms of Service.',
+                permission: 'User',
+            },
+            options: {
+                cooldown: 3,
+                nsfwCommand: false,
+                args: false,
+                usage: 'terms',
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args, guild, user) {
-        message.channel.send(new Discord.MessageEmbed()
+    async run(client, message, args) {
+        return message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FFFF)
             .setTitle(`Unicron Bot - Terms of Service`)
             .setDescription('\nUnicron has access to the End User Data through the Discord API, but Unicron does not collect, use and/or disclose End User Data except (a) as necessary to exercise your rights under this Agreement, (b) in accordance with Discord’s Privacy Policy.' +
@@ -21,17 +38,5 @@ module.exports = {
                 '\n\nBy using Unicron you expressly agree to this Agreement. And by using Discord you expressly agree to Discord’s [Terms of Service](https://discordapp.com/terms), [Guidelines](https://discordapp.com/guidelines) and [Privacy Policy](https://discordapp.com/privacy).' +
                 '\n\n\n*“End User Data” means all data associated with the content within the functionality enabled by the Discord API, including but not limited to message content, message metadata, voice data and voice metadata.*')
         );
-    },
-    config: {
-        name: 'terms',
-        description: 'Read Unicron\'s Terms of Service.',
-        permission: 'User',
-    },
-    options: {
-        cooldown: 3,
-        nsfwCommand: false,
-        args: false,
-        usage: 'terms',
-        donatorOnly: false,
     }
 }

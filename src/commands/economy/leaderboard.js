@@ -1,17 +1,35 @@
 
 const Discord = require('discord.js');
 const { UserProfile } = require('../../database/database');
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'leaderboard',
+                description: `Shows leaderboard`,
+                permission: 'User',
+            },
+            options: {
+                aliases: ['top'],
+                cooldown: 3,
+                nsfwCommand: false,
+                args: false,
+                usage: `leaderboard [Flags: -exp] [Page]`,
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const Cache = await UserProfile.findAll();
         const UserCache = Cache.filter((item) => {
             return message.guild.members.cache.has(item.user_id);
@@ -36,7 +54,7 @@ module.exports = {
             }).join('\n');
             embed.addField(`__**${name}**__`, text || '\u200b', true);
             embed.addField(`__**${tabl}**__`, cornip || '\u200b', true);
-            embed.setFooter(`Page ${PAGE} of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL());
+            embed.setFooter(`Page ${PAGE} of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL() || null);
             return message.channel.send(embed);
         }
         const text = Chunks[PAGE - 1].map((item, pos) => {
@@ -47,20 +65,7 @@ module.exports = {
         }).join('\n');
         embed.addField(`__**${name}**__`, text || '\u200b', true);
         embed.addField(`__**${tabl}**__`, cornip || '\u200b', true);
-        embed.setFooter(`Page ${PAGE} of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL());
+        embed.setFooter(`Page ${PAGE} of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL() || null);
         return message.channel.send(embed);
-    },
-    config: {
-        name: 'leaderboard',
-        description: `Shows leaderboard`,
-        permission: 'User',
-    },
-    options: {
-        aliases: ['top'],
-        cooldown: 3,
-        nsfwCommand: false,
-        args: false,
-        usage: `leaderboard [Flags: -exp] [Page]`,
-        donatorOnly: false,
     }
 }

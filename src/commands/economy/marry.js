@@ -1,17 +1,36 @@
 
 const Discord = require('discord.js');
 const User = require('../../handlers/User');
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'marry',
+                description: 'Marry someone using this command. O.o <3',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['merry'],
+                cooldown: 1200,
+                nsfwCommand: false,
+                args: true,
+                usage: 'marry <UserMention>',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message) {
+    async run(client, message, args) {
         const target = message.mentions.users.first();
         if (!target) {
             return message.channel.send(new Discord.MessageEmbed()
@@ -40,7 +59,7 @@ module.exports = {
         const ttarget = new User(target.id);
         const tID = await ttarget.profile('married_id');
         const mID = await message.author.db.profile('married_id');
-        if ( tID === message.author.id) {
+        if (tID === message.author.id) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor(0x00FF00)
                 .setTimestamp()
@@ -74,26 +93,12 @@ module.exports = {
                 const m2 = await ttarget.profile(true);
                 m1.married_id = target.id;
                 m2.married_id = message.author.id;
-                m1.save();
-                m2.save();
+                await m1.save();
+                await m2.save();
                 return message.channel.send(`🎉 ${message.author} and ${target} has been married yay!. 🎉`);
             }).catch((e) => {
                 console.log(e);
                 message.channel.send('Looks like nobody is getting married this time.');
             });
-    },
-    config: {
-        name: 'marry',
-        description: 'Marry someone using this command. O.o <3',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['merry'],
-        cooldown: 1200,
-        nsfwCommand: false,
-        args: true,
-        usage: 'marry [UserMention]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

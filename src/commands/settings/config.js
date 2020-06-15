@@ -2,15 +2,35 @@ const Discord = require('discord.js');
 const ms = require('ms');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'config',
+                description: 'Configure Unicron\'s settings for this server.',
+                permission: 'Server Administrator',
+            },
+            options: {
+                aliases: ['conf'],
+                clientPermissions: ['BAN_MEMBERS', 'MANAGE_ROLES', 'MANAGE_MESSAGES', 'MANAGE_CHANNELS', 'KICK_MEMBERS'],
+                cooldown: 3,
+                nsfwCommand: false,
+                args: true,
+                usage: 'config view\nconfig view [page]\nconfig set [key] [value]\nconfig reset\nconfig reset [key]',
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, [action, key, ...value]) {
+    async run(client, message, args) {
+        const [action, key, ...value] = args;
         const db = message.guild.db;
         if (action === 'view') {
             let embed = new Discord.MessageEmbed()
@@ -809,19 +829,5 @@ module.exports = {
                 }
             }
         }
-    },
-    config: {
-        name: 'config',
-        description: 'Configure Unicron\'s settings for this server.',
-        permission: 'Server Administrator',
-    },
-    options: {
-        aliases: ['conf'],
-        clientPermissions: ['BAN_MEMBERS', 'MANAGE_ROLES', 'MANAGE_MESSAGES', 'MANAGE_CHANNELS', 'KICK_MEMBERS'],
-        cooldown: 3,
-        nsfwCommand: false,
-        args: true,
-        usage: 'config view\nconfig view [page]\nconfig set [key] [value]\nconfig reset\nconfig reset [key]',
-        donatorOnly: false,
     }
 }

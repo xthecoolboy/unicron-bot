@@ -2,8 +2,9 @@
 const Discord = require('discord.js');
 const User = require('../../handlers/User');
 const { Random } = require('../../utils');
-const { Message }= require('discord.js');
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
 const Offense = {
     car: 25,
@@ -48,15 +49,33 @@ const getDefense = function (user) {
     });
 };
 
-
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'steal',
+                description: 'Steal coins from an another user!',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['rob'],
+                clientPermissions: [],
+                cooldown: 180,
+                nsfwCommand: false,
+                args: true,
+                usage: 'steal <UserMention|UserID|UserTag>',
+                donatorOnly: false,
+                premiumServer: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const utarget = message.mentions.users.first() || await client.users.fetch(args[0]) || client.users.cache.find((u) => u.tag === args[0]);
         if (!utarget || utarget.bot) {
             return message.channel.send(new Discord.MessageEmbed()
@@ -149,26 +168,11 @@ module.exports = {
         }
         await target.coins.add(750);
         await message.author.db.coins.remove(750);
-        message.channel.send(new Discord.MessageEmbed()
+        return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
             .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
             .setDescription(`You got caught, and paid **750** to the victim, OHHH`)
         );
-    },
-    config: {
-        name: 'steal',
-        description: 'Steal coins from an another user!',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['rob'],
-        clientPermissions: [],
-        cooldown: 180,
-        nsfwCommand: false,
-        args: true,
-        usage: 'steal [UserMention|UserID|UserTag]',
-        donatorOnly: false,
-        premiumServer: false,
     }
 }

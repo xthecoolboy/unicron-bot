@@ -5,15 +5,32 @@ const { version } = require('../../../package.json');
 const { version: discordjsVersion } = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
+const BaseCommand = require('../../classes/BaseCommand');
 
-module.exports = {
+module.exports = class extends BaseCommand {
+    constructor() {
+        super({
+            config: {
+                name: 'botinfo',
+                description: 'Check\'s bot\'s status',
+                permission: 'User',
+            },
+            options: {
+                aliases: ['uptime', 'botstats', 'stats'],
+                cooldown: 3,
+                args: false,
+                usage: '',
+                donatorOnly: false,
+            }
+        });
+    }
     /**
-     * 
-     * @param {Client} client Client
-     * @param {Message} message Message
-     * @param {Array<String>} args Arguments
+     * @returns {Promise<Message|Boolean>}
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array<String>} args 
      */
-    run: async function (client, message, args) {
+    async run(client, message, args) {
         const OWNER = await client.users.fetch(client.unicron.owner);
         message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
@@ -32,18 +49,6 @@ module.exports = {
             .addField('Node', `${process.version} on ${process.platform} ${process.arch}`, true)
             .addField('Discord.js', `${discordjsVersion}`, true)
             .setTimestamp()
-            );
-    },
-    config: {
-        name: 'botinfo',
-        description: 'Check\'s bot\'s status',
-        permission: 'User',
-    },
-    options: {
-        aliases: ['uptime', 'botstats', 'stats'],
-        cooldown: 3,
-        args: false,
-        usage: '',
-        donatorOnly: false,
+        );
     }
 }
