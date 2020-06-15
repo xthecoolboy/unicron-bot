@@ -18,7 +18,7 @@ module.exports = async (client) => {
             client.logger.info(`GET - ${Math.floor(Math.random() * 100)} received.`)
             response.sendStatus(200);
         });
-        app.listen(4200);
+        app.listen(process.env.PORT || 4200);
         client.setInterval(() => {
             http.get(process.env.BOT_HOST_URL);
         }, 280000);
