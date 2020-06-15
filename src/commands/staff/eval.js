@@ -78,7 +78,7 @@ module.exports = class extends BaseCommand {
         try {
             const code = content.replace(/```js/, '').replace(/```/, '');
             const output = safeEval(code, client);
-            const clean = await client.clean(client, output);
+            const clean = await client.clean(output);
             message.channel.send(new MessageEmbed()
                 .setColor('GREEN')
                 .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
@@ -86,7 +86,7 @@ module.exports = class extends BaseCommand {
                 .addField('Output', `\`\`\`xl\n${client.trim(clean, 1000)}\n\`\`\``)
             );
         } catch (err) {
-            const clean = await client.clean(client, err);
+            const clean = await client.clean(err);
             message.channel.send(new MessageEmbed()
                 .setColor('RED')
                 .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)

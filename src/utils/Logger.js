@@ -24,7 +24,7 @@ module.exports = {
 			if (settings['tracing']) {
 				console.log(chalk.black.bgYellow('[WARNING_TRACE]'));
 				console.trace(content);
-				console.log(chalk.black.bgYellow('[/WARNING_TRACE'));
+				console.log(chalk.black.bgYellow('[/WARNING_TRACE]'));
 			}
 		}
 	},
