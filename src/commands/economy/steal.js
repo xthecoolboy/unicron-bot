@@ -76,7 +76,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const utarget = message.mentions.users.first() || await client.users.fetch(args[0]) || client.users.cache.find((u) => u.tag === args[0]);
+        const utarget = message.mentions.users.first() || client.users.cache.get(args[0]) || client.users.cache.find((u) => u.tag === args[0]);
         if (!utarget || utarget.bot) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
