@@ -27,7 +27,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        let target = message.mentions.users.first() || await client.users.fetch(args[0]) || message.author;
+        let target = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
         if (!target) target = message.author;
         let embed = new Discord.MessageEmbed()
             .setColor('RANDOM')

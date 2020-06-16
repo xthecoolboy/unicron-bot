@@ -32,7 +32,7 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         const [user,] = args;
-        let target = message.mentions.users.first() || await client.users.fetch(user) || message.author;
+        let target = message.mentions.users.first() || client.users.cache.get(user) || message.author;
         if (!target || target.bot) target = message.author;
         const member = new Member(target.id, message.guild.id);
         const warns = await member.warnings.fetchAll();

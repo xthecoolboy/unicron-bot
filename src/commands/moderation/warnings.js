@@ -33,7 +33,7 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         const [user, page, ...values] = args;
-        let target = message.mentions.users.first() || await client.users.fetch(user) || message.author;
+        let target = message.mentions.users.first() || client.users.cache.get(user) || message.author;
         if (!target || target.bot) target = message.author;
         let embed = new Discord.MessageEmbed()
             .setColor('RANDOM')

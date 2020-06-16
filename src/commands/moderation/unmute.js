@@ -32,7 +32,7 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         const [user, ...reason] = args;
-        const target = message.mentions.users.first() || await client.users.fetch(user);
+        const target = message.mentions.users.first() || client.users.cache.get(user);
         if (!target) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
