@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const { inspect, promisify } = require('util');
-const { Client, Collection, Message, MessageEmbe, Emoji } = require('discord.js');
+const { Client, Collection, Message, MessageEmbed, Emoji } = require('discord.js');
 const Emotes = require('../../assets/Emotes.json');
 const { Poster } = require('dbots');
 const Unicron = require('../handlers/Unicron').Unicron;
