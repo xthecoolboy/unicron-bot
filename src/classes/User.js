@@ -36,21 +36,12 @@ module.exports = class User extends Base {
     profile(value) {
         return new Promise(async (resolve, reject) => {
             try {
+                let user = await UserProfile.findOne({ where: { user_id: this.id}});
+                if (!user) user = await UserProfile.create({ user_id: this.id });
                 if (typeof value === 'boolean') return resolve(this.data);
                 return resolve(this.data[value]);
             } catch (e) {
                 reject(e);
-            }
-        });
-    }
-    save(data) {
-        return new Promise(async (resolve, reject)=> {
-            try {
-                const bb = await data.save();
-                this.data = bb;
-                resolve(true);
-            } catch (error) {
-                
             }
         });
     }
