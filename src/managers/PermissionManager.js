@@ -1,4 +1,8 @@
 
+const BaseManager = require('../classes/BaseManager');
+const UnicronClient = require('../classes/Unicron');
+const { Message } = require('discord.js');
+
 const Levels = [
     {
         name: 'User',
@@ -39,25 +43,33 @@ const Levels = [
             return client.unicron.owner === message.author.id;
         }
     },
-];
-const Client = require('../classes/Unicron');
+]
 
-/**
- * @param {Client} client
- */
-module.exports = async (client) => {
-    client.logger.info('Loading Permission System....');
-    client.permission = {};
-    Levels.forEach((l) => {
-        client.permission[l.level] = l.name;
-    });
-    client.permission.cache = Levels;
-    client.permission.level = async function (client, message) {
-        let num = 0;
-        for await (const level of Levels) {
-            num = await level.check(client, message) ? level.level : num;
+module.exports = class PermissionManager extends BaseManager {
+    /**
+     * 
+     * @param {UnicronClient} client 
+     * @param {Array<Object>} options 
+     */
+    constructor(client, options = {}) {
+        super(client, options);
+        this.levels = [];
+        for (const l of Levels) {
+            this.cache.set(l.name, l);
+            this.levels[l.level] = l.name;
         }
-        return num;
-    };
-    client.logger.info('Permission System loaded');
+    }
+    /**
+     * @returns {Promise<Number>}
+     * @param {Message} message 
+     */
+    level(message) {
+        return new Promise(async (resolve, reject) => {
+            let num = 0;
+            for await (const level of Levels) {
+                num = await level.check(this.options.client, message) ? level.level : num;
+            }
+            return resolve(num);
+        });
+    }
 }

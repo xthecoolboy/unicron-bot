@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const Guild = require('../handlers/Guild');
 const Client = require('../classes/Unicron');
 const BaseEvent = require('../classes/BaseEvent');
 
@@ -14,14 +13,14 @@ module.exports = class extends BaseEvent {
     async run(client, guild) {
         const channel = await client.channels.fetch(client.unicron.channel);
         try {
-            const gg = new Guild(guild.id);
-            gg.destroy();
+            const g = await client.database.guilds.fetch(guild.id);
+            await g.destroy(true, true);
         } catch (err) {
             console.log(err);
         }
         client.user.setPresence({
             activity: {
-                name: `${client.guilds.cache.size} guilds!`,
+                name: `${client.guilds.cache.size} guilds! | ?help`,
                 type: 'LISTENING',
             },
             status: 'online',

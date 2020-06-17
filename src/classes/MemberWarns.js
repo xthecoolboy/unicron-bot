@@ -1,11 +1,10 @@
 
-const Base = require('../../classes/Base');
-const { GuildMember } = require('../../database/database');
+const { GuildMember } = require('../database/database');
 
-class Warnings extends Base {
-    constructor(id, guild_id) {
-        super(id);
-        this.guild_id = guild_id;
+module.exports = class MemberWarns {
+    constructor(Member) {
+        this.id = Member.id;
+        this.guild_id = Member.guild_id;
     }
     /**
      * ```js
@@ -22,6 +21,7 @@ class Warnings extends Base {
      * }
      * ```
      * @param {JSON} value Value
+     * @returns {Promise<Number>} case number
      */
     add(value) {
         return new Promise(async (resolve, reject) => {
@@ -40,6 +40,7 @@ class Warnings extends Base {
     /**
      * 
      * @param {Number} case_number Case Number
+     * @returns {Promise<Boolean>}
      */
     remove(case_number) {
         return new Promise(async (resolve, reject) => {
@@ -56,19 +57,20 @@ class Warnings extends Base {
     /**
      * 
      * @param {Number} case_number Case Number
+     * @returns {Promise<JSON|Boolean>}
      */
     fetch(case_number) {
         return new Promise(async (resolve, reject) => {
             let loser = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
             if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
-            if (!loser.data) return resolve(false);
-            if (!loser.data['warnings']) return resolve(false);
+            if (!loser.data || !loser.data['warnings']) return resolve(false);
             const ret = loser.data['warnings'].filter((item) => { return item.case === case_number });
             return resolve(ret ? ret : false);
         });
     }
     /**
      * Fetches all Member's Warns
+     * @returns {Promise<Array<JSON>>}
      */
     fetchAll() {
         return new Promise(async (resolve, reject) => {
@@ -87,10 +89,8 @@ class Warnings extends Base {
             if (!loser) loser = await GuildMember.create({ guild_id: this.guild_id, member_id: this.id });
             if (!loser.data) loser.data = {};
             loser.data['warnings'] = [];
-            return resolve(GuildMember.update({ data: loser.data }, { where: { guild_id: this.guild_id, member_id: this.id } }));
+            return resolve(await GuildMember.update({ data: loser.data }, { where: { guild_id: this.guild_id, member_id: this.id } }));
         });
 
     }
 }
-
-module.exports = Warnings;

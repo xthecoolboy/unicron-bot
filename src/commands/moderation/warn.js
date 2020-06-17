@@ -1,7 +1,7 @@
 
 const Discord = require('discord.js');
 const ms = require('ms');
-const Member = require('../../handlers/Member');
+const Member = require('../../classes/GuildMember');
 const Warning = require('../../modules/Warning');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');

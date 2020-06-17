@@ -1,26 +1,27 @@
-
 const { VoiceState } = require('discord.js');
-
-const Guild = require('../handlers/Guild');
 const Client = require('../classes/Unicron');
 const BaseEvent = require('../classes/BaseEvent');
+const Blacklist = require('../modules/Blacklist');
 
 module.exports = class extends BaseEvent {
     constructor() {
         super('voiceStateUpdate');
     }
     /**
-     * @param {Client} Client
+     * @param {Client} client
      * @param {VoiceState} oldState
      * @param {VoiceState} newState
      */
     async run(client, oldState, newState) {
-        const db = new Guild(oldState.guild.id);
+        if (await Blacklist(client, newState.member.user.id, newState.guild.id)) return;
+        const db = await client.database.guilds.fetch(oldState.guild.id);
         const enabled = await db.dynamicVoice('enabled');
         const waitingRoom = await db.dynamicVoice('waitingRoom');
         const category = await db.dynamicVoice('category');
-        if (!enabled ||
-            !oldState.guild.me.permissions.has(['MOVE_MEMBERS', 'MANAGE_CHANNELS'])
+        if (!enabled 
+            || oldState.member.user.bot
+            || newState.member.user.bot
+            || !oldState.guild.me.permissions.has(['MOVE_MEMBERS', 'MANAGE_CHANNELS', 'MANAGE_ROLES'])
             || !category
             || !waitingRoom
         ) return;
@@ -28,15 +29,14 @@ module.exports = class extends BaseEvent {
         if (!!newState.channel) {
             const dvlimit = newState.channel.parentID === category ? 11 : 10;
             if (newState.channel.id === waitingRoom && newState.channel.parent.children.size <= dvlimit) {
-                newState.guild.channels.create(`${newState.member.displayName}'s voice channel`,
+                newState.guild.channels.create(`${newState.member.displayName}'s vc`,
                     {
                         type: 'voice',
                         parent: category,
-                        userLimit: 8,
                         permissionOverwrites: [
                             {
                                 id: newState.member.id,
-                                allow: ['MANAGE_CHANNELS']
+                                allow: ['MANAGE_CHANNELS', 'MOVE_MEMBERS', 'USE_VAD']
                             }
                         ]
                     }).then(channel => {

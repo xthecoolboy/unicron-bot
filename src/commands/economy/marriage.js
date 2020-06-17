@@ -1,6 +1,5 @@
 
 const Discord = require('discord.js');
-const User = require('../../handlers/User');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
@@ -32,7 +31,7 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         const target = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
-        const t = new User(target.id);
+        const t = await client.database.users.fetch(target.id);
         if (! await t.profile('married_id')) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')

@@ -15,6 +15,8 @@ const {
 } = require('../database/database.js');
 
 const BaseEvent = require('../classes/BaseEvent');
+const Guilds = require('../classes/Guild');
+const Blacklist = require('../modules/Blacklist');
 
 module.exports = class extends BaseEvent {
     constructor() {
@@ -22,9 +24,13 @@ module.exports = class extends BaseEvent {
     }
     /**
      * @param {Client} client
-     * @param {Guild} guild
+     * @param {Guilds} guild
      */
     async run(client, guild) {
+        if (await Blacklist(client, null, guild.id)) {
+            await guild.leave();
+            return;
+        }
         const channel = await client.channels.fetch(client.unicron.channel);
         channel.send(new MessageEmbed()
             .setTitle(`${guild.name} has invited Unicron`)
@@ -43,14 +49,15 @@ module.exports = class extends BaseEvent {
             .setTimestamp()
         );
         try {
-            GuildSettings.create({ guild_id: guild.id });
-            GuildDynamicVoice.create({ guild_id: guild.id });
-            GuildFilter.create({ guild_id: guild.id });
-            GuildLeave.create({ guild_id: guild.id });
-            GuildWelcome.create({ guild_id: guild.id });
-            GuildModeration.create({ guild_id: guild.id });
-            GuildTicket.create({ guild_id: guild.id });
-            GuildVerification.create({ guild_id: guild.id });
+            const data = await GuildSettings.create({ guild_id: guild.id });
+            await GuildDynamicVoice.create({ guild_id: guild.id });
+            await GuildFilter.create({ guild_id: guild.id });
+            await GuildLeave.create({ guild_id: guild.id });
+            await GuildWelcome.create({ guild_id: guild.id });
+            await GuildModeration.create({ guild_id: guild.id });
+            await GuildTicket.create({ guild_id: guild.id });
+            await GuildVerification.create({ guild_id: guild.id });
+            client.database.guilds.cache.set(guild.id, new Guild(client, data))
         } catch (e) {
             console.log(e);
         }

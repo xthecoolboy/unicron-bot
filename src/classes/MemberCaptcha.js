@@ -1,13 +1,15 @@
-const Base = require('../../classes/Base');
-const { GuildMember } = require('../../database/database');
+const { GuildMember } = require('../database/database');
 
-const { Random } = require('../../utils');
+const { Random } = require('../utils');
 
-class Captcha extends Base {
-    constructor(id, guild_id) {
-        super(id);
-        this.guild_id = guild_id;
+module.exports =  class MemberCaptcha {
+    constructor(Member) {
+        this.id = Member.id;
+        this.guild_id = Member.guild_id;
     }
+    /**
+     * @returns {}
+     */
     generate() {
         return new Promise(async (resolve, reject) => {
             let user = await GuildMember.findOne({ where: { guild_id: this.guild_id, member_id: this.id } });
@@ -47,8 +49,5 @@ class Captcha extends Base {
             user.data['captcha'] = '';
             return resolve(await GuildWarns.update({ data: user.data }, { where: { guild_id: this.guild_id, member_id: this.id } }));
         });
-
     }
 }
-
-module.exports = Captcha;

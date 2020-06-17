@@ -1,7 +1,5 @@
 
 const Discord = require('discord.js');
-
-const User = require('../../handlers/User');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
@@ -32,7 +30,8 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        if (!await message.author.db.profile('married_id')) {
+        const id = await message.author.db.profile('married_id');
+        if (!id) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
@@ -40,7 +39,7 @@ module.exports = class extends BaseCommand {
                 .setDescription(`You can't file a divorce when you are not married to someone ;p`)
             );
         }
-        const waifu = new User(await message.author.db.profile('married_id'));
+        const waifu = await client.database.users.fetch(id);
         const m1 = await waifu.profile(true);
         const m2 = await message.author.db.profile(true);
         m1['married_id'] = '';

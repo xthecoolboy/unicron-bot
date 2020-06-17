@@ -1,6 +1,5 @@
 
 const Discord = require('discord.js');
-const User = require('../../handlers/User');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
@@ -14,7 +13,7 @@ module.exports = class extends BaseCommand {
                 permission: 'User',
             },
             options: {
-                aliases: ['stats'],
+                aliases: [],
                 cooldown: 5,
                 nsfwCommand: false,
                 args: false,
@@ -37,8 +36,8 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription('Error: Cannot show profile of a bot user.'));
         }
-        const profile = new User(target.id);
-        const badges = client.chunk(await profile.badges.fetch(), 7);
+        const profile = await client.database.users.fetch(target.id);
+        const badges = client.chunk(await profile.badges.fetch(), 8);
         const balance = await profile.coins.fetch();
         const inventory = await profile.inventory.fetch();
         const level = await profile.experience.getLevel();
@@ -57,7 +56,7 @@ module.exports = class extends BaseCommand {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
-            .setAuthor(target.tag, target.displayAvatarURL() || client.user.displayAvatarURL())
+            .setAuthor(target.tag, target.displayAvatarURL() || null)
             .addField('**Progress**', `**${level}** [${progress}](${client.unicron.serverInviteURL}) **${level + 1}**\n**${req}** - remaining`, true)
             .addField('**Badges**', badgeText, true)
             .addField('\u200b', '\u200b', true)

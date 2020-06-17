@@ -16,7 +16,7 @@ const ms = require('ms');
 module.exports = (client, message, member) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const g = message.guild.db;
+            const g = await client.database.guilds.fetch(message.guild.id);
             const strat = await g.moderation('autoModeration');
             const act = await g.moderation('autoModAction');
             const action = act.toLowerCase();
@@ -96,7 +96,7 @@ module.exports = (client, message, member) => {
                     .setAuthor(`${client.user.tag} / ${client.user.id}`, client.user.displayAvatarURL())
                     .setTimestamp()
                     .setThumbnail(message.author.displayAvatarURL() || null)
-                    .setDescription(`**Member** : ${message.author.tag} / ${message.author.id}\n**Action** : ${action}\n${duration ? `**Length** : ${ms(duration)}` : ''}\n**Reason** : ${reason}`)
+                    .setDescription(`**Member** : ${message.author.tag} / ${message.author.id}\n**Action** : ${action}\n**Reason** : ${reason}\n${duration ? `**Length** : ${ms(duration)}` : ''}`)
                 );
             }
             try {

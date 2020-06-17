@@ -1,16 +1,25 @@
+const Emotes = require('../../assets/Emotes.json');
+
 const fs = require('fs').promises;
 const path = require('path');
 const { inspect, promisify } = require('util');
+
 const { Client, Collection, Message, MessageEmbed, Emoji } = require('discord.js');
-const Emotes = require('../../assets/Emotes.json');
+
 const { Poster } = require('dbots');
-const Unicron = require('../handlers/Unicron').Unicron;
-const BaseCommand = require('../classes/BaseCommand');
-const BaseItem = require('../classes/BaseItem');
-const BaseEvent = require('../classes/BaseEvent');
+const Unicron = require('../handlers/Unicron');
+
+const BaseCommand = require('./BaseCommand');
+const BaseItem = require('./BaseItem');
+const BaseEvent = require('./BaseEvent');
+
+const UserManager = require('../managers/UserManager');
+const GuildManager = require('../managers/GuildManager');
+const PermissionManager = require('../managers/PermissionManager');
+
 const options = require('../options');
 
-module.exports = class extends Client {
+module.exports = class UnicronClient extends Client {
     constructor() {
         super(options.clientOptions);
         this.unicron = new Unicron(options.unicron)
@@ -21,6 +30,13 @@ module.exports = class extends Client {
         this.utils = require('../utils/');
         this.logger = this.utils.Logger;
         this.wait = promisify(setTimeout);
+        this.database = {
+            users: new UserManager(this, options.managers.users),
+            guilds: new GuildManager(this, options.managers.guilds),
+        }
+        this.permission = new PermissionManager(this, {
+            client: this,
+        });
     }
     /**
      * @brief Attach something to the client
@@ -28,6 +44,7 @@ module.exports = class extends Client {
      */
     async register() {
         await require('../core')(this);
+        await require('../listeners')(this);
     }
     /**
      * @returns {Promise<Emoji>}
@@ -57,7 +74,7 @@ module.exports = class extends Client {
         }
     }
     /**
-     * @returns {String}
+     * @returns {Promise<String>|String}
      * @param {Promise<String>} text 
      */
     async clean(text) {

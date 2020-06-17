@@ -23,6 +23,5 @@ module.exports = async (client) => {
             http.get(process.env.BOT_HOST_URL);
         }, 280000);
     }
-    await require('./modules/')(client);
     await require('./database/database.js').SyncDatabase();
 }

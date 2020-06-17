@@ -1,7 +1,7 @@
 
 const Discord = require('discord.js');
-const User = require('../../handlers/User');
 const BaseCommand = require('../../classes/BaseCommand');
+const Client = require('../../classes/Unicron');
 
 module.exports = class extends BaseCommand {
     constructor() {
@@ -32,7 +32,7 @@ module.exports = class extends BaseCommand {
     async run(client, message, args) {
         const [action, paging] = args;
         const target = message.mentions.members.first() || message.guild.members.cache.get(action) || message.author;
-        const userp = new User(target.id);
+        const userp = await client.database.users.fetch(target.id);
         const items = await userp.inventory.fetch();
         if (!items.length) {
             message.channel.send(new Discord.MessageEmbed()

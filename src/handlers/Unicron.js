@@ -2,11 +2,7 @@
 const { Admin } = require('../database/database.js');
 const { Random } = require('../utils/');
 
-const token = function () {
-    return Random.string(16);
-}
-
-class Unicron {
+module.exports = class Unicron {
     /**
      * 
      * @param {Object} options Options
@@ -21,15 +17,10 @@ class Unicron {
     }
     database(table, model) {
         return new Promise(async (resolve, reject) => {
-            const [data,] = await Admin.findOrCreate({ where: { table: table } });
+            let data = await Admin.findOne({ where: { table: table }});
+            if (!data) data = await Admin.create({ table });
             if (typeof model === 'boolean') return resolve(data);
             return resolve(data.data);
         });
-
     }
-};
-
-module.exports = {
-    Unicron,
-    token,
 };

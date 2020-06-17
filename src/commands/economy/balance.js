@@ -1,7 +1,6 @@
 
 const Discord = require('discord.js');
 
-const User = require('../../handlers/User');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
@@ -38,7 +37,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription('Error: Cannot show balance of a bot user.'));
         }
-        const user = new User(target.id);
+        const user = await client.database.users.fetch(target.id);
         const coins = await user.coins.fetch();
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')

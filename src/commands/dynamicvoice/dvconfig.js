@@ -36,6 +36,10 @@ module.exports = class extends BaseCommand {
         const db = message.guild.db;
         switch (action) {
             case 'view': {
+                const cid = await db.dynamicVoice('category');
+                const wid = await db.dynamicVoice('waitingRoom');
+                const category = cid ? `${message.guild.channels.cache.get(cid).name}` : `\`none\``;
+                const waitingRoom = wid ? `${message.guild.channels.cache.get(wid).name}` : `\`none\``;
                 const embed = new Discord.MessageEmbed()
                     .setColor('RANDOM')
                     .setDescription('You can also do \`dvsetup\` to setup Dynamic Voice interactively')
@@ -44,8 +48,8 @@ module.exports = class extends BaseCommand {
                     \`waitingRoom\`
                     `, true)
                     .addField('Value', `
-                    ${await db.dynamicVoice('category') ? `${message.guild.channels.cache.get(await db.dynamicVoice('category')).name}` : `\`none\``}
-                    ${await db.dynamicVoice('waitingRoom') ? `${message.guild.channels.cache.get(await db.dynamicVoice('waitingRoom')).name}` : `\`none\``}
+                    ${category}
+                    ${waitingRoom}
                     `, true);
                 message.channel.send(embed);
                 break;

@@ -1,3 +1,4 @@
+const Base = require('./Base');
 
 const {
     GuildSettings,
@@ -12,15 +13,15 @@ const {
     GuildMember,
 } = require('../database/database.js');
 
-const Base = require('../classes/Base');
-
-class Guild extends Base {
+module.exports = class Guild extends Base {
     /**
      * 
-     * @param {String} _id 
+     * @param {String} id 
+     * @param {Object} data 
      */
-    constructor(id) {
+    constructor(id, data) {
         super(id);
+        this.data = data;
     }
     /**
      * 
@@ -44,12 +45,13 @@ class Guild extends Base {
      * * premium
      * * data
      * @param {String|Boolean} value Search value
+     * @returns {Promise<String>|Promise<Object>}
      */
     settings(value) {
         return new Promise(async (resolve, reject) => {
             let retval = await GuildSettings.findOne({ where: { guild_id: this.id } });
             if (!retval) retval = await GuildSettings.create({ guild_id: this.id });
-            if (typeof value === "boolean") {
+            if (typeof value === 'boolean') {
                 return resolve(retval);
             }
             return resolve(retval[value]);
@@ -62,12 +64,13 @@ class Guild extends Base {
      * * data
      * * enabled
      * @param {String|Boolean} value Search value
+     * @returns {Promise<String>|Promise<Object>}
      */
     dynamicVoice(value) {
         return new Promise(async (resolve, reject) => {
             let retval = await GuildDynamicVoice.findOne({ where: { guild_id: this.id } });
             if (!retval) retval = await GuildDynamicVoice.create({ guild_id: this.id });
-            if (typeof value === "boolean") {
+            if (typeof value === 'boolean') {
                 return resolve(retval);
             }
             return resolve(retval[value]);
@@ -80,12 +83,13 @@ class Guild extends Base {
      * * type
      * * enabled
      * @param {String|Boolean} value Search value
+     * @returns {Promise<String>|Promise<Object>}
      */
     verification(value) {
         return new Promise(async (resolve, reject) => {
             let retval = await GuildVerification.findOne({ where: { guild_id: this.id } });
             if (!retval) retval = await GuildVerification.create({ guild_id: this.id });
-            if (typeof value === "boolean") {
+            if (typeof value === 'boolean') {
                 return resolve(retval);
             }
             return resolve(retval[value]);
@@ -98,12 +102,13 @@ class Guild extends Base {
      * * data
      * * enabled
      * @param {String|Boolean} value Search value
+     * @returns {Promise<String>|Promise<Object>}
      */
     ticket(value) {
         return new Promise(async (resolve, reject) => {
             let retval = await GuildTicket.findOne({ where: { guild_id: this.id } });
             if (!retval) retval = await GuildTicket.create({ guild_id: this.id });
-            if (typeof value === "boolean") {
+            if (typeof value === 'boolean') {
                 return resolve(retval);
             }
             return resolve(retval[value]);
@@ -124,12 +129,13 @@ class Guild extends Base {
      * * warnActionExpiresOn
      * * warningExpiresOn
      * @param {String|Boolean} value Search value
+     * @returns {Promise<String>|Promise<Object>}
      */
     moderation(value) {
         return new Promise(async (resolve, reject) => {
             let retval = await GuildModeration.findOne({ where: { guild_id: this.id } });
             if (!retval) retval = await GuildModeration.create({ guild_id: this.id });
-            if (typeof value === "boolean") {
+            if (typeof value === 'boolean') {
                 return resolve(retval);
             }
             return resolve(retval[value]);
@@ -143,12 +149,13 @@ class Guild extends Base {
      * * mentionSpamFilter
      * * data
      * @param {String|Boolean} value Search value
+     * @returns {Promise<String>|Promise<Object>}
      */
     filters(value) {
         return new Promise(async (resolve, reject) => {
             let retval = await GuildFilter.findOne({ where: { guild_id: this.id } });
             if (!retval) retval = await GuildFilter.create({ guild_id: this.id });
-            if (typeof value === "boolean") {
+            if (typeof value === 'boolean') {
                 return resolve(retval);
             }
             return resolve(retval[value]);
@@ -160,12 +167,13 @@ class Guild extends Base {
      * * message
      * * enabled
      * @param {String|Boolean} value Search value
+     * @returns {Promise<String>|Promise<Object>}
      */
     welcomer(value) {
         return new Promise(async (resolve, reject) => {
             let retval = await GuildWelcome.findOne({ where: { guild_id: this.id } });
             if (!retval) retval = await GuildWelcome.create({ guild_id: this.id });
-            if (typeof value === "boolean") {
+            if (typeof value === 'boolean') {
                 return resolve(retval);
             }
             return resolve(retval[value]);
@@ -178,12 +186,13 @@ class Guild extends Base {
      * * message
      * * enabled
      * @param {String|Boolean} value Search value
+     * @returns {Promise<String>|Promise<Object>}
      */
     leaver(value) {
         return new Promise(async (resolve, reject) => {
             let retval = await GuildLeave.findOne({ where: { guild_id: this.id } });
             if (!retval) retval = await GuildLeave.create({ guild_id: this.id });
-            if (typeof value === "boolean") {
+            if (typeof value === 'boolean') {
                 return resolve(retval);
             }
             return resolve(retval[value]);
@@ -191,7 +200,8 @@ class Guild extends Base {
     }
     /**
      * 
-     * @param {JSON} options Options
+     * @param {Object} options Options
+     * @returns {Promise<String>}
      * 
      * Actions:
      * * fetch
@@ -267,6 +277,4 @@ class Guild extends Base {
             return resolve(`\`${taglist.map(t => t.tag_name).join('\`, \`') || 'No tags set.'}\``);
         });
     }
-};
-
-module.exports = Guild;
+}

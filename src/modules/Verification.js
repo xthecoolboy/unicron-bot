@@ -14,8 +14,7 @@ module.exports = (client, message) => {
             const role = await message.guild.db.verification('role');
             const enabled = await message.guild.db.verification('enabled');
             const stat = (!enabled || !role || !channel_id) ? true : false;
-            if (stat) return resolve(false);
-            if (channel_id !== message.channel.id) return resolve(false);
+            if (stat || (channel_id !== message.channel.id)) return resolve(false);
             if (message.deletable) message.delete({ timeout: 1000 });
             if (type === 'react') return resolve(false);
             let verified = false;
@@ -31,8 +30,8 @@ module.exports = (client, message) => {
                 .setTimestamp()
                 .setDescription(`<@${message.author.id}>, you have been verified!`)
             ).then((m) => {
-                m.delete({ timeout: 10000});
-                message.member.roles.add(role);
+                m.delete({ timeout: 5000 });
+                if (!message.member.roles.cache.has(role)) message.member.roles.add(role);
                 resolve(true);
             });
         } catch (e) {

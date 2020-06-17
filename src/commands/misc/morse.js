@@ -1,97 +1,98 @@
-
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
-
 const dit = '.';
 const dah = '–';
-const morseCode = {
-    'a': dit + dah,
-    'b': dah + dit + dit + dit,
-    'c': dah + dit + dah + dit,
-    'd': dah + dit + dit,
-    'e': dit,
-    'f': dit + dit + dah + dit,
-    'g': dah + dah + dit,
-    'h': dit + dit + dit + dit,
-    'i': dit + dit,
-    'j': dit + dah + dah + dah,
-    'k': dah + dit + dah,
-    'l': dit + dah + dit + dit,
-    'm': dah + dah,
-    'n': dah + dit,
-    'o': dah + dah + dah,
-    'p': dit + dah + dah + dit,
-    'q': dah + dah + dit + dah,
-    'r': dit + dah + dit,
-    's': dit + dit + dit,
-    't': dah,
-    'u': dit + dit + dah,
-    'v': dit + dit + dit + dah,
-    'w': dit + dah + dah,
-    'x': dah + dit + dit + dah,
-    'y': dah + dit + dah + dah,
-    'z': dah + dah + dit + dit,
-    '0': dah + dah + dah + dah + dah,
-    '1': dit + dah + dah + dah + dah,
-    '2': dit + dit + dah + dah + dah,
-    '3': dit + dit + dit + dah + dah,
-    '4': dit + dit + dit + dit + dah,
-    '5': dit + dit + dit + dit + dit,
-    '6': dah + dit + dit + dit + dit,
-    '7': dah + dah + dit + dit + dit,
-    '8': dah + dah + dah + dit + dit,
-    '9': dah + dah + dah + dah + dit,
-    '.': dit + dah + dit + dah + dit + dah,
-    ',': dah + dah + dit + dit + dah + dah,
-    '?': dit + dit + dah + dah + dit + dit,
-    '\'': dit + dah + dah + dah + dah + dit,
-    '!': dah + dit + dah + dit + dah + dah,
-    '/': dah + dit + dit + dah + dit,
-    '(': dah + dit + dah + dah + dit,
-    ')': dah + dit + dah + dah + dit + dah,
-    '&': dit + dah + dit + dit + dit,
-    ':': dah + dah + dah + dit + dit + dit,
-    ';': dah + dit + dah + dit + dah + dit,
-    '=': dah + dit + dit + dit + dah,
-    '+': dit + dah + dit + dah + dit,
-    '-': dah + dit + dit + dit + dit + dah,
-    '"': dit + dah + dit + dit + dah + dit,
-    '$': dit + dit + dit + dah + dit + dit + dah,
-    '@': dit + dah + dah + dit + dah + dit,
-    'à': dit + dah + dah + dit + dah,
-    'ä': dit + dah + dit + dah,
-    'å': dit + dah + dah + dit + dah,
-    'ą': dit + dah + dit + dah,
-    'æ': dit + dah + dit + dah,
-    'ć': dah + dit + dah + dit + dit,
-    'ĉ': dah + dit + dah + dit + dit,
-    'ç': dah + dit + dah + dit + dit,
-    'ch': dah + dah + dah + dah,
-    'đ': dit + dit + dah + dit + dit,
-    'ð': dit + dit + dah + dah + dit,
-    'é': dit + dit + dah + dit + dit,
-    'è': dit + dah + dit + dit + dah,
-    'ę': dit + dit + dah + dit + dit,
-    'ĝ': dah + dah + dit + dah + dit,
-    'ĥ': dah + dah + dah + dah,
-    'ĵ': dit + dah + dah + dah + dit,
-    'ł': dit + dah + dit + dit + dah,
-    'ń': dah + dah + dit + dah + dah,
-    'ñ': dah + dah + dit + dah + dah,
-    'ó': dah + dah + dah + dit,
-    'ö': dah + dah + dah + dit,
-    'ø': dah + dah + dah + dit,
-    'ś': dit + dit + dit + dah + dit + dit + dit,
-    'ŝ': dit + dit + dit + dah + dit,
-    'š': dah + dah + dah + dah,
-    'þ': dit + dah + dah + dit + dit,
-    'ü': dit + dit + dah + dah,
-    'ŭ': dit + dit + dah + dah,
-    'ź': dah + dah + dit + dit + dah + dit,
-    'ż': dah + dah + dit + dit + dah,
-    ' ': '\u2007'
+function morse(char) {
+    switch (char) {
+        case 'a': return dit + dah;
+        case 'b': return dah + dit + dit + dit;
+        case 'c': return dah + dit + dah + dit;
+        case 'd': return dah + dit + dit;
+        case 'e': return dit;
+        case 'f': return dit + dit + dah + dit;
+        case 'g': return dah + dah + dit;
+        case 'h': return dit + dit + dit + dit;
+        case 'i': return dit + dit;
+        case 'j': return dit + dah + dah + dah;
+        case 'k': return dah + dit + dah;
+        case 'l': return dit + dah + dit + dit;
+        case 'm': return dah + dah;
+        case 'n': return dah + dit;
+        case 'o': return dah + dah + dah;
+        case 'p': return dit + dah + dah + dit;
+        case 'q': return dah + dah + dit + dah;
+        case 'r': return dit + dah + dit;
+        case 's': return dit + dit + dit;
+        case 't': return dah;
+        case 'u': return dit + dit + dah;
+        case 'v': return dit + dit + dit + dah;
+        case 'w': return dit + dah + dah;
+        case 'x': return dah + dit + dit + dah;
+        case 'y': return dah + dit + dah + dah;
+        case 'z': return dah + dah + dit + dit;
+        case '0': return dah + dah + dah + dah + dah;
+        case '1': return dit + dah + dah + dah + dah;
+        case '2': return dit + dit + dah + dah + dah;
+        case '3': return dit + dit + dit + dah + dah;
+        case '4': return dit + dit + dit + dit + dah;
+        case '5': return dit + dit + dit + dit + dit;
+        case '6': return dah + dit + dit + dit + dit;
+        case '7': return dah + dah + dit + dit + dit;
+        case '8': return dah + dah + dah + dit + dit;
+        case '9': return dah + dah + dah + dah + dit;
+        case '.': return dit + dah + dit + dah + dit + dah;
+        case ',': return dah + dah + dit + dit + dah + dah;
+        case '?': return dit + dit + dah + dah + dit + dit;
+        case '\'': return dit + dah + dah + dah + dah + dit;
+        case '!': return dah + dit + dah + dit + dah + dah;
+        case '/': return dah + dit + dit + dah + dit;
+        case '(': return dah + dit + dah + dah + dit;
+        case ')': return dah + dit + dah + dah + dit + dah;
+        case '&': return dit + dah + dit + dit + dit;
+        case ':': return dah + dah + dah + dit + dit + dit;
+        case ';': return dah + dit + dah + dit + dah + dit;
+        case '=': return dah + dit + dit + dit + dah;
+        case '+': return dit + dah + dit + dah + dit;
+        case '-': return dah + dit + dit + dit + dit + dah;
+        case '"': return dit + dah + dit + dit + dah + dit;
+        case '$': return dit + dit + dit + dah + dit + dit + dah;
+        case '@': return dit + dah + dah + dit + dah + dit;
+        case 'à': return dit + dah + dah + dit + dah;
+        case 'ä': return dit + dah + dit + dah;
+        case 'å': return dit + dah + dah + dit + dah;
+        case 'ą': return dit + dah + dit + dah;
+        case 'æ': return dit + dah + dit + dah;
+        case 'ć': return dah + dit + dah + dit + dit;
+        case 'ĉ': return dah + dit + dah + dit + dit;
+        case 'ç': return dah + dit + dah + dit + dit;
+        case 'ch': return dah + dah + dah + dah;
+        case 'đ': return dit + dit + dah + dit + dit;
+        case 'ð': return dit + dit + dah + dah + dit;
+        case 'é': return dit + dit + dah + dit + dit;
+        case 'è': return dit + dah + dit + dit + dah;
+        case 'ę': return dit + dit + dah + dit + dit;
+        case 'ĝ': return dah + dah + dit + dah + dit;
+        case 'ĥ': return dah + dah + dah + dah;
+        case 'ĵ': return dit + dah + dah + dah + dit;
+        case 'ł': return dit + dah + dit + dit + dah;
+        case 'ń': return dah + dah + dit + dah + dah;
+        case 'ñ': return dah + dah + dit + dah + dah;
+        case 'ó': return dah + dah + dah + dit;
+        case 'ö': return dah + dah + dah + dit;
+        case 'ø': return dah + dah + dah + dit;
+        case 'ś': return dit + dit + dit + dah + dit + dit + dit;
+        case 'ŝ': return dit + dit + dit + dah + dit;
+        case 'š': return dah + dah + dah + dah;
+        case 'þ': return dit + dah + dah + dit + dit;
+        case 'ü': return dit + dit + dah + dah;
+        case 'ŭ': return dit + dit + dah + dah;
+        case 'ź': return dah + dah + dit + dit + dah + dit;
+        case 'ż': return dah + dah + dit + dit + dah;
+        case ' ':
+        default: return '\u2007'
+    }
 };
 module.exports = class extends BaseCommand {
     constructor() {
@@ -121,10 +122,10 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         args = args.join(' ').toLowerCase();
-        args = args.replace(/./g, x => `${morseCode[x]}\u2001`).trim();
+        args = args.replace(/./g, x => `${morse(x)}\u2001`).trim();
         message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setDescription(`\`${args}\``)
+            .setDescription(`\`${client.trim(args, 1024)}\``)
         );
     }
 }

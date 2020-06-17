@@ -1,6 +1,4 @@
-
 const Discord = require('discord.js');
-const User = require('../../handlers/User');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
@@ -56,7 +54,7 @@ module.exports = class extends BaseCommand {
                 .setDescription('Error: You can\'t marry yourself :<')
             );
         }
-        const ttarget = new User(target.id);
+        const ttarget = await client.database.users.fetch(target.id);
         const tID = await ttarget.profile('married_id');
         const mID = await message.author.db.profile('married_id');
         if (tID === message.author.id) {
@@ -98,7 +96,7 @@ module.exports = class extends BaseCommand {
                 return message.channel.send(`🎉 ${message.author} and ${target} has been married yay!. 🎉`);
             }).catch((e) => {
                 console.log(e);
-                message.channel.send('Looks like nobody is getting married this time.');
+                message.channel.send('Looks like nobody is getting married today.');
             });
     }
 }

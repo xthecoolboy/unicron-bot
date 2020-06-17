@@ -1,4 +1,3 @@
-
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
@@ -47,7 +46,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`You don\'t have that item to sell.`));
         }
-        await message.author.db.coins.remove(item.options.cost);
+        await message.author.db.coins.add(item.options.cost);
         await message.author.db.inventory.remove(item.config.id);
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('0x00FF00')

@@ -94,11 +94,7 @@ $ tag delete <Tag Name>
                 if (msg === '[TAG_DOESNT_EXISTS]') {
                     msg = 'Sorry, That tag does not exist';
                 }
-                return message.channel.send(new MessageEmbed()
-                    .setColor('RANDOM')
-                    .setDescription(msg)
-                );
-
+                return message.channel.send(await msg.replace(/@/g, '@' + String.fromCharCode(8203)));
             }
         }
     }

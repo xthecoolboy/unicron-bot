@@ -4,12 +4,8 @@ const { Collection, MessageEmbed, Message } = require('discord.js');
 const Client = require('../classes/Unicron');
 const BaseEvent = require('../classes/BaseEvent');
 const cooldowns = new Collection();
+
 const LevelingCD = new Collection();
-
-const Guild = require('../handlers/Guild');
-const User = require('../handlers/User');
-const Member = require('../handlers/Member');
-
 const Blacklist = require('../modules/Blacklist');
 const Tags = require('../modules/Tags');
 const inviteFilter = require('../filters/inviteFilter');
@@ -27,8 +23,8 @@ module.exports = class extends BaseEvent {
      */
     async run(client, message) {
         if (message.author.bot) return;
-
-        if (await Blacklist(client, message)) return;
+        
+        if (await Blacklist(client, message.author.id, message.guild.id)) return;
 
         if (message.channel.type === 'dm') {
             await client.emit('directMessage', message);
@@ -37,11 +33,10 @@ module.exports = class extends BaseEvent {
 
         if (!message.member) message.member.fetch();
 
-        message.guild.db = new Guild(message.guild.id);
-        message.author.db = new User(message.author.id);
-        message.member.db = new Member(message.author.id, message.guild.id);
+        message.guild.db = await client.database.guilds.fetch(message.guild.id);
+        message.author.db = await client.database.users.fetch(message.author.id);
 
-        message.author.permLevel = await client.permission.level(client, message);
+        message.author.permLevel = await client.permission.level(message);
 
         if (await memberVerification(client, message)) return;
         if (await inviteFilter(client, message)) return;
@@ -71,22 +66,26 @@ module.exports = class extends BaseEvent {
         if (command.options.premiumServer && ! await message.guild.db.settings('premium')) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
-                .setDescription(`Sorry, this command is only for [Premium Servers](${message.unicron.serverInviteURL} 'Join here').`)
+                .setDescription(`Sorry, this command is only available for [Premium Servers](${client.unicron.serverInviteURL} 'Join here').`)
             );
         }
-        if (message.author.permLevel < client.permission.cache.find((level) => level.name === command.config.permission).level) {
+        if (message.author.permLevel < client.permission.cache.get(command.config.permission).level) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
                 .setDescription(`You do not have permission to use this command.
-                Your permission level is ${client.permission[`${message.author.permLevel}`]})
-                This command requires ${command.config.permission}`)
+                Your permission level is \`${client.permission.levels[message.author.permLevel]}\`
+                This command requires \`${command.config.permission}\``)
             );
         }
         if (command.options.clientPermissions) {
             if (!message.guild.me.permissions.has(command.options.clientPermissions)) {
                 return message.channel.send(new MessageEmbed()
                     .setColor('RED')
-                    .setDescription(`Sorry, but i need ${permissions.join(', ')} permission(s) to execute this command.`)
+                    .setDescription(`Sorry, but i need the following permisions to perform this command
+\`\`\`xl
+${command.options.clientPermissions.join(' ')}
+\`\`\`
+                    `)
                 );
             }
         }
@@ -120,7 +119,7 @@ module.exports = class extends BaseEvent {
                 .setDescription(`Sorry, this command is limited only for [Donators](${message.unicron.serverInviteURL} 'Click me!').`)
             );
         } else if (donator) {
-            cooldownAmount = Math.floor(cooldownAmount - (cooldownAmount * 0.35));
+            cooldownAmount = Math.floor(cooldownAmount - (cooldownAmount * 0.25));
         }
         if (timestamps.has(message.author.id)) {
             const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
@@ -140,7 +139,7 @@ module.exports = class extends BaseEvent {
             else setTimeout(() => LevelingCD.delete(message.author.id), 55000);
         }
         try {
-            if (command.run(client, message, args)) {
+            if (command.run(client, message, args) !== false) {
                 timestamps.set(message.author.id, now);
                 setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
             }
@@ -149,7 +148,6 @@ module.exports = class extends BaseEvent {
                 .setColor('RED')
                 .setDescription(`Something went wrong executing that command. If this keeps on happening please report it to the Bot Developer to handle this issue at [Support Server](${client.unicron.serverInviteURL}).`)
             );
-            client.logger.log(`Error on command : ${command.config.name}`, 'error');
             client.logger.error(e);
         }
     }

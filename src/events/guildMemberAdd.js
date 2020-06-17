@@ -1,7 +1,6 @@
 const { GuildMember, MessageEmbed } = require('discord.js');
-
-const Guild = require('../handlers/Guild');
-const Member = require('../handlers/Member');
+const Blacklist = require('../modules/Blacklist');
+const Member = require('../classes/GuildMember');
 const Client = require('../classes/Unicron');
 const BaseEvent = require('../classes/BaseEvent');
 
@@ -15,9 +14,10 @@ module.exports = class extends BaseEvent {
      */
     async run(client, member) {
         if (member.user.bot) return;
+        if (await Blacklist(client, member.user.id, member.guild.id)) return;
         const tmp = new Member(member.user.id, member.guild.id);
         await tmp.captcha.regenerate();
-        const guild = new Guild(member.guild.id);
+        const guild = await client.database.guilds.fetch(member.guild.id);
         const verifier = await guild.verification('type');
         if (['discrim', 'captcha'].includes(verifier)) {
             if (await guild.verification('enabled') && await guild.verification('channel') && await guild.verification('role')) {

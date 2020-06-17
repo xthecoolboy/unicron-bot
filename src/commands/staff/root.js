@@ -1,12 +1,14 @@
-
-const Discord = require('discord.js');
-const User = require('../../handlers/User');
+const User = require('../../classes/User');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const { Admin } = require('../../database/database');
-const { token } = require('../../handlers/Unicron');
 const { Crypto } = require('../../utils/');
 const BaseCommand = require('../../classes/BaseCommand');
+const { Random } = require('../../utils');
+
+const token = function () {
+    return Random.string(16);
+}
 
 function removeItemOnce(arr, value) {
     var index = arr.indexOf(value);

@@ -1,6 +1,5 @@
 
 const Discord = require('discord.js');
-const User = require('../../handlers/User');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
@@ -86,7 +85,7 @@ module.exports = class extends BaseCommand {
                 .setDescription('Error: Please enter an amount greater than **100**')
             );
         }
-        const transferTarget = new User(target.id);
+        const transferTarget = await client.database.users.fetch(target.id)
         await message.author.db.coins.remove(transferAmount);
         await transferTarget.coins.add(transferAmount);
         message.channel.send(new Discord.MessageEmbed()

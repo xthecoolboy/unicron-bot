@@ -1,4 +1,3 @@
-
 const Discord = require('discord.js');
 const querystring = require('querystring');
 const fetch = require('node-fetch');

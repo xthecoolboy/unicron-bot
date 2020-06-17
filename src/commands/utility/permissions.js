@@ -26,7 +26,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const friendly = client.permission[message.author.permLevel];
+        const friendly = client.permission.levels[message.author.permLevel];
         return message.channel.send(new MessageEmbed()
             .setColor('RANDOM')
             .setAuthor(message.author.id, message.author.displayAvatarURL() || null)

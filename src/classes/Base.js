@@ -1,8 +1,5 @@
-
-class Base {
-    constructor(_id) {
-        this.id = _id;
+module.exports = class Base {
+    constructor(id) {
+        this.id = id;
     }
 }
-
-module.exports = Base;

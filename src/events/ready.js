@@ -11,6 +11,8 @@ module.exports = class extends BaseEvent {
      * @param {Client} client 
      */
     async run(client) {
+        await client.database.users.sync();
+        await client.database.guilds.sync();
         client.user.setPresence({
             activity: {
                 name: `${client.guilds.cache.size} guilds!`,

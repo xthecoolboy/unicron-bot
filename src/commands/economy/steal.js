@@ -1,6 +1,4 @@
-
 const Discord = require('discord.js');
-const User = require('../../handlers/User');
 const { Random } = require('../../utils');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
@@ -93,29 +91,29 @@ module.exports = class extends BaseCommand {
                 .setDescription('Sorry, you can\'t rob yourself, :P')
             );
         }
-        const target = new User(utarget.id);
+        const target = await client.database.users.fetch(utarget.id);
         const tbal = await target.coins.fetch();
         const ubal = await message.author.db.coins.fetch();
-        if (tbal < 750) {
+        if (tbal < 600) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
-                .setDescription('Sorry, The victim must have atleast **750** coins!')
+                .setDescription('Sorry, The victim must have atleast **600** coins!')
             );
         }
-        if (ubal < 750) {
+        if (ubal < 600) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
-                .setDescription('Sorry, You must have atleast **750** coins to steal from soneone!')
+                .setDescription('Sorry, You must have atleast **600** coins to steal from someone!')
             );
         }
         const attackPoints = await getOffense(message.author.db);
         const defendPoints = await getDefense(target);
         const chance = defendPoints - attackPoints;
-        if (Random.nextInt({ max: 200, min: 0 }) <= (90 + chance)) {
+        if (Random.nextInt({ max: 200, min: 0 }) <= (100 + chance)) {
             const payout = Math.floor(
                 tbal - (
                     tbal * (
@@ -137,7 +135,7 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('LIME')
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(`+${chance}% Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
                 .setDescription(`You successfully robbed <@${utarget.id}> and your payout is **${payout}** coins!`)
             );
         }
@@ -162,17 +160,17 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(`+${chance}% Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
                 .setDescription(`You got caught by the authorities and paid **${lmao}** coins to stay out of prison, OHHH.`)
             );
         }
-        await target.coins.add(750);
-        await message.author.db.coins.remove(750);
+        await target.coins.add(600);
+        await message.author.db.coins.remove(600);
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
-            .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
-            .setDescription(`You got caught, and paid **750** to the victim, OHHH`)
+            .setFooter(`+${chance}% Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
+            .setDescription(`You got caught, and paid **600** to the victim, OHHH`)
         );
     }
 }

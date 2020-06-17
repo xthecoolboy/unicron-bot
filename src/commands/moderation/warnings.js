@@ -1,6 +1,6 @@
 
 const Discord = require('discord.js');
-const Member = require('../../handlers/Member');
+const Member = require('../../classes/GuildMember');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');

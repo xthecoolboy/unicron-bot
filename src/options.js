@@ -1,4 +1,9 @@
 module.exports = {
+    clientOptions: {
+        partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+        messageCacheMaxSize: 100,
+        messageSweepInterval: 30,
+    },
     unicron: {
         owner: process.env.BOT_OWNER_ID,
         server: process.env.BOT_SERVER_ID,
@@ -6,11 +11,6 @@ module.exports = {
         modChannel: process.env.BOT_MODCHANNEL_ID,
         hostURL: process.env.BOT_HOST_URL,
         inviteURL: process.env.BOT_SERVER_URL
-    },
-    clientOptions: {
-        partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
-        messageCacheMaxSize: 100,
-        messageSweepInterval: 30,
     },
     botlisting: {
         apiKeys: {
@@ -27,5 +27,13 @@ module.exports = {
         },
         clientLibrary: 'discord.js',
         clientID: '634908645896880128',
-    }
+    },
+    managers: {
+        users: {
+            maximumCacheSize: 0,
+        },
+        guilds: {
+            maximumCacheSize: 0,
+        },
+    },
 }

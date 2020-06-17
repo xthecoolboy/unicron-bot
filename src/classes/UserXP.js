@@ -1,40 +1,63 @@
+const Base = require('./Base');
+const User = require('./User');
+const { UserProfile } = require('../database/database');
+const Leveling = require('../modules/Leveling');
 
-const { UserProfile } = require('../../database/database');
-const Base = require('../../classes/Base');
-
-const Leveling = require('../../modules/Leveling');
-
-class Experience extends Base {
-    constructor(id, inst) {
+module.exports = class UserXP extends Base {
+    /**
+     * 
+     * @param {User} parent 
+     * @param {String} id 
+     */
+    constructor(parent, id) {
         super(id);
+        this.parent = parent;
     }
-    add(amount = 0) {
+    /**
+     * @returns {Promise<User>}
+     * @param {Number} amount 
+     */
+    add(amount) {
         return new Promise(async (resolve, reject) => {
             let user = await UserProfile.findOne({ where: { user_id: this.id } });
             if (!user) {
-                return resolve(UserProfile.create({ user_id: this.id, experience: amount }));
+                await UserProfile.create({ user_id: this.id, experience: amount });
+                return resolve(this.parent);
             }
             user.experience += Number(amount);
-            return resolve(await user.save());
+            await user.save();
+            return resolve(this.parent);
         });
-
     }
-    remove(amount = 0) {
-        return new Promise(async (resolve, reject) => {
+    /**
+     * @returns {Promise<User>}
+     * @param {Number} amount 
+     */
+    remove(amount) {
+        return new Promise(async (resolve, reject)=> {
             let user = await UserProfile.findOne({ where: { user_id: this.id } });
             if (!user) {
-                return resolve(UserProfile.create({ user_id: this.id, experience: amount }));
+                await UserProfile.create({ user_id: this.id, experience: amount });
+                return resolve(this.parent);
             }
             user.experience -= Number(amount);
-            return resolve(await user.save());
+            await user.save();
+            return resolve(this.parent);
         });
     }
-    fetch() {
+    /**
+     * @returns {Promise<Number>}
+     */
+    fetch(){
         return new Promise(async (resolve, reject) => {
             let user = await UserProfile.findOne({ where: { user_id: this.id } });
+            if (!user) user = await UserProfile.create({ user_id: this.id });
             return resolve(user ? user.experience : 0);
         });
     }
+    /**
+     * @returns {Promise<Number>}
+     */
     getLevel() {
         return new Promise(async (resolve, reject) => {
             let lvl = 0;
@@ -47,27 +70,42 @@ class Experience extends Base {
             return resolve(lvl);
         });
     }
+    /**
+     * @returns {Promise<Number>}
+     */
     getLevelXP() {
         return new Promise(async (resolve, reject) => {
             return resolve(Leveling.LevelChart[await this.getLevel()]);
         });
     }
+    /**
+     * @returns {Promise<Number>}
+     */
     getNextLevel() {
         return new Promise(async (resolve, reject) => {
             return resolve(await this.getLevel() + 1);
         });
     }
+    /**
+     * @returns {Promise<Number>}
+     */
     getNextLevelXP() {
         return new Promise(async (resolve, reject) => {
             return resolve(Leveling.LevelChart[await this.getNextLevel()]);
         });
 
     }
+    /**
+     * @returns {Promise<String>}
+     */
     getProgressBar() {
         return new Promise(async (resolve, reject) => {
             return resolve(Leveling.ProgressBar(await this.getPercentageProgressToNextLevel()));
         });
     }
+    /**
+     * @returns {Promise<Number>}
+     */
     getPercentageProgressToNextLevel() {
         return new Promise(async (resolve, reject) => {
             return resolve(((await this.fetch() - await this.getLevelXP()) /
@@ -75,11 +113,12 @@ class Experience extends Base {
         });
 
     };
+    /**
+     * @returns {Promise<Number>}
+     */
     getRequiredExpToNextLevel() {
         return new Promise(async (resolve, reject) => {
             return resolve(await this.getNextLevelXP() - await this.fetch());
         });
     }
-};
-
-module.exports = Experience;
+}

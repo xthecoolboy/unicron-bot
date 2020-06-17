@@ -1,15 +1,25 @@
+const Base = require('./Base');
+const User = require('./User');
+const { UserProfile } = require('../database/database');
 
-const { UserProfile } = require('../../database/database');
-const Base = require('../../classes/Base');
-
-const removeElement = function (arr, key) {
+function removeElement(arr, key) {
     return arr.filter((item) => { return item !== key });
 }
 
-class Badges extends Base {
-    constructor(id) {
+module.exports = class UserBadge extends Base {
+    /**
+     * 
+     * @param {User} parent 
+     * @param {String} id 
+     */
+    constructor(parent, id) {
         super(id);
+        this.parent = parent;
     }
+    /**
+     * @returns {Promise<Boolean>}
+     * @param {String} badge 
+     */
     add(badge) {
         return new Promise(async (resolve, reject) => {
             let user = await UserProfile.findOne({ where: { user_id: this.id } });
@@ -22,6 +32,10 @@ class Badges extends Base {
             return resolve(true);
         });
     }
+    /**
+     * @returns {Promise<Boolean>}
+     * @param {String} badge 
+     */
     remove(badge) {
         return new Promise(async (resolve, reject) => {
             let user = await UserProfile.findOne({ where: { user_id: this.id } });
@@ -34,7 +48,10 @@ class Badges extends Base {
             return resolve(true);
         });
     }
-
+    /**
+     * @returns {Promise<Boolean>}
+     * @param {String} badge 
+     */
     has(value) {
         return new Promise(async (resolve, reject) => {
             let user = await UserProfile.findOne({ where: { user_id: this.id } });
@@ -45,6 +62,9 @@ class Badges extends Base {
             return resolve(user.data['badges'].includes(value) ? true : false);
         });
     }
+    /**
+     * @returns {Promise<Array<String>>}
+     */
     fetch() {
         return new Promise(async (resolve, reject) => {
             let user = await UserProfile.findOne({ where: { user_id: this.id } });
@@ -52,8 +72,5 @@ class Badges extends Base {
             if (!user.data) user.data = {};
             return resolve(user.data['badges'] ? user.data['badges'] : []);
         });
-
     }
-};
-
-module.exports = Badges;
+}

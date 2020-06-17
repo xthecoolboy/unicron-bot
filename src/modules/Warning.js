@@ -1,6 +1,6 @@
 const { Message, MessageEmbed, GuildMember } = require('discord.js');
 const Client = require('../classes/Unicron');
-const Member = require('../handlers/Member');
+const Member = require('../classes/GuildMember');
 
 /**
  * @param {Client} client
@@ -95,7 +95,7 @@ module.exports = (client, message, user_id, member) => {
                     .setAuthor(`${client.user.tag} / ${client.user.id}`, client.user.displayAvatarURL())
                     .setTimestamp()
                     .setThumbnail(message.author.displayAvatarURL() || null)
-                    .setDescription(`**Member** : ${message.author.tag} / ${message.author.id}\n**Action** : ${faction}\n${duration ? `**Length** : ${ms(duration)}` : ''}\n**Reason** : ${reason}`)
+                    .setDescription(`**Member** : ${message.author.tag} / ${message.author.id}\n**Action** : ${faction}\n**Reason** : ${reason}\n${duration ? `**Length** : ${ms(duration)}` : ''}`)
                 );
             }
             try {
