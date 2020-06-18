@@ -33,15 +33,14 @@ module.exports = class extends BaseEvent {
 
         if (!message.member) message.member.fetch();
 
-        message.guild.db = await client.database.guilds.fetch(message.guild.id);
-        message.author.db = await client.database.users.fetch(message.author.id);
-
         message.author.permLevel = await client.permission.level(message);
 
         if (await memberVerification(client, message)) return;
         if (await inviteFilter(client, message)) return;
         if (await mentionSpamFilter(client, message)) return;
 
+        message.guild.db = await client.database.guilds.fetch(message.guild.id);
+        
         const prefix = await message.guild.db.settings('prefix');
         const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${client.escapeRegex(prefix)})\\s*`);
         if (!prefixRegex.test(message.content)) {
@@ -58,11 +57,11 @@ module.exports = class extends BaseEvent {
                 await swearFilter(client, message);
                 return;
             }
-            return message.channel.send(new MessageEmbed()
-                .setColor('RANDOM')
-                .setDescription(msg)
-            );
+            return message.channel.send(msg.replace(/@/g, '@' + String.fromCharCode(2803)));
         }
+        
+        message.author.db = await client.database.users.fetch(message.author.id);
+
         if (command.options.premiumServer && ! await message.guild.db.settings('premium')) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')

@@ -133,9 +133,9 @@ module.exports = class extends BaseCommand {
             await target.coins.remove(payout);
             await message.author.db.coins.add(payout);
             return message.channel.send(new Discord.MessageEmbed()
-                .setColor('LIME')
+                .setColor(0x00FF00)
                 .setTimestamp()
-                .setFooter(`+${chance}% Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
+                .setFooter(`${chance}% Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
                 .setDescription(`You successfully robbed <@${utarget.id}> and your payout is **${payout}** coins!`)
             );
         }
@@ -160,7 +160,7 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
                 .setTimestamp()
-                .setFooter(`+${chance}% Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
+                .setFooter(`${chance}% Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
                 .setDescription(`You got caught by the authorities and paid **${lmao}** coins to stay out of prison, OHHH.`)
             );
         }
@@ -169,7 +169,7 @@ module.exports = class extends BaseCommand {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
-            .setFooter(`+${chance}% Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
+            .setFooter(`${chance}% Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
             .setDescription(`You got caught, and paid **600** to the victim, OHHH`)
         );
     }

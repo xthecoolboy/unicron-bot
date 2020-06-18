@@ -61,15 +61,15 @@ module.exports = class extends BaseCommand {
             permissionOverwrites: [
                 {
                     id: message.guild.id,
-                    deny: ['VIEW_CHANNEL'],
+                    deny: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'],
                 },
                 {
                     id: message.author.id,
-                    allow: ['VIEW_CHANNEL'],
+                    allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'],
                 },
                 {
                     id: client.user.id,
-                    allow: ['VIEW_CHANNEL', 'MANAGE_CHANNELS', 'MANAGE_MESSAGES'],
+                    allow: ['VIEW_CHANNEL', 'MANAGE_CHANNELS', 'MANAGE_MESSAGES', 'SEND_MESSAGES'],
                 }
             ],
         });
@@ -82,8 +82,7 @@ module.exports = class extends BaseCommand {
         if (message.guild.roles.cache.find(r => r.name.toLowerCase() === 'support team')) {
             channel.overwritePermissions(message.guild.cache.roles.find(r => r.name.toLowerCase() === 'support team'), {
                 VIEW_CHANNEL: true,
-                MANAGE_CHANNELS: true,
-                MANAGE_MESSAGES: true,
+                SEND_MESSAGES: true,
             });
         }
         await channel.send(new Discord.MessageEmbed()
