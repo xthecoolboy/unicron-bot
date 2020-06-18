@@ -23,7 +23,7 @@
   return ex;
 })()
 */
-async function safeEval(code, client) {
+async function safeEval(code, client, message) {
     return eval(`
         (function () {
             Function = undefined;
@@ -34,7 +34,7 @@ async function safeEval(code, client) {
                 if (typeof item.constructor !== 'function') return;
                 this[key].constructor = undefined;
             });
-            ${code}
+            return ${code}
         })();
     `);
 }
@@ -77,7 +77,7 @@ module.exports = class extends BaseCommand {
         }
         try {
             const code = content.replace(/```js/, '').replace(/```/, '');
-            const output = safeEval(code, client);
+            const output = safeEval(code, client, message);
             const clean = await client.clean(output);
             message.channel.send(new MessageEmbed()
                 .setColor('GREEN')

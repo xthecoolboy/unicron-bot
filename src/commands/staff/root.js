@@ -65,6 +65,7 @@ const evaluation = async function (client, message, [key, ...value]) {
             case 'staff':
             case 'partner':
             case 'bug_hunter':
+            case 'developer':
             case 'supporter': {
                 const table = message.flags[0];
                 const action = message.flags[1];

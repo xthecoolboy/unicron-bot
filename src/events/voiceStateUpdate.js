@@ -29,7 +29,7 @@ module.exports = class extends BaseEvent {
         if (!!newState.channel) {
             const dvlimit = newState.channel.parentID === category ? 11 : 10;
             if (newState.channel.id === waitingRoom && newState.channel.parent.children.size <= dvlimit) {
-                newState.guild.channels.create(`${newState.member.displayName}'s vc`,
+                newState.guild.channels.create(`${newState.member.displayName}'s channel`,
                     {
                         type: 'voice',
                         parent: category,
