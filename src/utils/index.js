@@ -4,4 +4,5 @@ module.exports = {
     Random: require('./Random'),
     Regex: require('./Regex'),
     Crypto: require('./Crypto'),
+    Parse: require('./Parse'),
 }

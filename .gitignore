@@ -5,3 +5,4 @@ node_modules/
 hashing.js
 test.js
 package-lock.json
+tests/*
