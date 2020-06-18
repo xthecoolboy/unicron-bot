@@ -13,6 +13,8 @@ const mentionSpamFilter = require('../filters/mentionSpamFilter');
 const swearFilter = require('../filters/swearFilter');
 const memberVerification = require('../modules/Verification');
 
+const { Parse } = require('../utils/');
+
 module.exports = class extends BaseEvent {
     constructor() {
         super('message');
@@ -33,13 +35,13 @@ module.exports = class extends BaseEvent {
 
         if (!message.member) message.member.fetch();
 
+        message.author.db = await client.database.users.fetch(message.author.id);
+        message.guild.db = await client.database.guilds.fetch(message.guild.id);
         message.author.permLevel = await client.permission.level(message);
 
         if (await memberVerification(client, message)) return;
         if (await inviteFilter(client, message)) return;
         if (await mentionSpamFilter(client, message)) return;
-
-        message.guild.db = await client.database.guilds.fetch(message.guild.id);
         
         const prefix = await message.guild.db.settings('prefix');
         const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${client.escapeRegex(prefix)})\\s*`);
@@ -59,8 +61,6 @@ module.exports = class extends BaseEvent {
             }
             return message.channel.send(msg.replace(/@/g, '@' + String.fromCharCode(2803)));
         }
-        
-        message.author.db = await client.database.users.fetch(message.author.id);
 
         if (command.options.premiumServer && ! await message.guild.db.settings('premium')) {
             return message.channel.send(new MessageEmbed()
@@ -138,7 +138,9 @@ ${command.options.clientPermissions.join(' ')}
             else setTimeout(() => LevelingCD.delete(message.author.id), 55000);
         }
         try {
-            if (command.run(client, message, args) !== false) {
+            const argv = command.argsDefinitions ? Parse(args, command.argsDefinitions) : args;
+            const success = await command.run(client, message, argv);
+            if (success !== false) {
                 timestamps.set(message.author.id, now);
                 setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
             }

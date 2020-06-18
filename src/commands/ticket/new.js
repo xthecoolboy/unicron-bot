@@ -72,15 +72,18 @@ module.exports = class extends BaseCommand {
                     allow: ['VIEW_CHANNEL', 'MANAGE_CHANNELS', 'MANAGE_MESSAGES', 'SEND_MESSAGES'],
                 }
             ],
+        }).catch((e) => {
+            throw e;
         });
         await message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FF00)
             .setDescription(`Your ticket has been created! <#${channel.id}>\nWe will contact you in the ticket shortly!`)
             .setTimestamp()
-            .setAuthor('Unicron Ticket System')
+            .setAuthor('Unicron Ticket System', client.user.displayAvatarURL())
         );
-        if (message.guild.roles.cache.find(r => r.name.toLowerCase() === 'support team')) {
-            channel.overwritePermissions(message.guild.cache.roles.find(r => r.name.toLowerCase() === 'support team'), {
+        const st = message.guild.roles.cache.find(r => r.name.toLowerCase() === 'support team');
+        if (st) {
+            channel.overwritePermissions(st, {
                 VIEW_CHANNEL: true,
                 SEND_MESSAGES: true,
             });

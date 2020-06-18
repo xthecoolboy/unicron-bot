@@ -13,7 +13,7 @@ category.set('utility', '**Utility** commands that can help you do better.');
 category.set('moderation', 'Simple **Moderation** commands to strict your server from rule breakers!');
 category.set('settings', 'Fully **Customizable** Configurations. including simplistic interactive configuration setups.');
 category.set('nsfw', `**NSFW** commands made too cool:>`);
-category.set('dynamicvoice', '**Dynamic Voice System!** Which Allows users to create their own voice Channels to enhance your community environment as your users continue to meet new people.');
+category.set('dynamic', '**Dynamic Text/Voice System!** Which Allows users to create their own text/voice Channels to enhance your community environment as your users continue to meet new people.');
 category.set('ticket', 'Wonderful **Ticket System** for ease of server management.');
 category.set('staff', 'Bot Staff Commands ONLY!');
 
@@ -99,7 +99,7 @@ module.exports = class extends BaseCommand {
             .addField(`${await client.getEmoji('staff')} Moderation`, `\`moderation\``, true)
             .addField(`${await client.getEmoji('settings')} Settings`, `\`settings\``, true)
             .addField(`🎫 Ticket System`, `\`ticket\``, true)
-            .addField(`🎙️ Dynamic Voice`, `\`dynamicvoice\``, true)
+            .addField(`♾️ Dynamic Text/Voice`, `\`dynamic\``, true)
             .addField(`💰 Economy`, `\`economy\``, true)
             .addField(`${await client.getEmoji('tools')} Utility`, `\`utility\``, true)
             .addField(`${await client.getEmoji('yes')} Misc`, `\`misc\``, true)
