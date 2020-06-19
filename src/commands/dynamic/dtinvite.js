@@ -53,7 +53,7 @@ module.exports = class extends BaseCommand {
                 .setDescription('Hey, you can\'t invite users to this private channel')
             );
         }
-        const users = message.mentions.members;
+        const users = message.mentions.users;
         if (!users) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
@@ -62,12 +62,12 @@ module.exports = class extends BaseCommand {
             );
         }
         for (const m of users) {
-            await message.channel.createOverwrite(m, {
+            await message.channel.createOverwrite(m[0], {
                 SEND_MESSAGES: true,
                 VIEW_CHANNEL: true,
                 READ_MESSAGE_HISTORY: true,
             });
         }
-        message.channel.send(`Members has been added to this channel`);
+        message.channel.send(`Member(s) has been added to this channel`);
     }
 }

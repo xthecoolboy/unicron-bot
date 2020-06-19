@@ -4,6 +4,8 @@ const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
 
+const MINIMUM_COINS = 500;
+
 const Offense = {
     car: 25,
     motorcycle: 15,
@@ -94,20 +96,20 @@ module.exports = class extends BaseCommand {
         const target = await client.database.users.fetch(utarget.id);
         const tbal = await target.coins.fetch();
         const ubal = await message.author.db.coins.fetch();
-        if (tbal < 600) {
+        if (tbal < MINIMUM_COINS) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
-                .setDescription('Sorry, The victim must have atleast **600** coins!')
+                .setDescription('Sorry, The victim must have atleast **MINIMUM_COINS** coins!')
             );
         }
-        if (ubal < 600) {
+        if (ubal < MINIMUM_COINS) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
-                .setDescription('Sorry, You must have atleast **600** coins to steal from someone!')
+                .setDescription('Sorry, You must have atleast **MINIMUM_COINS** coins to steal from someone!')
             );
         }
         const attackPoints = await getOffense(message.author.db);
@@ -119,12 +121,12 @@ module.exports = class extends BaseCommand {
                     tbal * (
                         Random.nextInt({
                             max: Random.nextInt({
-                                max: 85,
+                                max: 95,
                                 min: 75,
                             }),
                             min: Random.nextInt({
                                 max: 75,
-                                min: 60
+                                min: 50
                             })
                         }) * 0.01
                     )
@@ -135,7 +137,7 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor(0x00FF00)
                 .setTimestamp()
-                .setFooter(`${chance}% Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
+                .setFooter(`${chance}% Bonus Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
                 .setDescription(`You successfully robbed <@${utarget.id}> and your payout is **${payout}** coins!`)
             );
         }
@@ -160,17 +162,17 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
                 .setTimestamp()
-                .setFooter(`${chance}% Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
+                .setFooter(`${chance}% Bonus Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
                 .setDescription(`You got caught by the authorities and paid **${lmao}** coins to stay out of prison, OHHH.`)
             );
         }
-        await target.coins.add(600);
-        await message.author.db.coins.remove(600);
+        await target.coins.add(MINIMUM_COINS);
+        await message.author.db.coins.remove(MINIMUM_COINS);
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
-            .setFooter(`${chance}% Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
-            .setDescription(`You got caught, and paid **600** to the victim, OHHH`)
+            .setFooter(`${chance}% Bonus Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
+            .setDescription(`You got caught, and paid **MINIMUM_COINS** to the victim, OHHH`)
         );
     }
 }

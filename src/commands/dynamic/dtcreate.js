@@ -9,7 +9,7 @@ module.exports = class extends BaseCommand {
         super({
             config: {
                 name: 'dtcreate',
-                description: 'Creates your own private text channels\n You can invite other users using \`dtinvite <User>\`',
+                description: 'Creates your own private text channels\n You can invite other users using \`dtinvite <...Mentions>\`',
                 permission: 'User',
             },
             options: {
@@ -98,7 +98,7 @@ module.exports = class extends BaseCommand {
             .setDescription(`Hello ${message.author.tag}, welcome to your own private text channel!\n
 You can invite other users to this text channel using
 \`\`\`xl
-dtinvite <UserTag|UserID> (On This Channel Only)
+dtinvite <...Mentions> (On This Channel Only)
 \`\`\`
 Plus! you can change the channel name to whatever you want <3
             `)
