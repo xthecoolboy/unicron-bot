@@ -10,20 +10,17 @@ module.exports = class GuildManager extends BaseManager {
      * @brief Caches all guild data from the database (Limit: 100)
      */
     async sync() {
-        const guilds = await GuildSettings.findAll();
-        /** 
-        if (this.options.maximumCacheSize) {
-            for (let i = 0; i < this.options.maximumCacheSize; i++) {
-                const data = guilds[i];
-                const instance = new Guild(data.guild_id, data);
+        const users = await GuildSettings.findAll();
+        this.client.setInterval(() => {
+            for (const data of users) {
+                if (!this.client.guilds.cache.has(data.user_id)) {
+                    this.cache.delete(data.user_id);
+                    continue;
+                }
+                const instance = new Guild(data.user_id, data);
                 this.cache.set(instance.id, instance);
             }
-        }
-        */
-        for (const data of guilds) {
-            const instance = new Guild(data.guild_id, data);
-            this.cache.set(instance.id, instance);
-        }
+        }, 60000 * 10);
     }
     /**
      * @param {String} guild_id 

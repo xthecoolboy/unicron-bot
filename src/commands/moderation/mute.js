@@ -45,7 +45,7 @@ module.exports = class extends BaseCommand {
         if (target.equals(message.author)) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
-                .setDescription(`Hey there, You mute kick yourself :P`)
+                .setDescription(`Hey there, You mute mute yourself :P`)
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
             );

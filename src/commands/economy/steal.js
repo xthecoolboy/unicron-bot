@@ -112,7 +112,7 @@ module.exports = class extends BaseCommand {
         }
         const attackPoints = await getOffense(message.author.db);
         const defendPoints = await getDefense(target);
-        const chance = defendPoints - attackPoints;
+        const chance = attackPoints = defendPoints;
         if (Random.nextInt({ max: 200, min: 0 }) <= (100 + chance)) {
             const payout = Math.floor(
                 tbal - (

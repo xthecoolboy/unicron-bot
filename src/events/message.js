@@ -33,10 +33,10 @@ module.exports = class extends BaseEvent {
             return;
         }
 
-        if (!message.member) message.member.fetch();
+        if (!message.member) await message.member.fetch();
 
-        message.author.db = await client.database.users.fetch(message.author.id);
-        message.guild.db = await client.database.guilds.fetch(message.guild.id);
+        if (!message.author.db) message.author.db = await client.database.users.fetch(message.author.id);
+        if (!message.guild.db) message.guild.db = await client.database.guilds.fetch(message.guild.id);
         message.author.permLevel = await client.permission.level(message);
 
         if (await memberVerification(client, message)) return;

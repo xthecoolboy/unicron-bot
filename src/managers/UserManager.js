@@ -2,6 +2,7 @@ const { UserProfile } = require('../database/database');
 const BaseManager = require('../classes/BaseManager');
 const User = require('../classes/User');
 
+
 module.exports = class UserManager extends BaseManager {
     constructor(client, options) {
         super(client, options);
@@ -11,20 +12,16 @@ module.exports = class UserManager extends BaseManager {
      */
     async sync() {
         const users = await UserProfile.findAll();
-        /** 
-        if (this.options.maximumCacheSize) {
-            for (let i = 0; i < this.options.maximumCacheSize; i++) {
-                const data = users[i];
+        this.client.setInterval(() => {
+            for (const data of users) {
+                if (!this.client.users.cache.has(data.user_id)) {
+                    this.cache.delete(data.user_id);
+                    continue;
+                }
                 const instance = new User(data.user_id, data);
                 this.cache.set(instance.id, instance);
             }
-            return;
-        }
-         */
-        for (const data of users) {
-            const instance = new User(data.user_id, data);
-            this.cache.set(instance.id, instance);
-        }
+        }, 60000 * 10);
     }
     /**
      * @returns {Promise<User>}

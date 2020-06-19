@@ -63,7 +63,7 @@ module.exports = class extends BaseCommand {
         const channel = await message.guild.channels.create(Random.string(6), {
             type: 'text',
             parent: category,
-            topic: `Owner: ${message.author.id}`,
+            topic: `Owner: ${message.author.id}\nDon't change owner ID otherwise the bot might not work properly on this channel`,
             permissionOverwrites: [
                 {
                     id: message.guild.id,

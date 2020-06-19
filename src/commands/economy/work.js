@@ -39,7 +39,7 @@ module.exports = class extends BaseCommand {
             options: {
                 aliases: [],
                 clientPermissions: [],
-                cooldown: 60 * 60,
+                cooldown: 60 * 30,
                 nsfwCommand: false,
                 args: true,
                 usage: 'work <Job>\nJobs:\n- mailman\n- developer\n- carpenter\n- mechanic\n- police',

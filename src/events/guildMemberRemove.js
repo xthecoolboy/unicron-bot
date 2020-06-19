@@ -14,7 +14,6 @@ module.exports = class extends BaseEvent {
      */
     async run(client, member) {
         if (member.user.bot) return;
-        
         if (await Blacklist(client, member.user.id, member.guild.id)) return;
         const tmp = new Member(member.user.id, member.guild.id);
         await tmp.captcha.regenerate();
