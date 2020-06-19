@@ -96,7 +96,7 @@ module.exports = class extends BaseCommand {
                 .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
                 .setTimestamp()
                 .setThumbnail(target.displayAvatarURL() || null)
-                .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : Warn\n${duration ? `**Length** : ${ms(duration)}` : ''}\n**Reason** : ${_reason}`)
+                .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : Warn\n**Reason** : ${_reason}\n${duration ? `**Length** : ${ms(duration)}` : ''}`)
             );
         }
         try {

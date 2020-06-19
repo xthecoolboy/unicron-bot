@@ -1,7 +1,7 @@
 
 const Discord = require('discord.js');
 const ms = require('ms');
-const { Message } = require('discord.js');
+const { Message, GuildChannel } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
 
@@ -79,10 +79,10 @@ module.exports = class extends BaseCommand {
         }
         await member.roles.add(role, _reason);
         try {
-            for (let channel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
-                channel = channel[1];
+            for (let schannel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
+                const channel = schannel[1];
                 if (!channel.permissionOverwrites.get(role.id)) {
-                    await channel.overwritePermissions(role, {
+                    await channel.createOverwrite(role, {
                         SEND_MESSAGES: false,
                         ADD_REACTIONS: false
                     }).catch(e => { throw e });

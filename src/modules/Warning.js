@@ -31,7 +31,7 @@ module.exports = (client, message, user_id, member) => {
                         for (let channel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
                             channel = channel[1];
                             if (!channel.permissionOverwrites.get(role.id)) {
-                                await channel.overwritePermissions(role, {
+                                await channel.createOverwrite(role, {
                                     SEND_MESSAGES: false,
                                     ADD_REACTIONS: false
                                 }).catch(e => { throw e });

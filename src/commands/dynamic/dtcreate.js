@@ -60,7 +60,7 @@ module.exports = class extends BaseCommand {
                 .setDescription('Hey, you can\'t create an another dynamic text')
             );
         }
-        const channel = await message.guild.channels.create(Random.string(6), {
+        const channel = await message.guild.channels.create(Random.string(16), {
             type: 'text',
             parent: category,
             topic: `Owner: ${message.author.id}\nDon't change owner ID otherwise the bot might not work properly on this channel`,
@@ -71,7 +71,7 @@ module.exports = class extends BaseCommand {
                 },
                 {
                     id: message.author.id,
-                    allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'MANAGE_CHANNELS', 'MANAGE_ROLES'],
+                    allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'MANAGE_CHANNELS'],
                 },
                 {
                     id: client.user.id,
@@ -87,7 +87,7 @@ module.exports = class extends BaseCommand {
         );
         const st = message.guild.roles.cache.find(r => r.name.toLowerCase() === 'Dynamic Mod');
         if (st) {
-            channel.overwritePermissions(st, {
+            channel.createOverwrite(st, {
                 VIEW_CHANNEL: true,
                 SEND_MESSAGES: true,
             });

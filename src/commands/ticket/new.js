@@ -83,7 +83,7 @@ module.exports = class extends BaseCommand {
         );
         const st = message.guild.roles.cache.find(r => r.name.toLowerCase() === 'support team');
         if (st) {
-            channel.overwritePermissions(st, {
+            channel.createOverwrite(st, {
                 VIEW_CHANNEL: true,
                 SEND_MESSAGES: true,
             });
