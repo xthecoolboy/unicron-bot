@@ -15,7 +15,6 @@ const {
 } = require('../database/database.js');
 
 const BaseEvent = require('../classes/BaseEvent');
-const Guilds = require('../classes/Guild');
 const Blacklist = require('../modules/Blacklist');
 
 module.exports = class extends BaseEvent {
@@ -24,7 +23,7 @@ module.exports = class extends BaseEvent {
     }
     /**
      * @param {Client} client
-     * @param {Guilds} guild
+     * @param {Guild} guild
      */
     async run(client, guild) {
         if (await Blacklist(client, null, guild.id)) {
@@ -48,19 +47,6 @@ module.exports = class extends BaseEvent {
             .addField('Voice Channels', guild.channels.cache.filter(channel => channel.type === 'voice').size, true)
             .setTimestamp()
         );
-        try {
-            const data = await GuildSettings.create({ guild_id: guild.id });
-            await GuildDynamicVoice.create({ guild_id: guild.id });
-            await GuildFilter.create({ guild_id: guild.id });
-            await GuildLeave.create({ guild_id: guild.id });
-            await GuildWelcome.create({ guild_id: guild.id });
-            await GuildModeration.create({ guild_id: guild.id });
-            await GuildTicket.create({ guild_id: guild.id });
-            await GuildVerification.create({ guild_id: guild.id });
-            client.database.guilds.cache.set(guild.id, new Guild(client, data))
-        } catch (e) {
-            console.log(e);
-        }
         client.user.setPresence({
             activity: {
                 name: `${client.guilds.cache.size} guilds! | ?help`,
