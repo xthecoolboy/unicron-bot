@@ -76,6 +76,7 @@ module.exports = class extends BaseCommand {
                 await channel.overwritePermissions(message.guild.id, {
                     SEND_MESSAGES: true,
                     VIEW_CHANNEL: true,
+                    READ_MESSAGE_HISTORY: true,
                 }).catch(e => { throw e });
             }
             for (let channels of message.guild.channels.cache.filter((c) => c.type === 'text')) {
@@ -87,7 +88,7 @@ module.exports = class extends BaseCommand {
                 }
             }
             if (!channel.permissionOverwrites.get(role.id)) {
-                await channel.overwritePermissions(role, {
+                await channel.createOverwrite(role, {
                     VIEW_CHANNEL: false,
                 }).catch(e => { throw e });
             }
