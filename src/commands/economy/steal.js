@@ -101,7 +101,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
-                .setDescription('Sorry, The victim must have atleast **MINIMUM_COINS** coins!')
+                .setDescription(`Sorry, The victim must have atleast **${MINIMUM_COINS}** coins!`)
             );
         }
         if (ubal < MINIMUM_COINS) {
@@ -109,13 +109,14 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
-                .setDescription('Sorry, You must have atleast **MINIMUM_COINS** coins to steal from someone!')
+                .setDescription(`Sorry, You must have atleast **${MINIMUM_COINS}** coins to steal from someone!`)
             );
         }
         const attackPoints = await getOffense(message.author.db);
         const defendPoints = await getDefense(target);
-        const chance = attackPoints - defendPoints;
-        if (Random.nextInt({ max: 200, min: 0 }) <= (100 + chance)) {
+        const chance = defendPoints - attackPoints;
+        const bchance = 90 + chance;
+        if (Random.nextInt({ max: 200, min: 0 }) <= bchance) {
             const payout = Math.floor(
                 tbal - (
                     tbal * (
@@ -172,7 +173,7 @@ module.exports = class extends BaseCommand {
             .setColor('RANDOM')
             .setTimestamp()
             .setFooter(`${chance}% Bonus Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
-            .setDescription(`You got caught, and paid **MINIMUM_COINS** to the victim, OHHH`)
+            .setDescription(`You got caught, and paid **${MINIMUM_COINS}** to the victim, OHHH`)
         );
     }
 }
