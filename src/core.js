@@ -19,9 +19,6 @@ module.exports = async (client) => {
             response.sendStatus(200);
         });
         app.listen(process.env.PORT || 4200);
-        client.setInterval(() => {
-            http.get(process.env.BOT_HOST_URL);
-        }, 280000);
     }
     await require('./database/database.js').SyncDatabase();
 }

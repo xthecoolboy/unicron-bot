@@ -13,7 +13,7 @@ module.exports = class extends BaseCommand {
                 permission: 'User',
             },
             options: {
-                aliases: [],
+                aliases: ['daily'],
                 clientPermissions: [],
                 cooldown: 60 * 60 * 24,
                 nsfwCommand: false,

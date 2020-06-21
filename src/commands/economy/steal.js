@@ -7,17 +7,17 @@ const BaseCommand = require('../../classes/BaseCommand');
 const MINIMUM_COINS = 500;
 
 const Offense = {
-    car: 25,
-    motorcycle: 15,
-    pistol: 12,
-    dagger: 10,
+    car: 30,
+    motorcycle: 25,
+    pistol: 20,
+    dagger: 15,
 };
 
 const Defense = {
-    dog: 25,
-    shield: 15,
-    bow: 12,
-    padlock: 10,
+    dog: 30,
+    shield: 25,
+    bow: 20,
+    padlock: 15,
 };
 
 /**

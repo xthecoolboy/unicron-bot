@@ -25,7 +25,7 @@ module.exports = class extends BaseEvent {
      */
     async run(client, message) {
         if (message.author.bot) return;
-        
+
         if (await Blacklist(client, message.author.id, message.guild.id)) return;
 
         if (message.channel.type === 'dm') {
@@ -35,14 +35,14 @@ module.exports = class extends BaseEvent {
 
         if (!message.member) await message.member.fetch();
 
-        if (!message.author.db) message.author.db = await client.database.users.fetch(message.author.id);
-        if (!message.guild.db) message.guild.db = await client.database.guilds.fetch(message.guild.id);
+        message.author.db = await client.database.users.fetch(message.author.id);
+        message.guild.db = await client.database.guilds.fetch(message.guild.id);
         message.author.permLevel = await client.permission.level(message);
 
         if (await memberVerification(client, message)) return;
         if (await inviteFilter(client, message)) return;
         if (await mentionSpamFilter(client, message)) return;
-        
+
         const prefix = await message.guild.db.settings('prefix');
         const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${client.escapeRegex(prefix)})\\s*`);
         if (!prefixRegex.test(message.content)) {

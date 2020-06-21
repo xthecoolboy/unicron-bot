@@ -13,7 +13,7 @@ module.exports = class extends BaseCommand {
                 permission: 'User',
             },
             options: {
-                aliases: ['transfer', 'give'],
+                aliases: ['transfer', 'give', 'pay'],
                 cooldown: 180,
                 nsfwCommand: false,
                 args: true,
@@ -29,17 +29,13 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const currentAmount = await message.author.db.coins.fetch();
-        let transferAmount = args[0]
-        const target = message.mentions.users.first() || client.users.cache.get(args[1]) || client.users.cache.find((u) => u.tag === args[1]);
-        if (target.bot) {
-            return message.channel.send(new Discord.MessageEmbed()
+        return message.channel.send(
+            new Discord.MessageEmbed()
                 .setColor('RED')
-                .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL())
-                .setDescription('Error: Cannot send coins to this user.')
-            );
-        }
+                .setDescription(`Sorry, this command is disabled due to a nitro giveaway event at [Unicron's Support Server](${client.unicron.serverInviteURL})`)
+        );
+        const currentAmount = await message.author.db.coins.fetch();
+        let transferAmount = args[0];
         if (isNaN(transferAmount)) {
             if (transferAmount === 'all') { transferAmount = currentAmount; }
             else if (transferAmount === 'half') { transferAmount = Math.floor(currentAmount / 2); }
@@ -52,6 +48,15 @@ module.exports = class extends BaseCommand {
                     .setDescription(`Sorry, that's an invalid amount.`)
                 );
             }
+        }
+        const target = message.mentions.users.first() || client.users.cache.get(args[1]) || client.users.cache.find((u) => u.tag === args[1]);
+        if (target.bot) {
+            return message.channel.send(new Discord.MessageEmbed()
+                .setColor('RED')
+                .setTimestamp()
+                .setFooter(message.author.tag, message.author.displayAvatarURL())
+                .setDescription('Error: Cannot send coins to this user.')
+            );
         }
         if (!target) {
             return message.channel.send(new Discord.MessageEmbed()

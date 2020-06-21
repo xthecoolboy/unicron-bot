@@ -11,20 +11,20 @@ const salary = {
         min: 500 - 300,
     },
     developer: {
-        max: 1500,
-        min: 1500 - 500,
+        max: 6500,
+        min: 6500 - 500,
     },
     carpenter: {
         max: 700,
         min: 700 - 200,
     },
     mechanic: {
-        max: 1100,
-        min: 1100 - 500,
+        max: 3100,
+        min: 3100 - 500,
     },
     police: {
-        max: 2700,
-        min: 2700 - 500,
+        max: 7700,
+        min: 7700 - 500,
     }
 }
 
@@ -39,7 +39,7 @@ module.exports = class extends BaseCommand {
             options: {
                 aliases: [],
                 clientPermissions: [],
-                cooldown: 60 * 30,
+                cooldown: 60 * 15,
                 nsfwCommand: false,
                 args: true,
                 usage: 'work <Job>\nJobs:\n- mailman\n- developer\n- carpenter\n- mechanic\n- police',
@@ -60,8 +60,8 @@ module.exports = class extends BaseCommand {
             .setTimestamp()
             .setFooter(message.author.tag, message.author.displayAvatarURL() || null);
         let status = true;
-        const job = args[0];
-        if (!job || !['mailman', 'developer', 'carpenter', 'mechanic', 'police'].includes(job.toLowerCase())) {
+        const job = args[0].toLowerCase();
+        if (!job || !['mailman', 'developer', 'carpenter', 'mechanic', 'police'].includes(job)) {
             message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
