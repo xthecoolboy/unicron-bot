@@ -43,7 +43,7 @@ module.exports = class extends BaseCommand {
             if (!item) {
                 return message.channel.send(new Discord.MessageEmbed()
                     .setColor(`RED`)
-                    .setDescription(`Sorry, That item doesn\'t exists.`));
+                    .setDescription(`Sorry, That item does not exist.`));
             };
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')

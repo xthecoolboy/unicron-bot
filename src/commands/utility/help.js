@@ -12,7 +12,6 @@ category.set('misc', 'Miscellaneous commands! over over the door')
 category.set('utility', '**Utility** commands that can help you do better.');
 category.set('moderation', 'Simple **Moderation** commands to strict your server from rule breakers!');
 category.set('settings', 'Fully **Customizable** Configurations. including simplistic interactive configuration setups.');
-category.set('nsfw', `**NSFW** commands made too cool:>`);
 category.set('dynamic', '**Dynamic Text/Voice System!** Which Allows users to create their own text/voice Channels to enhance your community environment as your users continue to meet new people.');
 category.set('ticket', 'Wonderful **Ticket System** for ease of server management.');
 category.set('staff', 'Bot Staff Commands ONLY!');
@@ -104,7 +103,6 @@ module.exports = class extends BaseCommand {
             .addField(`${await client.getEmoji('tools')} Utility`, `\`utility\``, true)
             .addField(`${await client.getEmoji('yes')} Misc`, `\`misc\``, true)
             .addField('😂 Fun', `\`fun\``, true)
-            .addField(`🔞 NSFW`, '\`nsfw\`', true)
             .setTimestamp()
         );
     }

@@ -27,7 +27,7 @@ module.exports = class extends BaseCommand {
             on_begged: [
                 (c) => `You successfully robbed a bank and gain **${c}** coins!`,
                 (c) => `You successfully stole **${c}** coins from yo mama and papa -,-`,
-                (c) => `You have gain **${c}** coins from a successfull jewerly heist!`
+                (c) => `You have gain **${c}** coins from a successfull jewelry heist!`
             ],
             caught: [
                 (c) => `You have been caught by the POLICE and paid a fine of **${c}** coins!`

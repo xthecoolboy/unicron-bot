@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./api/server');
 const Unicron = require('./Unicron');
 const client = new Unicron.Client();
 (async function () {

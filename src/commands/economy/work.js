@@ -7,24 +7,24 @@ const BaseCommand = require('../../classes/BaseCommand');
 
 const salary = {
     mailman: {
-        max: 500,
-        min: 500 - 300,
+        max: 1000,
+        min: 1000 - 500,
     },
     developer: {
-        max: 6500,
-        min: 6500 - 500,
+        max: 4000,
+        min: 4000 - 1000,
     },
     carpenter: {
-        max: 700,
-        min: 700 - 200,
+        max: 2000,
+        min: 2000 - 1000,
     },
     mechanic: {
-        max: 3100,
-        min: 3100 - 500,
+        max: 3000,
+        min: 3000 - 1000,
     },
     police: {
-        max: 7700,
-        min: 7700 - 500,
+        max: 5000,
+        min: 5000 - 1000,
     }
 }
 

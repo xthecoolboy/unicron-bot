@@ -17,7 +17,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 180,
                 nsfwCommand: false,
                 args: true,
-                usage: 'share <Amount> <UserMention|UserID|UserTag>',
+                usage: 'share <Amount> <UserMention>',
                 donatorOnly: false,
             }
         });
@@ -29,11 +29,6 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        return message.channel.send(
-            new Discord.MessageEmbed()
-                .setColor('RED')
-                .setDescription(`Sorry, this command is disabled due to a nitro giveaway event at [Unicron's Support Server](${client.unicron.serverInviteURL})`)
-        );
         const currentAmount = await message.author.db.coins.fetch();
         let transferAmount = args[0];
         if (isNaN(transferAmount)) {
@@ -49,7 +44,7 @@ module.exports = class extends BaseCommand {
                 );
             }
         }
-        const target = message.mentions.users.first() || client.users.cache.get(args[1]) || client.users.cache.find((u) => u.tag === args[1]);
+        const target = message.mentions.users.first();
         if (target.bot) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
@@ -63,7 +58,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setFooter(message.author.tag, message.author.displayAvatarURL())
                 .setTimestamp()
-                .setDescription(`Sorry, that's an invalid user.\n\`share [UserMention|UserTag] [Amount]\``)
+                .setDescription(`Sorry, that's an invalid user.\n\`share <Amount> <UserMention>\``)
             );
         }
         if (target.id === message.author.id) {

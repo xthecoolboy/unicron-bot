@@ -13,7 +13,7 @@ module.exports = class extends BaseItem {
                 buyable: true,
                 sellable: true,
                 usable: false,
-                price: 25000,
+                price: 75000,
                 cost: Math.floor(25000 * 0.3),
             }
         })

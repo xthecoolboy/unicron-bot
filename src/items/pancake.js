@@ -27,7 +27,7 @@ module.exports = class extends BaseItem {
      * @param {Message} message 
      */
     async run(client, message) {
-        await message.author.db.levelup(client, message, 20);
+        await message.author.db.levelup(client, message, 150);
         await message.author.db.inventory.remove(this.config.id);
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')

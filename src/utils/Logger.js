@@ -3,24 +3,36 @@ const moment = require('moment');
 
 const { settings } = require('../../config.json');
 
+const dir = new RegExp(__dirname, 'g');
+
+function timestamp(thread = 'Server') {
+	return `[${moment().format('YYYY-MM-DD HH:mm:ss')}] [${thread} Thread]`;
+}
+
 module.exports = {
-	timestamp: function (thread = 'Server') {
-		return `[${moment().format('YYYY-MM-DD HH:mm:ss')}] [${thread} Thread]`;
+	info: function (contents, thread = 'Server') {
+        let content = '';
+        if (contents.stack) content = contents.stack.replace(dir, '../');
+        else content = contents.replace(dir, '../');
+		console.log(`${timestamp(thread)} ${chalk.black.bgWhite('[INFO]')} : ${content}`);
 	},
-	info: function (content, thread = 'Server') {
-		console.log(`${this.timestamp(thread)} ${chalk.black.bgWhite('[INFO]')} : ${content}`);
-	},
-	error: function (content, thread = 'Server') {
-		console.log(`${this.timestamp(thread)} ${chalk.black.bgRed('[ERROR]')} : ${content}`);
+	error: function (contents, thread = 'Server') {
+        let content = '';
+        if (contents.stack) content = contents.stack.replace(dir, '../');
+        else content = contents.replace(dir, '../');
+		console.log(`${timestamp(thread)} ${chalk.black.bgRed('[ERROR]')} : ${content}`);
 		if (settings['tracing']) {
 			console.log(chalk.black.bgRed('[ERROR_TRACE]'));
 			console.trace(content);
 			console.log(chalk.black.bgRed('[/ERROR_TRACE]'));
 		}
 	},
-	warn: function (content, thread = 'Server') {
+	warn: function (contents, thread = 'Server') {
+        let content = '';
+        if (contents.stack) content = contents.stack.replace(dir, '../');
+        else content = contents.replace(dir, '../');
 		if (settings['warnings']) {
-			console.log(`${this.timestamp(thread)} ${chalk.black.bgYellow('[WARNING]')} : ${content}`);
+			console.log(`${timestamp(thread)} ${chalk.black.bgYellow('[WARNING]')} : ${content}`);
 			if (settings['tracing']) {
 				console.log(chalk.black.bgYellow('[WARNING_TRACE]'));
 				console.trace(content);
@@ -30,41 +42,7 @@ module.exports = {
 	},
 	debug: function (content, thread = 'Server') {
 		if (settings['debug']) {
-			console.log(`${this.timestamp(thread)} ${chalk.black.bgGreen('[DEBUG]')} : ${content}`);
+			console.log(`${timestamp(thread)} ${chalk.black.bgGreen('[DEBUG]')} : ${content}`);
 		}
 	}
 }
-/**
-exports.log = (content, type = "log") => {
-	const timestamp = `[${moment().format("YYYY-MM-DD HH:mm:ss")}]:`;
-	switch (type) {
-		case "log": {
-			return console.log(`${timestamp} ${chalk.bgBlue(`[${type.toLowerCase()}]`)} ${content} `);
-		}
-		case "warn": {
-			return console.log(`${timestamp} ${chalk.black.bgYellow(`[${type.toLowerCase()}]`)} ${content} `);
-		}
-		case "error": {
-			return console.log(`${timestamp} ${chalk.bgRed(`[${type.toLowerCase()}]`)} ${content} `);
-		}
-		case "debug": {
-			return console.log(`${timestamp} ${chalk.green(`[${type.toLowerCase()}]`)} ${content} `);
-		}
-		case "cmd": {
-			return console.log(`${timestamp} ${chalk.black.bgWhite(`[${type.toLowerCase()}]`)} ${content}`);
-		}
-		case "ready": {
-			return console.log(`${timestamp} ${chalk.black.bgGreen(`[${type.toLowerCase()}]`)} ${content}`);
-		}
-		default: throw new TypeError("Logger type must be either warn, debug, log, ready, cmd or error.");
-	}
-};
-
-exports.error = (...args) => this.log(...args, "error");
-
-exports.warn = (...args) => this.log(...args, "warn");
-
-exports.debug = (...args) => this.log(...args, "debug");
-
-exports.cmd = (...args) => this.log(...args, "cmd");
- */

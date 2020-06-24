@@ -9,7 +9,7 @@ module.exports = class extends BaseItem {
                 description: 'Precious collectable item! _O.o_',
             },
             options: {
-                buyable: false,
+                buyable: true,
                 sellable: true,
                 usable: false,
                 price: 1000000,

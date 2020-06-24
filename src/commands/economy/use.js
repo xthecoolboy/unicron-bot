@@ -31,7 +31,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const item = await client.shopitems.get(args[0]);
+        const item = await client.shopitems.get(args[0].toLowerCase());
         if (!item) {
             message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
@@ -47,7 +47,7 @@ module.exports = class extends BaseCommand {
         if (!item.options.usable) {
             message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
-                .setDescription('Sorry, this item is cannot be use.'));
+                .setDescription('Sorry, you cannot use this item'));
             return false;
         }
         return await item.run(client, message).catch(client.logger.error);
