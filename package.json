@@ -14,6 +14,7 @@
     "minimist": "^1.2.5",
     "minimist-options": "^4.1.0",
     "moment": "^2.26.0",
+    "ms": "^2.1.2",
     "node-fetch": "^2.6.0",
     "pretty-ms": "^7.0.0",
     "query-string": "^6.12.1",

@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
-const ms = require('pretty-ms');
+const ms = require('ms');
 const BaseCommand = require('../../classes/BaseCommand');
 
 const category = new Discord.Collection();

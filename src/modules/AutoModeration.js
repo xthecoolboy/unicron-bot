@@ -1,7 +1,7 @@
 
 const { Message, MessageEmbed, GuildMember } = require('discord.js');
 const Client = require('../classes/Unicron');
-const ms = require('pretty-ms');
+const ms = require('ms');
 
 /** Example
  * ```js

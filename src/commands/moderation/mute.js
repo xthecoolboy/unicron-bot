@@ -1,6 +1,6 @@
 
 const Discord = require('discord.js');
-const ms = require('pretty-ms');
+const ms = require('ms');
 const { Message, GuildChannel } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');

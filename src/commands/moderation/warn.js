@@ -1,6 +1,6 @@
 
 const Discord = require('discord.js');
-const ms = require('pretty-ms');
+const ms = require('ms');
 const Member = require('../../classes/GuildMember');
 const Warning = require('../../modules/Warning');
 const { Message } = require('discord.js');

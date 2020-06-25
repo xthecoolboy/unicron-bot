@@ -1,6 +1,7 @@
 const { Message, MessageEmbed, GuildMember } = require('discord.js');
 const Client = require('../classes/Unicron');
 const Member = require('../classes/GuildMember');
+const ms = require('ms');
 
 /**
  * @param {Client} client
@@ -38,7 +39,7 @@ module.exports = (client, message, user_id, member) => {
                             }
                         }
                     } catch (e) {
-            
+
                     }
                     if (duration && !isNaN(duration)) {
                         try {
