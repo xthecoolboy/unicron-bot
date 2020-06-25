@@ -39,7 +39,7 @@ module.exports = class extends BaseCommand {
                 return message.channel.send(new Discord.MessageEmbed()
                     .setColor('RED')
                     .setTimestamp()
-                    .setFooter(message.author.tag, message.author.displayAvatarURL())
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
                     .setDescription(`Sorry, that's an invalid amount.`)
                 );
             }
@@ -49,14 +49,14 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
                 .setDescription('Error: Cannot send coins to this user.')
             );
         }
         if (!target) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
-                .setFooter(message.author.tag, message.author.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
                 .setTimestamp()
                 .setDescription(`Sorry, that's an invalid user.\n\`share <Amount> <UserMention>\``)
             );
@@ -65,14 +65,14 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
                 .setDescription(`Sorry, You cannot send coins to yourself, lmao.`)
             );
         }
         if (transferAmount > currentAmount) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
-                .setFooter(message.author.tag, message.author.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
                 .setTimestamp()
                 .setDescription(`Sorry, you don\'t have enough balance to send that amount of coins.`)
             );
@@ -80,7 +80,7 @@ module.exports = class extends BaseCommand {
         if (transferAmount < 100) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
-                .setFooter(message.author.tag, message.author.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
                 .setTimestamp()
                 .setDescription('Error: Please enter an amount greater than **100**')
             );
@@ -90,7 +90,7 @@ module.exports = class extends BaseCommand {
         await transferTarget.coins.add(transferAmount);
         message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FF00)
-            .setFooter(message.author.tag, message.author.displayAvatarURL())
+            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setDescription(`Successfully transferred **${transferAmount}**💰 to ${target}.\nYour balance is now **${await message.author.db.coins.fetch()}**💰`)
         );

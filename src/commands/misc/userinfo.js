@@ -58,7 +58,7 @@ module.exports = class extends BaseCommand {
         if (roles.length === 0) roles = '-';
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setThumbnail(user.displayAvatarURL())
+            .setThumbnail(user.displayAvatarURL({ dynamic: true }))
             .addField(`${user.bot ? 'Bot' : 'User'} Info`, `${user.tag} / ${user.id}`)
             .addField(`Joined Server`, member.joinedAt.toUTCString(), true)
             .addField(`Created At`, user.createdAt.toUTCString(), true)

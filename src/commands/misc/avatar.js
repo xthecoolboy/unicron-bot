@@ -31,7 +31,7 @@ module.exports = class extends BaseCommand {
         if (!target) target = message.author;
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setAuthor(target.tag, target.displayAvatarURL())
+            .setAuthor(target.tag, target.displayAvatarURL({ dynamic: true }))
             .setImage(target.displayAvatarURL({ dynamic: true }))
         );
     }

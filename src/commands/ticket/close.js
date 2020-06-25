@@ -56,7 +56,7 @@ module.exports = class extends BaseCommand {
             modchannel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
                 .setTimestamp()
-                .setAuthor(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                 .setTitle(`Ticket closed`)
                 .setDescription(`Ticket : \`${message.channel.name}\`\nReason : ${args.join(' ') || 'No reason provided'}`)
             );

@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
-const ms = require('ms');
+const ms = require('pretty-ms');
 const BaseCommand = require('../../classes/BaseCommand');
 
 const category = new Discord.Collection();
@@ -94,7 +94,7 @@ module.exports = class extends BaseCommand {
             .setColor(0x00FFFF)
             .setTitle('Unicron\'s Commands')
             .setDescription(`Join our [Support Server](${client.unicron.serverInviteURL}) for help and updates!\n\`\`\`xl\n${prefix}help [Category]\n\`\`\``)
-            .setFooter(`Made by ${OWNER.tag}`, OWNER.displayAvatarURL())
+            .setFooter(`Made by ${OWNER.tag}`, OWNER.displayAvatarURL({ dynamic: true }))
             .addField(`${await client.getEmoji('staff')} Moderation`, `\`moderation\``, true)
             .addField(`${await client.getEmoji('settings')} Settings`, `\`settings\``, true)
             .addField(`🎫 Ticket System`, `\`ticket\``, true)

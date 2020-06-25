@@ -19,7 +19,7 @@ module.exports = class extends BaseEvent {
             let embed = new MessageEmbed()
                 .setColor('RANDOM')
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null);
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null);
             switch (commandName) {
                 case 'help': {
                     embed.setTitle('Help Command')

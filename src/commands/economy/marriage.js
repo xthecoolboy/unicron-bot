@@ -36,14 +36,14 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
                 .setTimestamp()
-                .setAuthor(target.tag, target.displayAvatarURL() || client.user.displayAvatarURL())
+                .setAuthor(target.tag, target.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                 .setDescription('Not married to someone else, kek')
             );
         }
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
-            .setAuthor(target.tag, target.displayAvatarURL() || client.user.displayAvatarURL())
+            .setAuthor(target.tag, target.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             .setTitle('Marriage Certificate')
             .setDescription(`${target} ❤️ <@${await t.profile('married_id')}>`)
         );

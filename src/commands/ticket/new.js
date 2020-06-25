@@ -79,7 +79,7 @@ module.exports = class extends BaseCommand {
             .setColor(0x00FF00)
             .setDescription(`Your ticket has been created! <#${channel.id}>\nWe will contact you in the ticket shortly!`)
             .setTimestamp()
-            .setAuthor('Unicron Ticket System', client.user.displayAvatarURL())
+            .setAuthor('Unicron Ticket System', client.user.displayAvatarURL({ dynamic: true }))
         );
         const st = message.guild.roles.cache.find(r => r.name.toLowerCase() === 'support team');
         if (st) {

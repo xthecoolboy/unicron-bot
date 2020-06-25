@@ -1,5 +1,5 @@
 
-const ms = require('ms');
+const ms = require('pretty-ms');
 const { Collection, MessageEmbed, Message } = require('discord.js');
 const Client = require('../classes/Unicron');
 const BaseEvent = require('../classes/BaseEvent');

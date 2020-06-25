@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const ms = require('ms');
+const ms = require('pretty-ms');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
@@ -41,7 +41,7 @@ module.exports = class extends BaseCommand {
                     const inviteFilter = await db.filters('inviteFilter') ? 'ON' : 'OFF';
                     const mentionSpamFilter = await db.filters('mentionSpamFilter') ? 'ON' : 'OFF';
                     const swearFilter = await db.filters('swearFilter') ? 'ON' : 'OFF';
-                    embed.setFooter('Page 2 of 4', message.guild.iconURL() || client.user.displayAvatarURL())
+                    embed.setFooter('Page 2 of 4', message.guild.iconURL() || client.user.displayAvatarURL({ dynamic: true }))
                         .addField('Key', `
                     \`inviteFilter\`
                     \`swearFilter\`
@@ -62,7 +62,7 @@ module.exports = class extends BaseCommand {
                     const leaveMessage = await db.leaver('message');
                     const leaver = await db.leaver('enabled') ? 'ON' : 'OFF';
                     embed.setDescription('Use command \`welcomer\` or \`farewell\` to change these values')
-                    embed.setFooter('Page 3 of 4', message.guild.iconURL() || client.user.displayAvatarURL())
+                    embed.setFooter('Page 3 of 4', message.guild.iconURL() || client.user.displayAvatarURL({ dynamic: true }))
                         .addField('Key', `
                     \`welcomer\`
                     \`welcomeChannel\`
@@ -89,7 +89,7 @@ module.exports = class extends BaseCommand {
                     const ticketSystem = await db.ticket('enabled') ? 'ON' : 'OFF';
                     const ticketCategory = await db.ticket('category') ? `<#${await db.ticket('category')}>` : '\`none\`';
                     embed.setDescription('Use command \`verification\` or \`ticketconfig\` / \`ticketsetup\` to change these values.')
-                    embed.setFooter('Page 4 of 4', message.guild.iconURL() || client.user.displayAvatarURL())
+                    embed.setFooter('Page 4 of 4', message.guild.iconURL() || client.user.displayAvatarURL({ dynamic: true }))
                         .addField('Key', `
                     \`memberVerification\`
                     \`verificationChannel\`
@@ -137,7 +137,7 @@ module.exports = class extends BaseCommand {
                     \`${warnTresholdAction}\`
                     \`${warnActionExpiresOn}\`
                     \`${warningExpiresOn}\`
-                    `, true).setFooter('Page 1 of 4', message.guild.iconURL() || client.user.displayAvatarURL());
+                    `, true).setFooter('Page 1 of 4', message.guild.iconURL() || client.user.displayAvatarURL({ dynamic: true }));
                     break;
                 }
             }
@@ -152,7 +152,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s configurations for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -160,7 +160,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -175,7 +175,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -183,7 +183,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -199,7 +199,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -207,7 +207,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -222,7 +222,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -230,7 +230,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -246,7 +246,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -254,7 +254,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -269,7 +269,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -277,7 +277,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -292,7 +292,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -300,7 +300,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -315,7 +315,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -323,7 +323,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -338,7 +338,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -346,7 +346,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -361,7 +361,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -369,7 +369,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -384,7 +384,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -392,7 +392,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -407,7 +407,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -415,7 +415,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -430,7 +430,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -438,7 +438,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -454,7 +454,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -462,7 +462,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -478,7 +478,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -486,7 +486,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -501,7 +501,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -509,7 +509,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -524,7 +524,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -532,7 +532,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -547,7 +547,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -555,7 +555,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -570,7 +570,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s \`${key}\` for this server.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on reseting settings for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -578,7 +578,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while reseting.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -598,7 +598,7 @@ module.exports = class extends BaseCommand {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RED')
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                             .setDescription('TypeError: invalid type.\nActions: \`MUTE\`, \`KICK\`, \`SOFTBAN\`,\`BAN\`\nCASE SENSITIVE')
                         );
                     }
@@ -606,7 +606,7 @@ module.exports = class extends BaseCommand {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RED')
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                             .setDescription('Error: Muted Role not setup, use \`config set mutedRole [RoleMention|RoleID|RoleName]\` to set it up and use this command again!')
                         );
                     }
@@ -617,7 +617,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${value[0]}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -625,7 +625,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -636,7 +636,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription('Error: Prefix length must not exceed 3 characters.')
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }
                     const settings = await db.settings(true);
@@ -646,7 +646,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${value[0]}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -654,7 +654,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -666,7 +666,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`Incorrect Arguments: Use \`config set ${key} [ChannelMention|ChannelID|ChannelName]\``)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }
                     if (!channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES'])) {
@@ -674,7 +674,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`Error: Unicron doesn't have access to that channel`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }
                     const settings = await db.moderation(true);
@@ -685,7 +685,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to <#${channel.id}>.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -693,7 +693,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -704,7 +704,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`Incorrect Arguments: Use \`config set ${key} [on|off]\``)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }
                     const bool = (value[0] === 'on') ? true : false;
@@ -715,7 +715,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${bool ? 'on' : 'off'}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -723,7 +723,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -735,7 +735,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`Incorrect Arguments: Use \`config set ${key} [Number]\``)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }
                     const settings = await db.moderation(true);
@@ -745,7 +745,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${time}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -753,7 +753,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -766,7 +766,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`Incorrect or Invalid Arguments: Use \`config set ${key} [Duration]\``)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }
                     const settings = await db.moderation(true);
@@ -776,7 +776,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${ms(num)}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -784,7 +784,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;
@@ -797,7 +797,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`Incorrect Arguments: Use \`config set ${key} [on|off]\``)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }
                     const bool = (value[0] === 'on') ? true : false;
@@ -808,7 +808,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RANDOM')
                             .setDescription(`Successfully set \`${key}\` to \`${bool ? 'on' : 'off'}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }).catch(e => {
                         client.logger.error(`Error on setting configurations for ${message.guild.name}/${message.guild.id} : ${e}`);
@@ -816,7 +816,7 @@ module.exports = class extends BaseCommand {
                             .setColor('RED')
                             .setDescription(`An error occured while setting \`${key}\`.`)
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     });
                     break;

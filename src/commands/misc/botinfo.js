@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const ms = require('ms');
+const ms = require('pretty-ms');
 const { version } = require('../../../package.json');
 const { version: discordjsVersion } = require('discord.js');
 const { Message } = require('discord.js');
@@ -35,7 +35,7 @@ module.exports = class extends BaseCommand {
             .setColor('RANDOM')
             .setTitle('Unicron Stats')
             .setAuthor(`Unicron ${version}`)
-            .setThumbnail(client.user.displayAvatarURL())
+            .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
             .addField('Owner', `${OWNER.tag} / ${OWNER.id}`)
             .addField('Uptime', `${ms(client.uptime)}`, true)
             .addField('Guild Count', `${client.guilds.cache.size}`, true)

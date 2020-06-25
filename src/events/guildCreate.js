@@ -30,7 +30,7 @@ module.exports = class extends BaseEvent {
             await guild.leave();
             return;
         }
-        const channel = await client.channels.fetch(client.unicron.channel);
+        const channel = await client.channels.fetch(client.unicron.channel, false);
         channel.send(new MessageEmbed()
             .setTitle(`${guild.name} has invited Unicron`)
             .setColor('RANDOM')

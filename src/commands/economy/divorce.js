@@ -35,7 +35,7 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription(`You can't file a divorce when you are not married to someone ;p`)
             );
         }
@@ -49,7 +49,7 @@ module.exports = class extends BaseCommand {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FFFF)
             .setTimestamp()
-            .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
             .setDescription(`${message.author} and <@${waifu.id}> has gotten a divorce :<`)
         );
     }

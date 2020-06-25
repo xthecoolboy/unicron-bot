@@ -56,7 +56,7 @@ module.exports = class extends BaseCommand {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
-            .setAuthor(target.tag, target.displayAvatarURL() || null)
+            .setAuthor(target.tag, target.displayAvatarURL({ dynamic: true }) || null)
             .addField('**Progress**', `**${level}** [${progress}](${client.unicron.serverInviteURL}) **${level + 1}**\n**${req}** - remaining`, true)
             .addField('**Badges**', badgeText, true)
             .addField('\u200b', '\u200b', true)

@@ -58,7 +58,7 @@ module.exports = class extends BaseCommand {
         let embed = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
-            .setFooter(message.author.tag, message.author.displayAvatarURL() || null);
+            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null);
         let status = true;
         const job = args[0].toLowerCase();
         if (!job || !['mailman', 'developer', 'carpenter', 'mechanic', 'police'].includes(job)) {

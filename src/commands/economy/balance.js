@@ -41,7 +41,7 @@ module.exports = class extends BaseCommand {
         const coins = await user.coins.fetch();
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setAuthor(target.tag, target.displayAvatarURL())
+            .setAuthor(target.tag, target.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setDescription(`**${coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}** 💸`)
         );

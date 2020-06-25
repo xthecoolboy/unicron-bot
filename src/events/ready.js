@@ -20,7 +20,8 @@ module.exports = class extends BaseEvent {
             },
             status: 'online',
         });
-        if (client.poster && client.poster.options.clientID) client.poster.startInterval();
+        if (client.poster && client.poster.options.clientID) client.poster.startInterval(60000 * 30);
+        client.logger.info(`API Server running on port : ${client.port}`);
         client.logger.info(`Bot Ready! ${client.user.tag} / ${client.user.id}`);
     }
 }

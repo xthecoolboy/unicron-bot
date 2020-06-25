@@ -37,7 +37,7 @@ module.exports = class extends BaseCommand {
         if (!target || target.bot) target = message.author;
         let embed = new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setAuthor(`${target.tag} / ${target.id}`, target.displayAvatarURL() || null)
+            .setAuthor(`${target.tag} / ${target.id}`, target.displayAvatarURL({ dynamic: true }) || null)
             .setTimestamp();
         const mem = new Member(target.id, message.guild.id);
         const warns = client.chunk(await mem.warnings.fetchAll(), 3);

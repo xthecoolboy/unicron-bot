@@ -38,7 +38,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`Incorrect Usage, the correct usages are:\n\`${this.options.usage}\``)
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
         if (target.equals(message.author)) {
@@ -46,7 +46,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`Hey there, You can\'t kick yourself :P`)
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
         const member = message.guild.member(target.id);
@@ -55,7 +55,7 @@ module.exports = class extends BaseCommand {
                 return message.channel.send(new Discord.MessageEmbed()
                     .setColor('RED')
                     .setTimestamp()
-                    .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                     .setDescription('You can\'t kick a member who has a higher or equal to your highest role.')
                 );
             }
@@ -64,7 +64,7 @@ module.exports = class extends BaseCommand {
                     .setColor('RED')
                     .setDescription('Error: I can\'t kick that member.')
                     .setTimestamp()
-                    .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                 );
             }
         } else {
@@ -72,7 +72,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`You can't kick a user that is not on this server. ;-;`)
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
         const _reason = reason ? reason.join(' ') : 'No reason provided.';
@@ -84,7 +84,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`Unexpected error occured. Member was not kicked`)
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
         message.channel.send(`Successfully kick ${target.tag}`);
@@ -92,9 +92,9 @@ module.exports = class extends BaseCommand {
         if (modchannel && modchannel.type === 'text') {
             modchannel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
-                .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
+                .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
                 .setTimestamp()
-                .setThumbnail(target.displayAvatarURL() || null)
+                .setThumbnail(target.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : Kick\n**Reason** : ${_reason}`)
             );
         }
@@ -104,7 +104,7 @@ module.exports = class extends BaseCommand {
                 .setTimestamp()
                 .setTitle(`You have been kicked from ${message.guild.name}`)
                 .setDescription(`Reason : ${_reason}`)
-                .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
+                .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
             );
         } catch (e) {
 

@@ -35,21 +35,21 @@ module.exports = class extends BaseCommand {
         if (!category || !enabled) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription('Hey, Dynamic Feature is disabled or Dynamic Category cannot be found, contact server admins to enable/fix this')
             );
         }
         if (message.channel.parentID !== category) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription('Hey, you can\'t invite users outside a private text channel')
             );
         }
         if (!message.channel.permissionsFor(message.member).has(['MANAGE_CHANNEL'])) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription('Hey, you can\'t invite users to this private channel')
             );
         }
@@ -57,7 +57,7 @@ module.exports = class extends BaseCommand {
         if (!users) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription('Hey, you need to mention who you gonna invite to this channel.')
             );
         }

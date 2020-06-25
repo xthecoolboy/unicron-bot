@@ -1,6 +1,6 @@
 
 const Discord = require('discord.js');
-const ms = require('ms');
+const ms = require('pretty-ms');
 const { Message, GuildChannel } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
@@ -39,7 +39,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`Incorrect Usage, the correct usages are:\n\`${this.options.usage}\``)
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
         if (target.equals(message.author)) {
@@ -47,7 +47,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`Hey there, You mute mute yourself :P`)
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
         const member = message.guild.member(target.id);
@@ -56,7 +56,7 @@ module.exports = class extends BaseCommand {
                 return message.channel.send(new Discord.MessageEmbed()
                     .setColor('RED')
                     .setTimestamp()
-                    .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                     .setDescription('You can\'t mute a member who has a higher or equal to your highest role.')
                 );
             }
@@ -65,7 +65,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`You can't mute a user that is not on this server. ;-;`)
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
         const duration = reason[0] ? ms(reason[0]) : false;
@@ -105,9 +105,9 @@ module.exports = class extends BaseCommand {
         if (modchannel && modchannel.type === 'text') {
             modchannel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
-                .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
+                .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
                 .setTimestamp()
-                .setThumbnail(target.displayAvatarURL() || null)
+                .setThumbnail(target.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : Mute\n**Reason** : ${_reason}\n${duration ? `**Length** : ${ms(duration)}` : ''}`)
             );
         }
@@ -117,7 +117,7 @@ module.exports = class extends BaseCommand {
                 .setTimestamp()
                 .setTitle(`You have been muted from ${message.guild.name}`)
                 .setDescription(`Reason : ${_reason}`)
-                .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
+                .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
             );
         } catch (e) {
             //

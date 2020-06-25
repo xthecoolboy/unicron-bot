@@ -40,7 +40,7 @@ module.exports = class extends BaseCommand {
                     modChannel.send(new Discord.MessageEmbed()
                         .setColor('RANDOM')
                         .setTimestamp()
-                        .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
+                        .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
                         .setDescription(`**Member** : ${user.tag} / ${user.id}\n**Action** : Pardon/Unban\n**Reason** : ${reason ? reason.join(' ') : 'No reason provided'}`)
                     );
                 }

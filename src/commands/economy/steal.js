@@ -81,7 +81,7 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription('Sorry, You need to mention a valid user to rob\n\`steal [UserMention|UserID|UserTag]\`')
             );
         }
@@ -89,7 +89,7 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription('Sorry, you can\'t rob yourself, :P')
             );
         }
@@ -100,7 +100,7 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription(`Sorry, The victim must have atleast **${MINIMUM_COINS}** coins!`)
             );
         }
@@ -108,7 +108,7 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription(`Sorry, You must have atleast **${MINIMUM_COINS}** coins to steal from someone!`)
             );
         }
@@ -138,7 +138,7 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor(0x00FF00)
                 .setTimestamp()
-                .setFooter(`${chance}% Bonus Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
+                .setFooter(`${chance}% Bonus Chance | ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription(`You successfully robbed <@${utarget.id}> and your payout is **${payout}** coins!`)
             );
         }
@@ -163,7 +163,7 @@ module.exports = class extends BaseCommand {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
                 .setTimestamp()
-                .setFooter(`${chance}% Bonus Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
+                .setFooter(`${chance}% Bonus Chance | ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription(`You got caught by the authorities and paid **${lmao}** coins to stay out of prison, OHHH.`)
             );
         }
@@ -172,7 +172,7 @@ module.exports = class extends BaseCommand {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
-            .setFooter(`${chance}% Bonus Chance | ${message.author.id}`, message.author.displayAvatarURL() || null)
+            .setFooter(`${chance}% Bonus Chance | ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || null)
             .setDescription(`You got caught, and paid **${MINIMUM_COINS}** to the victim, OHHH`)
         );
     }

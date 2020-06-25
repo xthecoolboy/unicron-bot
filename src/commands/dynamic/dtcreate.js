@@ -37,14 +37,14 @@ module.exports = class extends BaseCommand {
         if (!category || !enabled) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription('Hey, Dynamic Feature is disabled or Dynamic Category cannot be found, contact server admins to enable/fix this')
             );
         }
         if (message.channel.parentID === category) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription('Hey, you can\'t create a dynamic text inside a dynamic text channel')
             );
         }
@@ -56,7 +56,7 @@ module.exports = class extends BaseCommand {
         if (hasAlready || CateSize >= 10) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription('Hey, you can\'t create an another dynamic text')
             );
         }
@@ -83,7 +83,7 @@ module.exports = class extends BaseCommand {
             .setColor(0x00FF00)
             .setDescription(`Your private text channel has been created! <#${channel.id}>`)
             .setTimestamp()
-            .setAuthor('Unicron Dynamic Text System', client.user.displayAvatarURL())
+            .setAuthor('Unicron Dynamic Text System', client.user.displayAvatarURL({ dynamic: true }))
         );
         const st = message.guild.roles.cache.find(r => r.name.toLowerCase() === 'Dynamic Mod');
         if (st) {
@@ -94,7 +94,7 @@ module.exports = class extends BaseCommand {
         }
         await channel.send(new MessageEmbed()
             .setColor('RANDOM')
-            .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
+            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
             .setDescription(`Hello ${message.author.tag}, welcome to your own private text channel!\n
 You can invite other users to this text channel using
 \`\`\`xl

@@ -38,7 +38,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`Incorrect Usage, the correct usages are:\n\`${this.options.usage}\``)
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
         const member = message.guild.member(target.id);
@@ -47,7 +47,7 @@ module.exports = class extends BaseCommand {
                 return message.channel.send(new Discord.MessageEmbed()
                     .setColor('RED')
                     .setTimestamp()
-                    .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                     .setDescription('You can\'t unmute a member who has a higher or equal to your highest role.')
                 );
             }
@@ -56,7 +56,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`You can't unmute a user that is not on this server. ;-;`)
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
         const MODERATION = await message.guild.db.moderation(true);

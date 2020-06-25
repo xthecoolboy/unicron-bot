@@ -11,9 +11,9 @@ module.exports = class extends BaseEvent {
      * @param {Discord.Guild} guild
      */
     async run(client, guild) {
-        const channel = await client.channels.fetch(client.unicron.channel);
+        const channel = await client.channels.fetch(client.unicron.channel, false);
         try {
-            const g = await client.database.guilds.fetch(guild.id);
+            const g = await client.database.guilds.fetch(guild.id, false);
             await g.destroy(true, true);
         } catch (err) {
             console.log(err);

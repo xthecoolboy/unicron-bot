@@ -54,7 +54,7 @@ module.exports = class extends BaseCommand {
             }).join('\n');
             embed.addField(`__**${name}**__`, text || '\u200b', true);
             embed.addField(`__**${tabl}**__`, cornip || '\u200b', true);
-            embed.setFooter(`Page ${PAGE} of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL() || null);
+            embed.setFooter(`Page ${PAGE} of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }) || null);
             return message.channel.send(embed);
         }
         const text = Chunks[PAGE - 1].map((item, pos) => {
@@ -65,7 +65,7 @@ module.exports = class extends BaseCommand {
         }).join('\n');
         embed.addField(`__**${name}**__`, text || '\u200b', true);
         embed.addField(`__**${tabl}**__`, cornip || '\u200b', true);
-        embed.setFooter(`Page ${PAGE} of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL() || null);
+        embed.setFooter(`Page ${PAGE} of ${pages} | ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }) || null);
         return message.channel.send(embed);
     }
 }

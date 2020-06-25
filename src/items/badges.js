@@ -8,7 +8,7 @@ module.exports = class extends BaseItem {
         super({
             config: {
                 id: 'badges',
-                displayname: '🗳️ Random Badge Crate',
+                displayname: '🗳️ Badge Crate',
                 description: 'Get a RANDOM BADGE!',
             },
             options: {
@@ -79,10 +79,13 @@ module.exports = class extends BaseItem {
             return message.channel.send('Oh oh...it seems you already exceeded the maximum amount of badges ;(');
         }
         if (await message.author.db.badges.has(badge)) {
-            return message.channel.send(`Oh oh... it seems you already have the ${await client.getEmoji(badge)} ${badge} badge, please try again LOL`);
+            const pp = Math.floor(this.options.price * .4);
+            await message.author.db.coins.add(pp);
+            await message.author.db.inventory.remove(this.config.id);
+            return message.channel.send(`Oh oh... it seems you already have the ${await client.getEmoji(badge)} ${badge} badge, but you received **${pp}** coins!`);
         }
         await message.author.db.badges.add(badge);
-        await message.author.db.levelup(client, message, 40);
+        await message.author.db.levelup(client, message, 120);
         await message.author.db.inventory.remove(this.config.id);
         return message.channel.send(`Yay! you have gotten the ${await client.getEmoji(badge)} ${badge} badge!`);
     }

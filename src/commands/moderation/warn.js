@@ -1,6 +1,6 @@
 
 const Discord = require('discord.js');
-const ms = require('ms');
+const ms = require('pretty-ms');
 const Member = require('../../classes/GuildMember');
 const Warning = require('../../modules/Warning');
 const { Message } = require('discord.js');
@@ -41,7 +41,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`Incorrect Usage, the correct usages are:\n\`${this.options.usage}\``)
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
         if (target.equals(message.author)) {
@@ -49,7 +49,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`Hey there, You can't warn yourself :P`)
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
         const member = message.guild.member(target);
@@ -58,7 +58,7 @@ module.exports = class extends BaseCommand {
                 return message.channel.send(new Discord.MessageEmbed()
                     .setColor('RED')
                     .setTimestamp()
-                    .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                     .setDescription('You can\'t warn a member who has a higher or equal to your highest role.')
                 );
             }
@@ -67,7 +67,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`You can't warn a user that is not on this server. Or that user doesn't exist`)
                 .setTimestamp()
-                .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
         const duration = reason[0] ? ms(reason[0]) : false;
@@ -93,9 +93,9 @@ module.exports = class extends BaseCommand {
         if (modChannel) {
             modChannel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
-                .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
+                .setAuthor(`${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
                 .setTimestamp()
-                .setThumbnail(target.displayAvatarURL() || null)
+                .setThumbnail(target.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : Warn\n**Reason** : ${_reason}\n${duration ? `**Length** : ${ms(duration)}` : ''}`)
             );
         }
@@ -105,7 +105,7 @@ module.exports = class extends BaseCommand {
                 .setTimestamp()
                 .setTitle(`You have been warned from ${message.guild.name}`)
                 .setDescription(`Reason : ${_reason}`)
-                .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL() || message.guild.iconURL())
+                .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
             );
         } catch (e) {
 

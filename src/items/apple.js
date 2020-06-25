@@ -32,7 +32,7 @@ module.exports = class extends BaseItem {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
-            .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
+            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
             .setDescription('Hmmmmm this tasty apple!')
         );
     }

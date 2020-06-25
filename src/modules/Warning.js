@@ -92,9 +92,9 @@ module.exports = (client, message, user_id, member) => {
             if (modchannel && modchannel.type === 'text') {
                 modchannel.send(new MessageEmbed()
                     .setColor('RANDOM')
-                    .setAuthor(`${client.user.tag} / ${client.user.id}`, client.user.displayAvatarURL())
+                    .setAuthor(`${client.user.tag} / ${client.user.id}`, client.user.displayAvatarURL({ dynamic: true }))
                     .setTimestamp()
-                    .setThumbnail(message.author.displayAvatarURL() || null)
+                    .setThumbnail(message.author.displayAvatarURL({ dynamic: true }) || null)
                     .setDescription(`**Member** : ${message.author.tag} / ${message.author.id}\n**Action** : ${faction}\n**Reason** : ${reason}\n${duration ? `**Length** : ${ms(duration)}` : ''}`)
                 );
             }
@@ -104,7 +104,7 @@ module.exports = (client, message, user_id, member) => {
                     .setTimestamp()
                     .setTitle(`You have been ${faction} from ${message.guild.name}`)
                     .setDescription(`Reason : ${reason}`)
-                    .setFooter(`Moderator : ${client.user.tag} / ${client.user.id}`, client.user.displayAvatarURL())
+                    .setFooter(`Moderator : ${client.user.tag} / ${client.user.id}`, client.user.displayAvatarURL({ dynamic: true }))
                 );
             } catch (e) {
                 //

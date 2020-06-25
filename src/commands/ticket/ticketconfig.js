@@ -70,7 +70,7 @@ module.exports = class extends BaseCommand {
                     return message.channel.send(new Discord.MessageEmbed()
                         .setColor('RED')
                         .setTimestamp()
-                        .setFooter(message.author.tag, message.author.displayAvatarURL() || null)
+                        .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                         .setDescription('Error: Invalid Key provided, Please try again.')
                     );
                 }

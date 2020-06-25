@@ -9,7 +9,7 @@ module.exports = class extends BaseItem {
         super({
             config: {
                 id: 'pancake',
-                displayname: '🥞 Pancakes',
+                displayname: '🥞 Pancake',
                 description: 'It\'s a cake made from a frying pan!',
             },
             options: {
@@ -32,7 +32,7 @@ module.exports = class extends BaseItem {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
-            .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
+            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
             .setDescription('Ay yes... PANCAKES')
         );
     }

@@ -28,6 +28,28 @@ module.exports = {
         clientLibrary: 'discord.js',
         clientID: '634908645896880128',
     },
+    Authorizations: `
+    dVV9uPm847uSGgR2BVMn
+    RBUiJ7bRU46HnrlMR74I
+    fu2pcJ97jwuype1urh4u
+    XxI9k3THIEYiXQ6tfvSL
+    aAavIPIYGKpojXYUxJcY
+    DAZ5nFI5LgwVUv3vqTty
+    AWAZr9I2F25VUV6KXEB9
+    ZWeURMjxroQHjqC9bqFQ
+    m2R5gqTRHIWFjRxiL87C
+    klL6kyyK0unb3V0I4CSN
+    pRW7zRx6A3UOsHDwlHZx
+    F96ngeTPCnWA4gFDFMRa
+    TfEIcjNCYGvZwJS0Mn9j
+    sWmMc5Uds0uJWT12QYZB
+    cYQ6GRSs5dWlMdKf0hsr
+    1FwViqafCszU7As87qhe
+    u1n4jAYTpLVntCcjOYlZ
+    ueKngbQjNHZaxeVgtzq0
+    0Lb6oSxon3oLShI6hStb
+    AE7uogFqhS0s2dwDW48q
+    `,
     managers: {
         users: {
             maximumCacheSize: 0,

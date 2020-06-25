@@ -2,6 +2,8 @@ const Emotes = require('../../assets/Emotes.json');
 
 const fs = require('fs').promises;
 const path = require('path');
+const express = require('express');
+const rateLimit = require('express-rate-limit');
 const { inspect, promisify } = require('util');
 
 const { Client, Collection, Message, MessageEmbed, Emoji } = require('discord.js');
@@ -12,6 +14,7 @@ const Unicron = require('../handlers/Unicron');
 const BaseCommand = require('./BaseCommand');
 const BaseItem = require('./BaseItem');
 const BaseEvent = require('./BaseEvent');
+const Endpoint = require('./Endpoint');
 
 const UserManager = require('../managers/UserManager');
 const GuildManager = require('../managers/GuildManager');
@@ -45,6 +48,66 @@ module.exports = class UnicronClient extends Client {
     async register() {
         await require('../core')(this);
         await require('../listeners')(this);
+        this.app = express();
+        this.app.use((req, res, next) => {
+            this.logger.info(`${req.ip} : ${req.method} - ${req.url}`, 'Client');
+            next();
+        })
+        this.app.use(rateLimit({
+            windowMs: 60000,
+            max: 50,
+            message: {
+                message: 'Too Many Requests'
+            }
+        }));
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: false }));
+        this.app.get('/', (req, res) => {
+            res.status(200).send({
+                gateway: '/api/v1/',
+                author: 'oadpoaw'
+            });
+        });
+        await this.registerEndpoints('../endpoints');
+    }
+    /**
+     * @private
+     * @param {String} dir 
+     */
+    async registerEndpoints(dir) {
+        if (this.isLoaded) return;
+        const filePath = path.join(__dirname, dir);
+        const files = await fs.readdir(filePath);
+        for await (const file of files) {
+            if (file.endsWith('.js')) {
+                const endpoint = require(path.join(filePath, file));
+                if (endpoint.prototype instanceof Endpoint) {
+                    const instance = new endpoint(this);
+                    const url = '/api/v1' + instance.url;
+                    this.logger.info(`API Endpoint - ${url}`);
+                    this.app.use(url, instance.createRoute());
+                    continue;
+                }
+            }
+        }
+        this.app.use((req, res) => {
+            res.status(404).send({
+                message: 'Not Found',
+                status: 404,
+            });
+        });
+    }
+    /**
+     * @returns {Promise<void>}
+     * @param {String} token 
+     * @param {Number} port 
+     */
+    superlogin(token, port = 4200) {
+        return new Promise(async (res, rej) => {
+            this.port = port;
+            this.app.listen(port);
+            await this.login(token);
+        });
     }
     /**
      * @returns {Promise<Emoji>}

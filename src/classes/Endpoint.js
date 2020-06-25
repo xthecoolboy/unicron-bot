@@ -1,16 +1,16 @@
 
 const express = require('express');
-const API = require('../API')
+const Client = require('./Unicron');
 
 class Endpoint {
     /**
      * 
      * @param {String} url 
-     * @param {API} server 
+     * @param {Client} client 
      */
-    constructor(url, server) {
+    constructor(url, client) {
         this.url = url;
-        this.server = server;
+        this.client = client;
         this.route = express.Router();
     }
 }

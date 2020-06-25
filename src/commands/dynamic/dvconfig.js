@@ -80,7 +80,7 @@ module.exports = class extends BaseCommand {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RED')
                             .setTimestamp()
-                            .setFooter(message.author.tag, message.author.displayAvatarURL() || message.guild.iconURL())
+                            .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
                             .setDescription('Incorrect arguments, pls use `help dvconfig` for more information.')
                         );
                     }
@@ -100,7 +100,7 @@ module.exports = class extends BaseCommand {
                 return message.channel.send(new Discord.MessageEmbed()
                     .setColor('RED')
                     .setTimestamp()
-                    .setFooter(message.author.tag, message.author.displayAvatarURL() || message.guild.iconURL())
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
                     .setDescription('Incorrect arguments, pls use `help dvconfig` for more information.')
                 );
             }

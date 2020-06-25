@@ -71,7 +71,7 @@ module.exports = class extends BaseCommand {
         if (!/```js[a-z]*[\s\S]*?```/.test(content)) {
             return message.channel.send(new MessageEmbed()
                 .setColor('GREEN')
-                .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
+                .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .addField('Output', `\`\`\`xl\nJavascript Codeblock Parse error\n\`\`\``)
             );
         }
@@ -81,7 +81,7 @@ module.exports = class extends BaseCommand {
             const clean = await client.clean(output);
             message.channel.send(new MessageEmbed()
                 .setColor('GREEN')
-                .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
+                .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .addField('Code', `${client.trim(content, 512)}`)
                 .addField('Output', `\`\`\`xl\n${client.trim(clean, 1000)}\n\`\`\``)
             );
@@ -89,7 +89,7 @@ module.exports = class extends BaseCommand {
             const clean = await client.clean(err);
             message.channel.send(new MessageEmbed()
                 .setColor('RED')
-                .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
+                .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
                 .addField('Output', `\`\`\`xl\n${client.trim(clean, 1000)}\n\`\`\``)
             );
         }

@@ -45,7 +45,7 @@ module.exports = class extends BaseCommand {
                     return message.channel.send(new Discord.MessageEmbed()
                         .setColor('RED')
                         .setTimestamp()
-                        .setFooter(message.author.tag, message.author.displayAvatarURL() || client.user.displayAvatarURL())
+                        .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         .setDescription('Error: Invalid flag provided, Please try again.')
                     );
                 }
@@ -106,7 +106,7 @@ module.exports = class extends BaseCommand {
         if (response3.content === 'react') {
             const m = await channel.send(new Discord.MessageEmbed()
                 .setColor(0x00FF00)
-                .setAuthor(client.user.tag, client.user.displayAvatarURL())
+                .setAuthor(client.user.tag, client.user.displayAvatarURL({ dynamic: true }))
                 .setDescription(`This server is protected by [Unicron](${client.unicron.serverInviteURL} 'Unicron's Support Server'), a powerful bot that prevents servers from being raided, React ${await client.getEmoji('yes')} to get yourself verified!`)
             );
             m.react(await client.getEmoji('yes'));
