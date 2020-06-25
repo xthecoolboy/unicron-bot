@@ -20,7 +20,10 @@ module.exports = class extends BaseEvent {
         const guild = await client.database.guilds.fetch(member.guild.id);
         const verifier = await guild.verification('type');
         if (['discrim', 'captcha'].includes(verifier)) {
-            if (await guild.verification('enabled') && await guild.verification('channel') && await guild.verification('role')) {
+            const enabled = await guild.verification('enabled');
+            const channel = await guild.verification('channel');
+            const role = await guild.verification('role');
+            if (enabled && channel && role) {
                 const dm = await member.user.createDM();
                 switch (verifier) {
                     case 'discrim': {
@@ -44,6 +47,10 @@ module.exports = class extends BaseEvent {
                         break;
                     }
                 }
+                setTimeout(async () => {
+                    await member.fetch();
+                    if (!member.roles.cache.has(role) && member.kickable) await member.kick('Did not verified in 10 mins');
+                }, 60000 * 10)
             }
         }
         const channel_id = await guild.welcomer('channel');
