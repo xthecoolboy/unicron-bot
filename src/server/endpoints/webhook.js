@@ -1,6 +1,6 @@
 const Endpoint = require('../classes/Endpoint');
 const Authorization = require('../validators/Authorization');
-const Voter = require('../classes/Voter');
+const Voter = require('../../classes/Voter');
 
 class Webhook extends Endpoint {
     constructor(app) {

@@ -14,7 +14,6 @@ const Unicron = require('../handlers/Unicron');
 const BaseCommand = require('./BaseCommand');
 const BaseItem = require('./BaseItem');
 const BaseEvent = require('./BaseEvent');
-const Endpoint = require('./Endpoint');
 
 const UserManager = require('../managers/UserManager');
 const GuildManager = require('../managers/GuildManager');
@@ -43,73 +42,6 @@ module.exports = class UnicronClient extends Client {
         }
         this.permission = new PermissionManager(this, {
             client: this,
-        });
-    }
-    /**
-     * @brief Attach something to the client
-     * @param {String} path 
-     */
-    async register() {
-        require('../listeners/process')(this);
-        this.app = express();
-        this.app.use((req, res, next) => {
-            this.logger.info(`${req.ip} : ${req.method} - ${req.url}`, 'Client');
-            next();
-        })
-        this.app.use(rateLimit({
-            windowMs: 60000,
-            max: 50,
-            message: {
-                message: 'Too Many Requests'
-            }
-        }));
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: false }));
-        this.app.get('/', (req, res) => {
-            res.status(200).send({
-                gateway: '/api/v1/',
-                author: 'oadpoaw'
-            });
-        });
-        await this.registerEndpoints('../endpoints');
-    }
-    /**
-     * @private
-     * @param {String} dir 
-     */
-    async registerEndpoints(dir) {
-        if (this.isLoaded) return;
-        const filePath = path.join(__dirname, dir);
-        const files = await fs.readdir(filePath);
-        for await (const file of files) {
-            if (file.endsWith('.js')) {
-                const endpoint = require(path.join(filePath, file));
-                if (endpoint.prototype instanceof Endpoint) {
-                    const instance = new endpoint(this);
-                    const url = '/api/v1' + instance.url;
-                    this.logger.info(`API Endpoint - ${url}`);
-                    this.app.use(url, instance.createRoute());
-                    continue;
-                }
-            }
-        }
-        this.app.use((req, res) => {
-            res.status(404).send({
-                message: 'Not Found',
-                status: 404,
-            });
-        });
-    }
-    /**
-     * @returns {Promise<void>}
-     * @param {String} token 
-     * @param {Number} port 
-     */
-    superlogin(token, port = 4200) {
-        return new Promise(async (res, rej) => {
-            this.port = port;
-            this.app.listen(port);
-            await this.login(token);
         });
     }
     /**
@@ -285,6 +217,10 @@ module.exports = class UnicronClient extends Client {
             return previous;
         }, []);
     }
+    /**
+     * 
+     * @param {String} dir 
+     */
     async registerEvents(dir) {
         const filePath = path.join(__dirname, dir);
         const files = await fs.readdir(filePath);
@@ -295,6 +231,7 @@ module.exports = class UnicronClient extends Client {
                     const instance = new Event();
                     this.on(instance.eventName.split('.')[0], instance.run.bind(instance, this));
                 }
+                delete require.cache[require.resolve(path.join(filePath, file))];
             }
         }
     }

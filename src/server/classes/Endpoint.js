@@ -1,6 +1,6 @@
 
 const express = require('express');
-const Client = require('./Unicron');
+const Client = require('./Server');
 
 class Endpoint {
     /**

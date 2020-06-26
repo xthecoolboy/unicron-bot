@@ -1,5 +1,5 @@
 const { request, response } = require('express');
-const { Authorizations } = require('../utils/Constants');
+const { Authorizations } = require('../../utils/Constants');
 
 /**
  * 
