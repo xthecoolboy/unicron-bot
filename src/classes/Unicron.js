@@ -20,11 +20,15 @@ const UserManager = require('../managers/UserManager');
 const GuildManager = require('../managers/GuildManager');
 const PermissionManager = require('../managers/PermissionManager');
 
-const options = require('../options');
+const options = require('../utils/Constants');
 
 module.exports = class UnicronClient extends Client {
     constructor() {
-        super(options.clientOptions);
+        super({
+            partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+            messageCacheMaxSize: 100,
+            messageSweepInterval: 30,
+        });
         this.unicron = new Unicron(options.unicron)
         this.poster = new Poster(options.botlisting);
         this.commands = new Collection();
@@ -46,8 +50,7 @@ module.exports = class UnicronClient extends Client {
      * @param {String} path 
      */
     async register() {
-        await require('../core')(this);
-        await require('../listeners')(this);
+        require('../listeners/process')(this);
         this.app = express();
         this.app.use((req, res, next) => {
             this.logger.info(`${req.ip} : ${req.method} - ${req.url}`, 'Client');
@@ -164,6 +167,10 @@ module.exports = class UnicronClient extends Client {
             return `Unable to load item ${dir}: ${e}`;
         }
     }
+    /**
+     * 
+     * @param {String} dir 
+     */
     async registerItems(dir) {
         const filePath = path.join(__dirname, dir);
         const files = await fs.readdir(filePath);

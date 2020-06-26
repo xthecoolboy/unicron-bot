@@ -1,9 +1,4 @@
 module.exports = {
-    clientOptions: {
-        partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
-        messageCacheMaxSize: 100,
-        messageSweepInterval: 30,
-    },
     unicron: {
         owner: process.env.BOT_OWNER_ID,
         server: process.env.BOT_SERVER_ID,

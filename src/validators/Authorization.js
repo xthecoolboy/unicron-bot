@@ -1,5 +1,6 @@
 const { request, response } = require('express');
-const { Authorizations } = require('../options');
+const { Authorizations } = require('../utils/Constants');
+
 /**
  * 
  * @param {request} req 
@@ -12,7 +13,7 @@ function Authorization(req, res, next) {
         next();
     } else {
         res.status(403).send({
-            message: "Not Authorizaed",
+            message: "Not Authorized",
         });
     }
 }

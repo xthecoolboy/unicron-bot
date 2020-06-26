@@ -40,37 +40,34 @@ module.exports = class extends BaseEvent {
         message.author.permLevel = await client.permission.level(message);
 
         if (await memberVerification(client, message)) return;
+        if (await swearFilter(client, message)) return;
         if (await inviteFilter(client, message)) return;
         if (await mentionSpamFilter(client, message)) return;
 
         const prefix = await message.guild.db.settings('prefix');
         const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${client.escapeRegex(prefix)})\\s*`);
-        if (!prefixRegex.test(message.content)) {
-            await swearFilter(client, message);
-            return;
-        }
+        if (!prefixRegex.test(message.content)) return;
         const [, matchedPrefix] = message.content.match(prefixRegex);
         const args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
         const commandName = args.shift().toLowerCase();
         const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.options.aliases && cmd.options.aliases.includes(commandName));
         if (!command) {
             const msg = await Tags(message, commandName);
-            if (msg === '[TAG_DOESNT_EXISTS]') {
-                await swearFilter(client, message);
-                return;
-            }
+            if (msg === '[TAG_DOESNT_EXISTS]') return;
             return message.channel.send(msg.replace(/@/g, '@' + String.fromCharCode(2803)));
         }
 
         if (command.options.premiumServer && ! await message.guild.db.settings('premium')) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
+                .setTimestamp()
                 .setDescription(`Sorry, this command is only available for [Premium Servers](${client.unicron.serverInviteURL} 'Join here').`)
             );
         }
         if (message.author.permLevel < client.permission.cache.get(command.config.permission).level) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
+                .setTimestamp()
                 .setDescription(`You do not have permission to use this command.
                 Your permission level is \`${client.permission.levels[message.author.permLevel]}\`
                 This command requires \`${command.config.permission}\``)
@@ -80,6 +77,7 @@ module.exports = class extends BaseEvent {
             if (!message.guild.me.permissions.has(command.options.clientPermissions)) {
                 return message.channel.send(new MessageEmbed()
                     .setColor('RED')
+                    .setTimestamp()
                     .setDescription(`Sorry, but i need the following permisions to perform this command
 \`\`\`xl
 ${command.options.clientPermissions.join(' ')}
@@ -91,6 +89,7 @@ ${command.options.clientPermissions.join(' ')}
         if (command.options.args && !args.length && command.options.usage) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
+                .setTimestamp()
                 .setDescription(`You didn't provide any arguments, ${message.author}!\nThe proper usage would be: \n\`\`\`xl\n${command.options.usage}\n\`\`\``)
             );
         }
@@ -101,6 +100,7 @@ ${command.options.clientPermissions.join(' ')}
         if (command.options.nsfwCommand && !message.channel.nsfw) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
+                .setTimestamp()
                 .setDescription(`Sorry, i can\'t run nsfw commands on a non-nsfw channel.`)
             );
         }
@@ -115,6 +115,7 @@ ${command.options.clientPermissions.join(' ')}
         if (command.options.donatorOnly && !donator) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
+                .setTimestamp()
                 .setDescription(`Sorry, this command is limited only for [Donators](${message.unicron.serverInviteURL} 'Click me!').`)
             );
         } else if (donator) {
@@ -127,6 +128,7 @@ ${command.options.clientPermissions.join(' ')}
                 const donCD = Math.floor(bcd - (bcd * 0.35));
                 return message.channel.send(new MessageEmbed()
                     .setColor('RED')
+                    .setTimestamp()
                     .setDescription(` ${await client.getEmoji('slowmode', 'system')} Please wait **${ms(timeLeft)}** before reusing the command again.`)
                 );
             }
@@ -147,6 +149,7 @@ ${command.options.clientPermissions.join(' ')}
         } catch (e) {
             message.channel.send(new MessageEmbed()
                 .setColor('RED')
+                .setTimestamp()
                 .setDescription(`Something went wrong executing that command. If this keeps on happening please report it to the Bot Developer to handle this issue at [Support Server](${client.unicron.serverInviteURL}).`)
             );
             client.logger.error(e);

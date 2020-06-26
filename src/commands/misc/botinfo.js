@@ -30,7 +30,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const OWNER = await client.users.fetch(client.unicron.owner);
+        const OWNER = await client.users.fetch(client.unicron.owner, false);
         message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTitle('Unicron Stats')

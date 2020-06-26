@@ -19,9 +19,8 @@ module.exports = class Guild extends Base {
      * @param {String} id 
      * @param {Object} data 
      */
-    constructor(id, data) {
+    constructor(id) {
         super(id);
-        this.data = data;
     }
     /**
      * 

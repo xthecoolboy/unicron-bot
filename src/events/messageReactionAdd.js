@@ -36,6 +36,7 @@ module.exports = class extends BaseEvent {
                 if (!member.roles.cache.has(role)) await member.roles.add(role);
                 reaction.message.channel.send(new MessageEmbed()
                     .setColor(0x00FF00)
+                    .setTimestamp()
                     .setDescription(`You have been verified <@${user.id}>`)
                 ).then(async m => {
                     await m.delete({ timeout: 5000 });

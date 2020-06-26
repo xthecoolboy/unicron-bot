@@ -1,19 +1,5 @@
-
 const { Guild, MessageEmbed } = require('discord.js');
-
 const Client = require('../classes/Unicron');
-
-const {
-    GuildSettings,
-    GuildDynamicVoice,
-    GuildFilter,
-    GuildLeave,
-    GuildWelcome,
-    GuildModeration,
-    GuildTicket,
-    GuildVerification,
-} = require('../database/database.js');
-
 const BaseEvent = require('../classes/BaseEvent');
 const Blacklist = require('../modules/Blacklist');
 

@@ -11,11 +11,11 @@ module.exports = class extends BaseEvent {
      * @param {Client} client 
      */
     async run(client) {
-        await client.database.users.sync();
-        await client.database.guilds.sync();
+        client.database.users.startInterval();
+        client.database.guilds.startInterval();
         client.user.setPresence({
             activity: {
-                name: `${client.guilds.cache.size} guilds!`,
+                name: `${client.guilds.cache.size} guilds! | ?help`,
                 type: 'LISTENING',
             },
             status: 'online',

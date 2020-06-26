@@ -1,42 +1,46 @@
 const Sequelize = require('sequelize');
 const { Logger } = require('../utils/');
 
-const UnicronDB = new Sequelize(
-    'database',
+function Debug(...args) {
+    Logger.debug(args[0], 'Database');
+}
+
+const UnicronDB = new Sequelize.Sequelize(
+    'unicron_admin',
     process.env.UNICRON_DATABASE_USERNAME,
     process.env.UNICRON_DATABASE_PASSWORD,
     {
         host: 'localhost',
         dialect: 'sqlite',
-        logging: false,
+        logging: Debug,
         storage: `./database/${process.env.UNICRON_DATABASE_FILE}.sqlite`,
         retry: {
             max: 10,
         }
     }
 );
-const UserDB = new Sequelize(
-    'database',
+const UserDB = new Sequelize.Sequelize(
+    'user_database',
     process.env.USER_DATABASE_USERNAME,
     process.env.USER_DATABASE_PASSWORD,
     {
         host: 'localhost',
         dialect: 'sqlite',
-        logging: false,
+        logging: Debug,
         storage: `./database/${process.env.USER_DATABASE_FILE}.sqlite`,
         retry: {
             max: 10,
         }
     }
 )
-const GuildDB = new Sequelize(
-    'database',
+const GuildDB = new Sequelize.Sequelize(
+    'guild_database',
     process.env.GUILD_DATABASE_USERNAME,
     process.env.GUILD_DATABASE_PASSWORD,
     {
         host: 'localhost',
         dialect: 'sqlite',
-        logging: false,
+        logging: Debug,
         storage: `./database/${process.env.GUILD_DATABASE_FILE}.sqlite`,
         retry: {
             max: 10,
@@ -60,34 +64,34 @@ const GuildTicket = GuildDB.import('../models/guild/ticket');
 const GuildDynamicVoice = GuildDB.import('../models/guild/dynamicVoice');
 const GuildMember = GuildDB.import('../models/guild/member');
 
-const SyncDatabase = async function () {
+if (process.argv.includes('--database')) {
+    const force = process.argv.includes('--reset');
     Logger.info('Connecting to databases...');
-    const auth = [
-        await UnicronDB.authenticate().then(() => {
-            Logger.info('Unicron Administrative Database synced!');
-        }).catch(err => {
-            Logger.error(`Unable to connect to the database: ${err} ${JSON.stringify(err)}`);
-        }),
-        await UserDB.authenticate().then(() => {
-            Logger.info('User Database synced!');
-        }).catch(err => {
-            Logger.error(`Unable to connect to the database: ${err} ${JSON.stringify(err)}`);
-        }),
-        await GuildDB.authenticate().then(() => {
-            Logger.info('Guild Database synced!');
-        }).catch(err => {
-            Logger.error(`Unable to connect to the database: ${err} ${JSON.stringify(err)}`);
-        }),
-    ];
-    Promise.all(auth).then(() => {
-        Logger.info('Database connection established!');
-    }).catch(err => {
-        return Logger.error(`Error occured on connecting to database : ${err} ${JSON.stringify(err)}`);
-    })
+    if (process.argv.includes('--all') || process.argv.includes('--unicron')) {
+        UnicronDB.sync({ force }).then(() => {
+            Logger.info('Unicron Database Synced!');
+            UnicronDB.close();
+        }).catch(Logger.error);
+    }
+    if (process.argv.includes('--all') || process.argv.includes('--user')) {
+        UserDB.sync({ force }).then(() => {
+            Logger.info('User Database Synced!');
+            UserDB.close();
+        }).catch(Logger.error);
+    }
+    if (process.argv.includes('--all') || process.argv.includes('--guild')) {
+        GuildDB.sync({ force }).then(() => {
+            Logger.info('Guild Database Synced!');
+            GuildDB.close();
+        }).catch(Logger.error);
+    }
+    process.exit(0);
 }
 
 module.exports = {
-    SyncDatabase,
+    UnicronDB,
+    GuildDB,
+    UserDB,
     Admin,
     UserProfile,
     UserInventory,

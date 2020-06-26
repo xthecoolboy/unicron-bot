@@ -15,9 +15,8 @@ module.exports = class User extends Base {
      * @param {String} id 
      * @param {UserProfile} data 
      */
-    constructor(id, data) {
+    constructor(id) {
         super(id);
-        this.data = data;
         this.inventory = new UserInventory(this, id);
         this.coins = new UserCoin(this, id);
         this.badges = new UserBadge(this, id);
@@ -36,7 +35,7 @@ module.exports = class User extends Base {
     profile(value) {
         return new Promise(async (resolve, reject) => {
             try {
-                let user = await UserProfile.findOne({ where: { user_id: this.id}});
+                let user = await UserProfile.findOne({ where: { user_id: this.id } });
                 if (!user) user = await UserProfile.create({ user_id: this.id });
                 if (typeof value === 'boolean') return resolve(this.data);
                 return resolve(this.data[value]);
