@@ -37,8 +37,8 @@ module.exports = class User extends Base {
             try {
                 let user = await UserProfile.findOne({ where: { user_id: this.id } });
                 if (!user) user = await UserProfile.create({ user_id: this.id });
-                if (typeof value === 'boolean') return resolve(this.data);
-                return resolve(this.data[value]);
+                if (typeof value === 'boolean') return resolve(user);
+                return resolve(user[value]);
             } catch (e) {
                 reject(e);
             }

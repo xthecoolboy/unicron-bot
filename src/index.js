@@ -3,23 +3,65 @@ require('./prototypes/Array');
 require('./prototypes/Number');
 require('./prototypes/Object');
 require('./prototypes/String');
-require('./database/Connection');
 require('./listeners/process');
+require('./database/Connection');
 require('./server/server');
 require('./cli');
 
-const Unicron = require('./classes/Unicron');
+const { Logger } = require('./utils');
 
-const client = new Unicron();
+const { ShardingManager } = require('discord.js');
 
-(async function () {
+const Manager = new ShardingManager('./src/bot.js', {
 
-    await client.registerItems('../items/');
+    token: process.env.BOT_TOKEN,
 
-    await client.registerCommands('../commands/');
+    totalShards: 3,
 
-    await client.registerEvents('../events/');
+    shardArgs: ['--shard']
 
-    await client.login(process.env.BOT_TOKEN);
+});
+
+Manager.spawn();
+
+Manager.on('shardCreate', (shard) => {
+
+    Logger.info(`Shard[${shard.id}] has been created!`, 'Shard');
+
+    shard.on('ready', () => {
+
+        Logger.info(`Shard[${shard.id}] is now ready!`, 'Shard');
+
+    });
+
+    shard.on('death', (child) => {
+
+        Logger.error(`Shard[${shard.id}][${child.pid}] Death`, 'Shard');
+
+    });
+
+    shard.on('disconnect', () => {
+
+        Logger.error(`Shard[${shard.id}] Disconnection`, 'Shard');
+
+    });
+
+    shard.on('error', (err) => {
+
+        Logger.error(`Shard[${shard.id}] Error : ${err.name}`, 'Shard');
+
+    });
+
+    shard.on('reconnecting', () => {
+
+        Logger.info(`Shard[${shard.id}] reconnecting...`, 'Shard');
+
+    });
+
+    shard.on('spawn', (child) => {
+
+        Logger.info(`Shard[${shard.id}][${child.pid}] has been spawned!`, 'Shard');
+
+    });
     
-})();
+});

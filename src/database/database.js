@@ -1,12 +1,12 @@
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
 const { Logger } = require('../utils/');
 
 function Debug(...args) {
     Logger.debug(args[0], 'Database');
 }
 
-const UnicronDB = new Sequelize.Sequelize(
-    'unicron_admin',
+const UnicronDB = new Sequelize(
+    'database',
     process.env.UNICRON_DATABASE_USERNAME,
     process.env.UNICRON_DATABASE_PASSWORD,
     {
@@ -19,8 +19,8 @@ const UnicronDB = new Sequelize.Sequelize(
         }
     }
 );
-const UserDB = new Sequelize.Sequelize(
-    'user_database',
+const UserDB = new Sequelize(
+    'database',
     process.env.USER_DATABASE_USERNAME,
     process.env.USER_DATABASE_PASSWORD,
     {
@@ -33,8 +33,8 @@ const UserDB = new Sequelize.Sequelize(
         }
     }
 )
-const GuildDB = new Sequelize.Sequelize(
-    'guild_database',
+const GuildDB = new Sequelize(
+    'database',
     process.env.GUILD_DATABASE_USERNAME,
     process.env.GUILD_DATABASE_PASSWORD,
     {
@@ -44,7 +44,7 @@ const GuildDB = new Sequelize.Sequelize(
         storage: `./database/${process.env.GUILD_DATABASE_FILE}.sqlite`,
         retry: {
             max: 10,
-        }
+        },
     }
 )
 

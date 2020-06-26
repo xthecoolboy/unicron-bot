@@ -33,12 +33,14 @@ module.exports = class extends BaseEvent {
             .addField('Voice Channels', guild.channels.cache.filter(channel => channel.type === 'voice').size, true)
             .setTimestamp()
         );
-        client.user.setPresence({
-            activity: {
-                name: `${client.guilds.cache.size} guilds! | ?help`,
-                type: 'LISTENING',
-            },
-            status: 'online',
-        });
+        client.shard.broadcastEval(`
+            this.user.setPresence({
+                activity: {
+                    name: \`${await client.getCount('guilds')} guilds! | ?help\`,
+                    type: 'LISTENING',
+                },
+                status: 'online',
+            });
+        `);
     }
 }

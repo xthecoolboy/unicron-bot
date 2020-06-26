@@ -13,15 +13,11 @@ module.exports = class UserManager extends BaseManager {
         this.client.setInterval(async () => {
             const users = await UserProfile.findAll();
             this.client.logger.info(`Clearing Users Database cache...`);
-            let count = 0;
-            const now = Date.now();
             for (const data of users) {
                 if (!this.client.users.cache.has(data.user_id)) {
                     this.cache.delete(data.user_id);
-                    count++;
                 }
             }
-            this.client.logger.info(`Cleared ${count} users in ${ms(Date.now() - now)}`);
         }, 60000 * 10);
     }
     /**

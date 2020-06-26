@@ -13,14 +13,6 @@ module.exports = class extends BaseEvent {
     async run(client) {
         client.database.users.startInterval();
         client.database.guilds.startInterval();
-        client.user.setPresence({
-            activity: {
-                name: `${client.guilds.cache.size} guilds! | ?help`,
-                type: 'LISTENING',
-            },
-            status: 'online',
-        });
         if (client.poster && client.poster.options.clientID) client.poster.startInterval(60000 * 30);
-        client.logger.info(`Bot Ready! ${client.user.tag} / ${client.user.id}`);
     }
 }

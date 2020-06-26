@@ -1,7 +1,6 @@
 const { GuildSettings } = require('../database/database');
 const BaseManager = require('../classes/BaseManager');
 const Guild = require('../classes/Guild');
-const ms = require('pretty-ms');
 
 module.exports = class GuildManager extends BaseManager {
     constructor(client, options) {
@@ -13,16 +12,11 @@ module.exports = class GuildManager extends BaseManager {
     startInterval() {
         this.client.setInterval(async () => {
             const guilds = await GuildSettings.findAll();
-            this.client.logger.info(`Clearing Guild Database cache...`);
-            let count = 0;
-            const now = Date.now();
             for (const data of guilds) {
                 if (!this.client.guilds.cache.has(data.guild_id)) {
                     this.cache.delete(data.guild_id);
-                    count++;
                 }
             }
-            this.client.logger.info(`Cleared ${count} guilds in ${ms(Date.now() - now)}`);
         }, 60000 * 10);
     }
     /**

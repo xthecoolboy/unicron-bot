@@ -30,7 +30,6 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        message.guild.emojis.cache.size
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setAuthor(`${message.guild.name} / ${message.guild.id}`)
@@ -44,6 +43,7 @@ module.exports = class extends BaseCommand {
             .addField('Channel Categories', message.guild.channels.cache.filter(channel => channel.type === 'category').size, true)
             .addField('Text Channels', message.guild.channels.cache.filter(channel => channel.type === 'text').size, true)
             .addField('Voice Channels', message.guild.channels.cache.filter(channel => channel.type === 'voice').size, true)
+            .addField('Shard ID', message.guild.shardID, true)
             .setTimestamp()
         );
     }

@@ -18,13 +18,15 @@ module.exports = class extends BaseEvent {
         } catch (err) {
             console.log(err);
         }
-        client.user.setPresence({
-            activity: {
-                name: `${client.guilds.cache.size} guilds! | ?help`,
-                type: 'LISTENING',
-            },
-            status: 'online',
-        });
         channel.send(`Unicron left \`${guild.name}\``);
+        client.shard.broadcastEval(`
+            this.user.setPresence({
+                activity: {
+                    name: \`${await client.getCount('guilds')} guilds! | ?help\`,
+                    type: 'LISTENING',
+                },
+                status: 'online',
+            });
+        `);
     }
 }

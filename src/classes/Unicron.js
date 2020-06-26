@@ -2,11 +2,9 @@ const Emotes = require('../../assets/Emotes.json');
 
 const fs = require('fs').promises;
 const path = require('path');
-const express = require('express');
-const rateLimit = require('express-rate-limit');
 const { inspect, promisify } = require('util');
 
-const { Client, Collection, Message, MessageEmbed, Emoji } = require('discord.js');
+const { Client, Collection, Message, MessageEmbed, Emoji, Guild, GuildEmoji } = require('discord.js');
 
 const { Poster } = require('dbots');
 const Unicron = require('../handlers/Unicron');
@@ -48,8 +46,31 @@ module.exports = class UnicronClient extends Client {
      * @returns {Promise<Emoji>}
      * @param {String} name 
      */
-    async getEmoji(name) {
-        return this.emojis.cache.get(Emotes[name]);
+    getEmoji(name) {
+        function findEmoji(id) {
+            const temp = this.emojis.cache.get(id);
+            if (!temp) return null;
+            const emoji = Object.assign({}, temp);
+            if (emoji.guild) emoji.guild = emoji.guild.id;
+            emoji.require_colons = emoji.requiresColons;
+            return emoji;
+        }
+        return new Promise(async (resolve, reject) => {
+            return resolve(
+                await this.shard.broadcastEval(`(${findEmoji}).call(this, '${Emotes[name]}')`)
+                    .then((arr) => {
+                        const femoji = arr.find(emoji => emoji);
+                        if (!femoji) return null;
+                        return this.api.guilds(femoji.guild)
+                            .get()
+                            .then(raw => {
+                                const guild = new Guild(this, raw);
+                                const emoji = new GuildEmoji(this, femoji, guild);
+                                return emoji;
+                        });
+                    })
+            );
+        });
     }
     /**
      * 
@@ -234,5 +255,12 @@ module.exports = class UnicronClient extends Client {
                 delete require.cache[require.resolve(path.join(filePath, file))];
             }
         }
+    }
+    /**
+     * @returns {Promise<Number>}
+     * @param {String} props
+     */
+    async getCount(props = 'guilds' || 'users') {
+        return this.shard.fetchClientValues(`${props}.cache.size`).then((results) => results.reduce((prev, cur) => prev + cur, 0));
     }
 }
