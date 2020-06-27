@@ -1,5 +1,5 @@
 const Emotes = require('../../assets/Emotes.json');
-
+const crypto = require('crypto')
 const fs = require('fs').promises;
 const path = require('path');
 const { inspect, promisify } = require('util');
@@ -67,7 +67,7 @@ module.exports = class UnicronClient extends Client {
                                 const guild = new Guild(this, raw);
                                 const emoji = new GuildEmoji(this, femoji, guild);
                                 return emoji;
-                        });
+                            });
                     })
             );
         });
@@ -262,5 +262,72 @@ module.exports = class UnicronClient extends Client {
      */
     async getCount(props = 'guilds' || 'users') {
         return this.shard.fetchClientValues(`${props}.cache.size`).then((results) => results.reduce((prev, cur) => prev + cur, 0));
+    }
+    /**
+     * @returns {Array<any>}
+     * @param {Array<any>} arr 
+     * @param {Number} maxLen 
+     */
+    trimArray(arr, maxLen = 10) {
+        if (arr.length > maxLen) {
+            const len = arr.length - maxLen;
+            arr = arr.slice(0, maxLen);
+            arr.push(`${len} more...`);
+        }
+        return arr;
+    }
+    list(arr, conj = 'and') {
+        const len = arr.length;
+        if (len === 0) return '';
+        if (len === 1) return arr[0];
+        return `${arr.slice(0, -1).join(', ')}${len > 1 ? `${len > 2 ? ',' : ''} ${conj} ` : ''}${arr.slice(-1)}`;
+    }
+
+    shorten(text, maxLen = 2000) {
+        return text.length > maxLen ? `${text.substr(0, maxLen - 3)}...` : text;
+    }
+
+    removeDuplicates(arr) {
+        if (arr.length === 0 || arr.length === 1) return arr;
+        const newArr = [];
+        for (let i = 0; i < arr.length; i++) {
+            if (newArr.includes(arr[i])) continue;
+            newArr.push(arr[i]);
+        }
+        return newArr;
+    }
+
+    sortByName(arr, prop) {
+        return arr.sort((a, b) => {
+            if (prop) return a[prop].toLowerCase() > b[prop].toLowerCase() ? 1 : -1;
+            return a.toLowerCase() > b.toLowerCase() ? 1 : -1;
+        });
+    }
+
+    firstUpperCase(text, split = ' ') {
+        return text.split(split).map(word => `${word.charAt(0).toUpperCase()}${word.slice(1)}`).join(' ');
+    }
+
+    formatNumber(number, minimumFractionDigits = 0) {
+        return Number.parseFloat(number).toLocaleString(undefined, {
+            minimumFractionDigits,
+            maximumFractionDigits: 2
+        });
+    }
+
+    formatNumberK(number) {
+        return number > 999 ? `${(number / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}K` : number;
+    }
+
+    base64(text, mode = 'encode') {
+        if (mode === 'encode') return Buffer.from(text).toString('base64');
+        if (mode === 'decode') return Buffer.from(text, 'base64').toString('utf8') || null;
+        throw new TypeError(`${mode} is not a supported base64 mode.`);
+    }
+    embedURL(title, url, display) {
+		return `[${title}](${url.replace(/\)/g, '%27')}${display ? ` "${display}"` : ''})`;
+	}
+    hash(text, algorithm) {
+        return crypto.createHash(algorithm).update(text).digest('hex');
     }
 }

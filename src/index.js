@@ -6,7 +6,7 @@ require('./prototypes/String');
 require('./listeners/process');
 require('./database/Connection');
 require('./server/server');
-require('./cli');
+require('./terminal');
 
 const { Logger } = require('./utils');
 
@@ -16,7 +16,7 @@ const Manager = new ShardingManager('./src/bot.js', {
 
     token: process.env.BOT_TOKEN,
 
-    totalShards: 3,
+    totalShards: 'auto',
 
     shardArgs: ['--shard']
 

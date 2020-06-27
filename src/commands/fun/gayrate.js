@@ -1,3 +1,4 @@
+
 const { Message, MessageEmbed } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
@@ -6,16 +7,19 @@ module.exports = class extends BaseCommand {
     constructor() {
         super({
             config: {
-                name: 'permissions',
-                description: 'Tells you your permission level for the current message guild location.',
+                name: 'gayrate',
+                description: 'Gay rate command!',
                 permission: 'User',
             },
             options: {
-                cooldown: 3,
+                aliases: ['gay', 'howgay'],
+                clientPermissions: [],
+                cooldown: 10,
                 nsfwCommand: false,
                 args: false,
                 usage: '',
                 donatorOnly: false,
+                premiumServer: false,
             }
         });
     }
@@ -26,11 +30,12 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const friendly = client.permission.levels[message.author.permLevel];
+        const stat = client.utils.Random.nextInt({ max: 101, min: 0});
+        const target = message.mentions.users.first() || message.author;
         return message.channel.send(new MessageEmbed()
             .setColor('RANDOM')
-            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
-            .setDescription(`Permission Level : ${message.author.permLevel} - ${friendly}`)
+            .setAuthor(`Gay Rate`)
+            .setDescription(`${target.tag} is ${stat}% gay :rainbow_flag: `)
         );
     }
 }

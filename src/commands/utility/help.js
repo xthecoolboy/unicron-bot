@@ -14,6 +14,7 @@ category.set('moderation', 'Simple **Moderation** commands to strict your server
 category.set('settings', 'Fully **Customizable** Configurations. including simplistic interactive configuration setups.');
 category.set('dynamic', '**Dynamic Text/Voice System!** Which Allows users to create their own text/voice Channels to enhance your community environment as your users continue to meet new people.');
 category.set('ticket', 'Wonderful **Ticket System** for ease of server management.');
+category.set('search', 'Searching commands!');
 category.set('staff', 'Bot Staff Commands ONLY!');
 
 module.exports = class extends BaseCommand {
@@ -80,11 +81,11 @@ module.exports = class extends BaseCommand {
                 if (command.options.aliases && command.options.aliases.length !== 0)
                     embed.addField(`Aliases`, `${command.options.aliases.join(', ')}`, true);
                 if (command.config.permission)
-                    embed.addField(`Required Permission`, `\`\`\`xl\n${command.config.permission}\n\`\`\``, false);
+                    embed.addField(`Required Permission`, `\`\`\`html\n<${command.config.permission}>\n\`\`\``, false);
                 if (command.options.clientPermissions && command.options.clientPermissions.length !== 0)
-                    embed.addField(`Required Bot Permissions`, `\`\`\`xl\n${command.options.clientPermissions.join(' ')}\n\`\`\``, false)
+                    embed.addField(`Required Bot Permissions`, `\`\`\`html\n<${command.options.clientPermissions.join('> <')}>\n\`\`\``, false)
                 if (command.options.usage)
-                    embed.addField(`Usage`, `\`\`\`xl\n${command.options.usage}\n\`\`\``, false);
+                    embed.addField(`Usage`, `\`\`\`html\n${command.options.usage}\n\`\`\``, false);
                 if (command.options.donatorOnly)
                     embed.setFooter('This command is exclusive only to donators');
                 return message.channel.send(embed);
@@ -101,6 +102,7 @@ module.exports = class extends BaseCommand {
             .addField(`♾️ Dynamic Text/Voice`, `\`dynamic\``, true)
             .addField(`💰 Economy`, `\`economy\``, true)
             .addField(`${await client.getEmoji('tools')} Utility`, `\`utility\``, true)
+            .addField(`🔍 Search`, `\`search\``, true)
             .addField(`${await client.getEmoji('yes')} Misc`, `\`misc\``, true)
             .addField('😂 Fun', `\`fun\``, true)
             .setTimestamp()

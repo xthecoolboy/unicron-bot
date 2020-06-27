@@ -1,4 +1,5 @@
-const { Message, MessageEmbed } = require('discord.js');
+
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
 
@@ -6,18 +7,28 @@ module.exports = class extends BaseCommand {
     constructor() {
         super({
             config: {
-                name: 'permissions',
-                description: 'Tells you your permission level for the current message guild location.',
+                name: 'tableflip',
+                description: 'Tableflip! with animation!',
                 permission: 'User',
             },
             options: {
+                aliases: [],
+                clientPermissions: [],
                 cooldown: 3,
                 nsfwCommand: false,
                 args: false,
                 usage: '',
                 donatorOnly: false,
+                premiumServer: false,
             }
         });
+        this.frames = [
+            '(-°□°)-  ┬─┬',
+            '(╯°□°)╯    ]',
+            '(╯°□°)╯  ︵  ┻━┻',
+            '(╯°□°)╯       [',
+            '(╯°□°)╯           ┬─┬'
+        ];
     }
     /**
      * @returns {Promise<Message|Boolean>}
@@ -26,11 +37,11 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const friendly = client.permission.levels[message.author.permLevel];
-        return message.channel.send(new MessageEmbed()
-            .setColor('RANDOM')
-            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
-            .setDescription(`Permission Level : ${message.author.permLevel} - ${friendly}`)
-        );
+        const msg = await message.channel.send('(\\\\°□°)\\\\  ┬─┬');
+		for (const frame of this.frames) {
+			await client.wait(200);
+			await msg.edit(frame);
+		}
+		return msg;
     }
 }

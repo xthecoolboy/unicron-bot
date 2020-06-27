@@ -90,7 +90,7 @@ ${command.options.clientPermissions.join(' ')}
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
-                .setDescription(`You didn't provide any arguments, ${message.author}!\nThe proper usage would be: \n\`\`\`xl\n${command.options.usage}\n\`\`\``)
+                .setDescription(`You didn't provide any arguments, ${message.author}!\nThe proper usage would be: \n\`\`\`html\n${command.options.usage}\n\`\`\``)
             );
         }
         message.flags = [];

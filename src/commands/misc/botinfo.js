@@ -43,6 +43,7 @@ module.exports = class extends BaseCommand {
             .addField('Guild Count', `${await client.getCount('guilds')}`, true)
             .addField('User Count', `${await client.getCount('users')}`, true)
             .addField('Shard Count', `${client.shard.count} shard(s)`, true)
+            .addField('Commands', `${client.commands.size} cmds`,true)
             .addField('Node', `${process.version} on ${process.platform} ${process.arch}`, true)
             .addField('Discord.js', `${discordjsVersion}`, true)
             .setTimestamp()

@@ -1,21 +1,26 @@
-const { Message, MessageEmbed } = require('discord.js');
+
+const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
+const path = require('path');
 
 module.exports = class extends BaseCommand {
     constructor() {
         super({
             config: {
-                name: 'permissions',
-                description: 'Tells you your permission level for the current message guild location.',
+                name: 'nitro',
+                description: 'Fake Nitro giveaway',
                 permission: 'User',
             },
             options: {
-                cooldown: 3,
+                aliases: ['fakenitro', 'fake-nitro'],
+                clientPermissions: [],
+                cooldown: 10,
                 nsfwCommand: false,
                 args: false,
                 usage: '',
                 donatorOnly: false,
+                premiumServer: false,
             }
         });
     }
@@ -26,11 +31,6 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const friendly = client.permission.levels[message.author.permLevel];
-        return message.channel.send(new MessageEmbed()
-            .setColor('RANDOM')
-            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || null)
-            .setDescription(`Permission Level : ${message.author.permLevel} - ${friendly}`)
-        );
+        message.channel.send(`htt${String.fromCharCode(8203)}ps://discord.${String.fromCharCode(8203)}gift/${client.utils.Random.string(16)}`, { files: [path.join(__dirname, '..', '..', '..', 'assets', 'nitro.png')] });
     }
 }

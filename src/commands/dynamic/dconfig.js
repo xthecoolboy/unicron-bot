@@ -9,8 +9,8 @@ module.exports = class extends BaseCommand {
     constructor() {
         super({
             config: {
-                name: 'dvconfig',
-                description: 'Dynamic Voice Configuration',
+                name: 'dconfig',
+                description: 'Dynamic Text/Voice Configuration',
                 permission: 'Server Administrator',
             },
             options: {
@@ -101,7 +101,7 @@ module.exports = class extends BaseCommand {
                     .setColor('RED')
                     .setTimestamp()
                     .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
-                    .setDescription('Incorrect arguments, pls use `help dvconfig` for more information.')
+                    .setDescription('Incorrect arguments, pls use `help dconfig` for more information.')
                 );
             }
         }
