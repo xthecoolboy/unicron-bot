@@ -12,7 +12,6 @@ module.exports = class UserManager extends BaseManager {
     startInterval() {
         this.client.setInterval(async () => {
             const users = await UserProfile.findAll();
-            this.client.logger.info(`Clearing Users Database cache...`);
             for (const data of users) {
                 if (!this.client.users.cache.has(data.user_id)) {
                     this.cache.delete(data.user_id);

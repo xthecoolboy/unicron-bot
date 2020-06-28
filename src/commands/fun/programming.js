@@ -1,20 +1,21 @@
 
-const { Message } = require('discord.js');
+const { Message, MessageEmbed } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
+const fetch = require('node-fetch');
 
 module.exports = class extends BaseCommand {
     constructor() {
         super({
             config: {
-                name: 'tableflip',
-                description: 'Tableflip! with animation!',
+                name: 'programming',
+                description: 'Random programming quote!',
                 permission: 'User',
             },
             options: {
-                aliases: [],
+                aliases: ['pquote'],
                 clientPermissions: [],
-                cooldown: 3,
+                cooldown: 10,
                 nsfwCommand: false,
                 args: false,
                 usage: '',
@@ -22,13 +23,6 @@ module.exports = class extends BaseCommand {
                 premiumServer: false,
             }
         });
-        this.frames = [
-            '(-°□°)-  ┬─┬',
-            '(╯°□°)╯    ]',
-            '(╯°□°)╯  ︵  ┻━┻',
-            '(╯°□°)╯       [',
-            '(╯°□°)╯           ┬─┬'
-        ];
     }
     /**
      * @returns {Promise<Message|Boolean>}
@@ -37,11 +31,15 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const msg = await message.channel.send('(\\\\°□°)\\\\  ┬─┬');
-		for (const frame of this.frames) {
-			await client.wait(750);
-			await msg.edit(frame);
-		}
-		return msg;
+        try {
+            const quote = await fetch('https://programming-quotes-api.herokuapp.com/quotes/random').then((r) => r.json());
+            return message.channel.send(new MessageEmbed()
+                .setColor('RANDOM')
+                .setDescription(`${quote.en}`)
+                .setFooter(`- ${quote.author}`)
+            );
+        } catch (e) {
+            throw e;
+        }
     }
 }

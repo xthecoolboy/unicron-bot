@@ -2,19 +2,20 @@
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
+const fetch = require('node-fetch');
 
 module.exports = class extends BaseCommand {
     constructor() {
         super({
             config: {
-                name: 'tableflip',
-                description: 'Tableflip! with animation!',
+                name: 'kanyewest',
+                description: 'Sends a Random Kanye West quote!',
                 permission: 'User',
             },
             options: {
-                aliases: [],
+                aliases: ['kanye'],
                 clientPermissions: [],
-                cooldown: 3,
+                cooldown: 10,
                 nsfwCommand: false,
                 args: false,
                 usage: '',
@@ -22,13 +23,6 @@ module.exports = class extends BaseCommand {
                 premiumServer: false,
             }
         });
-        this.frames = [
-            '(-°□°)-  ┬─┬',
-            '(╯°□°)╯    ]',
-            '(╯°□°)╯  ︵  ┻━┻',
-            '(╯°□°)╯       [',
-            '(╯°□°)╯           ┬─┬'
-        ];
     }
     /**
      * @returns {Promise<Message|Boolean>}
@@ -37,11 +31,12 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const msg = await message.channel.send('(\\\\°□°)\\\\  ┬─┬');
-		for (const frame of this.frames) {
-			await client.wait(750);
-			await msg.edit(frame);
-		}
-		return msg;
+        try {
+            const response = await fetch(`https://api.kanye.rest/`);
+            const body = await response.json();
+            message.channel.send(body.quote);
+        } catch (e) {
+            throw e;
+        }
     }
 }
