@@ -3,6 +3,8 @@ const { Message, MessageEmbed } = require('discord.js');
 const AutoModeration = require('../modules/AutoModeration');
 const fs = require('fs');
 const Client = require('../classes/Unicron');
+const swearWords = fs.readFileSync('assets/swearWords.txt').toString().split('\r\n');
+
 /**
  * @param {Client} client
  * @param {Message} message
@@ -10,7 +12,6 @@ const Client = require('../classes/Unicron');
 module.exports = (client, message) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const swearWords = fs.readFileSync('assets/swearWords.txt').toString().split('\r\n');
             const status = await message.guild.db.filters('swearFilter');
             const strat = (status && !message.channel.nsfw && message.author.permLevel < 3 &&
                 (

@@ -1,6 +1,6 @@
 {
   "name": "unicron",
-  "version": "1.0.1",
+  "version": "1.0.13",
   "description": "Multipurpose fun discord bot :)",
   "main": "src/index.js",
   "dependencies": {
@@ -36,10 +36,7 @@
   "scripts": {
     "test": "node tests/index.js",
     "start": "node src/index.js",
-    "reset-database": "node src/dbInit.js -f -all",
-    "reset-guilds": "node src/dbInit.js -f -guild",
-    "reset-users": "node src/dbInit.js -f -user",
-    "reset-unicron": "node src/dbInit.js -f -unicron"
+    "terminal": "node src/terminal/index.js"
   },
   "engines": {
     "node": "12.16.3"

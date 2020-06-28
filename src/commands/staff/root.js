@@ -32,9 +32,9 @@ const evaluation = async function (client, message, [key, ...value]) {
         switch (message.flags[0]) {
             case 'setPresence': {
                 const status = key;
-                const type = value.shift();
+                const type = value.shift().toUpperCase();
                 const message = value.join(' ')
-                client.user.setPresence({ activity: { name: message, type: type }, status: status });
+                client.shard.broadcastEval(`this.user.setPresence({ activity: { name: ${message}, type: ${type} }, status: ${status} })`)
                 return;
             }
             case 'codes': {

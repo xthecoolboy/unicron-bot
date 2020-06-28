@@ -7,21 +7,147 @@ module.exports = {
         hostURL: process.env.BOT_HOST_URL,
         inviteURL: process.env.BOT_SERVER_URL
     },
-    botlisting: {
-        apiKeys: {
-            glennbotlist: process.env.GLENN_TOKEN,
-            arcane: process.env.ARCANE_TOKEN,
-            mythicalbots: process.env.MYTHICAL_TOKEN,
-            listmybots: process.env.LMB_TOKEN,
-            discordboats: process.env.BOAT_TOKEN,
-            botsfordiscord: process.env.BFD_TOKEN,
-            topgg: process.env.TOPGG_TOKEN,
-            botsondiscord: process.env.BOD_TOKEN,
-            discordbotsgg: process.env.DBG_TOKEN,
-            discordbotlist: process.env.DBL_TOKEN,
+    BotLists: {
+        glennbotlist: {
+            token: process.env.GLENN_TOKEN,
+            endpoint: 'https://glennbotlist.xyz/api/bot/:id/stats',
+            /**
+             * 
+             * @param {Number} a
+             * @param {Number} b
+             */
+            parse: function (a, b) {
+                return {
+                    serverCount: a,
+                    shardCount: b,
+                }
+            }
         },
-        clientLibrary: 'discord.js',
-        clientID: '634908645896880128',
+        arcane: {
+            token: process.env.ARCANE_TOKEN,
+            endpoint: 'https://arcane-botcenter.xyz/api/:id/stats',
+            /**
+             * 
+             * @param {Number} a
+             * @param {Number} b
+             * @param {Number} c
+             */
+            parse: function (a, b, c) {
+                return {
+                    server_count: a,
+                    shard_count: b,
+                    member_count: c,
+                }
+            }
+        },
+        mythicalbots: {
+            token: process.env.MYTHICAL_TOKEN,
+            endpoint: 'https://mythicalbots.xyz/api/bot/:id',
+            /**
+             * 
+             * @param {Number} a
+             */
+            parse: function (a) {
+                return {
+                    server_count: a,
+                }
+            }
+        },
+        listmybots: {
+            token: process.env.LMB_TOKEN,
+            endpoint: 'https://listmybots.com/api/bot/:id',
+            /**
+             * 
+             * @param {Number} a
+             */
+            parse: function (a) {
+                return {
+                    server_count: a,
+                    count: a,
+                }
+            }
+        },
+        discordboats: {
+            token: process.env.BOAT_TOKEN,
+            endpoint: 'https://discord.boats/api/bot/:id',
+            /**
+             * 
+             * @param {Number} a
+             */
+            parse: function (a) {
+                return {
+                    server_count: a,
+                }
+            }
+        },
+        botsfordiscord: {
+            token: process.env.BFD_TOKEN,
+            endpoint: 'https://botsfordiscord.com/api/bot/:id',
+            /**
+             * 
+             * @param {Number} a
+             */
+            parse: function (a) {
+                return {
+                    server_count: a,
+                }
+            }
+        },
+        topgg: {
+            token: process.env.TOPGG_TOKEN,
+            endpoint: 'https://top.gg/api/bots/:id/stats',
+            /**
+             * 
+             * @param {Number} a
+             */
+            parse: function (a) {
+                return {
+                    server_count: a,
+                }
+            }
+        },
+        botsondiscord: {
+            token: process.env.BOD_TOKEN,
+            endpoint: 'https://bots.ondiscord.xyz/bot-api/bot/:id/guilds',
+            /**
+             * 
+             * @param {Number} a
+             */
+            parse: function (a) {
+                return {
+                    guildCount: a,
+                }
+            }
+        },
+        discordbotsgg: {
+            token: process.env.DBG_TOKEN,
+            endpoint: 'https://discord.bots.gg/api/v1/bots/:id/stats',
+            /**
+             * 
+             * @param {Number} a
+             * @param {Number} b
+             */
+            parse: function (a, b) {
+                return {
+                    guildCount: a,
+                    shardCount: b,
+                }
+            }
+
+        },
+        discordbotlist: {
+            token: process.env.DBL_TOKEN,
+            endpoint: 'https://discordbotlist.com/api/v1/bots/:id/stats',
+            /**
+             * 
+             * @param {Number} a
+             */
+            parse: function (a) {
+                return {
+                    guilds: a,
+                }
+            }
+        },
     },
     Authorizations: `
     dVV9uPm847uSGgR2BVMn

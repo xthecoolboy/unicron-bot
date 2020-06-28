@@ -6,9 +6,7 @@ const { inspect, promisify } = require('util');
 
 const { Client, Collection, Message, MessageEmbed, Emoji, Guild, GuildEmoji } = require('discord.js');
 
-const { Poster } = require('dbots');
 const Unicron = require('../handlers/Unicron');
-
 const BaseCommand = require('./BaseCommand');
 const BaseItem = require('./BaseItem');
 const BaseEvent = require('./BaseEvent');
@@ -16,6 +14,7 @@ const BaseEvent = require('./BaseEvent');
 const UserManager = require('../managers/UserManager');
 const GuildManager = require('../managers/GuildManager');
 const PermissionManager = require('../managers/PermissionManager');
+const POSTManager = require('../managers/POSTManager');
 
 const options = require('../utils/Constants');
 
@@ -27,7 +26,6 @@ module.exports = class UnicronClient extends Client {
             messageSweepInterval: 30,
         });
         this.unicron = new Unicron(options.unicron)
-        this.poster = new Poster(options.botlisting);
         this.commands = new Collection();
         this.events = new Collection();
         this.shopitems = new Collection();
@@ -38,9 +36,8 @@ module.exports = class UnicronClient extends Client {
             users: new UserManager(this, options.managers.users),
             guilds: new GuildManager(this, options.managers.guilds),
         }
-        this.permission = new PermissionManager(this, {
-            client: this,
-        });
+        this.permission = new PermissionManager(this, {});
+        this.poster = new POSTManager(this, {});
     }
     /**
      * @returns {Promise<Emoji>}
@@ -186,24 +183,6 @@ module.exports = class UnicronClient extends Client {
                 }
             }
         }
-    }
-    /**
-     * @returns {Boolean|String}
-     * @param {String} commandName 
-     */
-    unregisterCommand(commandName) {
-        const command = this.commands.get(commandName) || this.commands.find(cmd => cmd.options.aliases && cmd.options.aliases.includes(commandName));
-        if (!command) return `The command \`${commandName}\` doesn\`t seem to exist, nor is it an alias. Try again!`;
-        this.commands.delete(command.config.name);
-        const mod = require.cache[require.resolve(`../commands/${command.config.category}/${command.config.name}`)];
-        delete require.cache[require.resolve(`../commands/${command.config.category}/${command.config.name}.js`)];
-        for (let i = 0; i < mod.parent.children.length; i++) {
-            if (mod.parent.children[i] === mod) {
-                mod.parent.children.splice(i, 1);
-                break;
-            }
-        }
-        return false;
     }
     /**
      * @returns {String}

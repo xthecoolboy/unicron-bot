@@ -18,7 +18,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 3,
                 nsfwCommand: false,
                 args: true,
-                usage: 'config view\nconfig view [page]\nconfig set [key] [value]\nconfig reset\nconfig reset [key]',
+                usage: 'config view\nconfig view [page]\nconfig set <key> <value>\nconfig reset\nconfig reset [key]',
                 donatorOnly: false,
             }
         });

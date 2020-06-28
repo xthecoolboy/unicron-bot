@@ -13,6 +13,6 @@ module.exports = class extends BaseEvent {
     async run(client) {
         client.database.users.startInterval();
         client.database.guilds.startInterval();
-        if (client.poster && client.poster.options.clientID) client.poster.startInterval(60000 * 30);
+        client.poster.startInterval();
     }
 }
