@@ -67,7 +67,7 @@ module.exports = class PermissionManager extends BaseManager {
         return new Promise(async (resolve, reject) => {
             let num = 0;
             for await (const level of Levels) {
-                num = await level.check(this.options.client, message) ? level.level : num;
+                num = await level.check(this.client, message) ? level.level : num;
             }
             return resolve(num);
         });

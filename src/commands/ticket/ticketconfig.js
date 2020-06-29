@@ -9,7 +9,7 @@ module.exports = class extends BaseCommand {
         super({
             config: {
                 name: 'ticketconfig',
-                description: 'Ticket System Configuration!',
+                description: 'Ticket System Configuration!\nThe Bot Permissions below are required for the interative setup!',
                 permission: 'Server Administrator',
             },
             options: {
@@ -56,7 +56,7 @@ module.exports = class extends BaseCommand {
                     const model = await message.guild.db.ticket(true);
                     model.category = channel.id;
                     await model.save();
-                    return message.channel.send(`Ticket System has been \`${channel.name}\`.`);
+                    return message.channel.send(`Ticket System Category has been set to \`${channel.name}\`.`);
                 }
                 case 'enable':
                 case 'disable': {

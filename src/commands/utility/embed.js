@@ -9,7 +9,7 @@ module.exports = class extends BaseCommand {
         super({
             config: {
                 name: 'embed',
-                description: `MessageEmbed Constructor!
+                description: `MessageEmbed Constructor! Supports JSON formatting if you know how to use them :P
 \`\`\`bash
 $ embed [...Message]
 $ embed -json {"title": "My title", "description": "My description"}

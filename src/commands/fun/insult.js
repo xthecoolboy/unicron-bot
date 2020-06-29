@@ -16,7 +16,7 @@ module.exports = class extends BaseCommand {
                 aliases: [],
                 clientPermissions: [],
                 cooldown: 10,
-                nsfwCommand: false,
+                nsfwCommand: true,
                 args: false,
                 usage: '',
                 donatorOnly: false,

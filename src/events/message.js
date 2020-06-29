@@ -74,7 +74,7 @@ module.exports = class extends BaseEvent {
             );
         }
         if (command.options.clientPermissions) {
-            if (!message.guild.me.permissions.has(command.options.clientPermissions)) {
+            if (!message.guild.me.permissions.has(command.options.clientPermissions) || !message.channel.permissionsFor(message.guild.me).has(command.options.clientPermissions)) {
                 return message.channel.send(new MessageEmbed()
                     .setColor('RED')
                     .setTimestamp()
@@ -129,7 +129,7 @@ ${command.options.clientPermissions.join(' ')}
                 return message.channel.send(new MessageEmbed()
                     .setColor('RED')
                     .setTimestamp()
-                    .setDescription(` ${await client.getEmoji('slowmode', 'system')} Please wait **${ms(timeLeft)}** before reusing the command again.`)
+                    .setDescription(` ${await client.getEmoji('slowmode')} Please wait **${ms(timeLeft)}** before reusing the command again.`)
                 );
             }
         }

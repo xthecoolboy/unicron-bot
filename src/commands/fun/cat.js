@@ -15,7 +15,7 @@ module.exports = class extends BaseCommand {
             },
             options: {
                 aliases: [],
-                clientPermissions: [],
+                clientPermissions: ['EMBED_LINKS'],
                 cooldown: 10,
                 nsfwCommand: false,
                 args: false,

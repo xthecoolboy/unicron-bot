@@ -43,7 +43,7 @@ module.exports = class extends BaseCommand {
             .setTitle(answer.word)
             .setURL(answer.permalink)
             .addField('Definition', client.trim(answer.definition, 1024), false)
-            .addField('Example', trim(answer.example, 1024), false)
+            .addField('Example', client.trim(answer.example, 1024), false)
             .setFooter(`Rating: ${answer.thumbs_up - answer.thumbs_down} Upvotes.`)
         );
     }

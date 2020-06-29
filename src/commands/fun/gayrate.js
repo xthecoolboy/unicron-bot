@@ -34,7 +34,7 @@ module.exports = class extends BaseCommand {
         const target = message.mentions.users.first() || message.author;
         return message.channel.send(new MessageEmbed()
             .setColor('RANDOM')
-            .setAuthor(`Gay Rate`)
+            .setAuthor(`Gay Rate hehe`)
             .setDescription(`${target.tag} is ${stat}% gay :rainbow_flag: `)
         );
     }

@@ -14,7 +14,7 @@ module.exports = class extends BaseCommand {
             },
             options: {
                 aliases: ['fakenitro', 'fake-nitro'],
-                clientPermissions: [],
+                clientPermissions: ['ATTACH_FILES'],
                 cooldown: 10,
                 nsfwCommand: false,
                 args: false,

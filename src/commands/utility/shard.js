@@ -42,7 +42,7 @@ module.exports = class extends BaseCommand {
                 .then((results) => {
                     const result = results.find(g => g);
                     if (!result) {
-                        return message.channel.send(`i couldn't find that guild, sorry:/`);
+                        return message.channel.send(`i couldn't find that guild, sorry :/`);
                     }
                     message.channel.send(`That server is located on shard ${result.shardID}`);
             });

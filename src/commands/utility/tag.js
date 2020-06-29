@@ -76,7 +76,7 @@ $ tag delete <Tag Name>
             case 'delete': {
                 return message.channel.send(new MessageEmbed()
                     .setColor('RED')
-                    .setDescription(`You do not have the permissions to create/edit/delete a tag.`)
+                    .setDescription(`Sorry, You do not have the permissions to create/edit/delete a tag :P`)
                 );
             }
             case 'list': {

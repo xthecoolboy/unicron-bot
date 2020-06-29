@@ -12,7 +12,7 @@ module.exports = class extends BaseCommand {
             },
             options: {
                 aliases: ['swearfilter'],
-                clientPermissions: ['MANAGE_MESSAGES'],
+                clientPermissions: [],
                 cooldown: 10,
                 nsfwCommand: false,
                 args: false,

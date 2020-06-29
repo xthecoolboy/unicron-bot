@@ -47,17 +47,17 @@ module.exports = class extends BaseCommand {
                 .setDescription('Oi, you can\'t create a ticket inside a ticket ;p')
             );
         }
-        if (message.guild.channels.cache.find((ch) => { return new RegExp(`${message.author.id}`).test(ch.name) })) {
+        if (message.guild.channels.cache.find((ch) => { return ch.type === 'text' && new RegExp(`${message.author.id}`).test(ch.topic) })) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
                 .setDescription('Oi, you can\'t create a new ticket when you already have an open ticket ;p')
             );
         }
-        const channel = await message.guild.channels.create(`${message.author.id}`, {
+        const channel = await message.guild.channels.create(`ticket-${client.utils.Random.string(6)}`, {
             parent: strat,
             type: 'text',
-            topic: `TicketID: ${message.author.id}\n\nSubject: ${args.join(' ')}`,
+            topic: `TicketID: ${message.author.id}\nSubject: ${args.join(' ')}`,
             permissionOverwrites: [
                 {
                     id: message.guild.id,
