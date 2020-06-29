@@ -9,7 +9,7 @@ module.exports = class extends BaseCommand {
         super({
             config: {
                 name: 'verification',
-                description: 'Member Verification module configuration.',
+                description: 'Member Verification module configuration. The Bot Permissions are required for the interactive setup',
                 permission: 'User',
             },
             options: {

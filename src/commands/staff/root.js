@@ -2,7 +2,6 @@ const User = require('../../classes/User');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const { Admin } = require('../../database/database');
-const { Crypto } = require('../../utils/');
 const BaseCommand = require('../../classes/BaseCommand');
 const { Random } = require('../../utils');
 
@@ -19,7 +18,7 @@ function removeItemOnce(arr, value) {
 }
 
 function encrypt(str) {
-    return Crypto({ text: str, hash: 'sha256', salt: 'oadpoaw' });
+    return str;
 }
 /**
  * 

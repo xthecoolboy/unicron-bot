@@ -15,7 +15,7 @@ module.exports = class extends BaseCommand {
             },
             options: {
                 aliases: [],
-                clientPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS'],
+                clientPermissions: [],
                 cooldown: 3,
                 nsfwCommand: false,
                 args: true,

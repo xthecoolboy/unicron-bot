@@ -13,12 +13,16 @@ class Help extends Command {
      */
     async run(terminal, content, args) {
         console.log(`
-        Commands:
-            eco - Economy manager (Coins)
-                eco help
-                eco add <Snowflake> <amount>
-                eco remove <Snowfalge> <amount>
-                eco show <Snowflake>
+Commands:
+\teco - Economy manager (Coins)
+\t\t- eco add <Snowflake> <amount>
+\t\t- eco remove <Snowflake> <amount>
+\t\t- eco show <Snowflake>
+\tauth - Authorization
+\t\t- auth revoke <Table> <Token>
+\t\t- auth regenerate <Table> <Amount> [--force](Forcefully create a new table if not exist)
+\t\t- auth list <Table>
+\t\t- auth all (List all valid tables)
         `)
     }
 }

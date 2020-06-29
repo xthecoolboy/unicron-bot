@@ -41,9 +41,11 @@ class Webhook extends Endpoint {
                     return;
                 }
                 const parsed = this.parseJSON[list](req.body);
+                if (!parsed.id) return res.status(400).send({ message: 'Bad Request' });
                 this.client.emit('vote', new Voter(parsed));
                 res.status(202).send(parsed);
             } catch (e) {
+                console.log(e);
                 res.status(500).send({
                     message: 'Internal Server Error'
                 });

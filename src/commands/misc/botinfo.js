@@ -33,10 +33,8 @@ module.exports = class extends BaseCommand {
         const OWNER = await client.users.fetch(client.unicron.owner, false);
         message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setTitle('Unicron Stats')
-            .setAuthor(`Unicron ${version}`)
+            .setTitle(`Unicron v${version}`)
             .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
-            .addField('Owner', `${OWNER.tag} / ${OWNER.id}`)
             .addField('Uptime', `${ms(client.uptime)}`, true)
             .addField('WebSocket Ping', `${client.ws.ping}ms`, true)
             .addField('Memory', `${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} MB RSS\n${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB Heap`, true)

@@ -21,10 +21,6 @@ module.exports = class Server extends EventEmitter {
      */
     async register() {
         this.app = express();
-        this.app.use((req, res, next) => {
-            this.logger.info(`${req.ip} : ${req.method} - ${req.url}`, 'API');
-            next();
-        })
         this.app.use(rateLimit({
             windowMs: 60000,
             max: 50,
