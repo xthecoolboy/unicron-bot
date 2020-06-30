@@ -10,12 +10,12 @@ module.exports = class extends BaseCommand {
                 name: 'tag',
                 description: `Create a tag, delete a tag, edit a tag, show a tag, list all tags
 Creating/Removing/Editing a tag requires permission level \`Server Moderator\`
-\`\`\`bash
-$ tag <Tag Name>
-$ <Tag Name>
-$ tag list
-$ tag <create|edit> <Tag Name> <...Value>
-$ tag delete <Tag Name>
+\`\`\`html
+tag <Tag Name>
+<Tag Name>
+tag list
+tag <create|edit> <Tag Name> <...Value>
+tag delete <Tag Name>
 \`\`\`
 `,
                 permission: 'User',

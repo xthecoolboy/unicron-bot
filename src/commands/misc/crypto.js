@@ -33,7 +33,7 @@ module.exports = class extends BaseCommand {
      */
     CrytpoComparePrice(fsym, tsyms, message) {
         fetch(`https://min-api.cryptocompare.com/data/price?fsym=${fsym}&tsyms=${tsyms}`).then(async (response) => {
-            let finalMessage = '**~~------~~** __Current exchange rates for 1 ' + fsym + '__ **~~------~~**\n```c++';
+            let finalMessage = '**~~------~~** __Current exchange rates for 1 ' + fsym + '__ **~~------~~**\n```c++\n';
             try {
                 let responseBody = await response.json();
                 for (let sym = 0; sym < tsyms.length; sym++) {

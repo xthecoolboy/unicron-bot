@@ -33,11 +33,11 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         try {
-            const response = await fetch('https://aws.random.cat/meow');
-            const { file } = await response.json();
+            const response = await fetch('http://placekitten.com/200/300');
+            const body = await response.json();
             message.channel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
-                .setImage(file)
+                .setImage(body)
                 .setDescription('https://random.cat/')
             );
         } catch (e) {

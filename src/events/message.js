@@ -140,8 +140,9 @@ ${command.options.clientPermissions.join(' ')}
             else setTimeout(() => LevelingCD.delete(message.author.id), 55000);
         }
         try {
+            client.logger.info(`Shard (${message.guild.shardID} / ${message.guild.id}) ${message.author.tag} / ${message.author.id} : ${commandName} ${args.join(' ')}`);
             const argv = command.argsDefinitions ? Parse(args, command.argsDefinitions) : args;
-            const success = await command.run(client, message, argv);
+            const success = await command.run(client, message, argv).catch((e) => { throw e });
             if (success !== false) {
                 timestamps.set(message.author.id, now);
                 setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
@@ -150,7 +151,7 @@ ${command.options.clientPermissions.join(' ')}
             message.channel.send(new MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
-                .setDescription(`Something went wrong executing that command. If this keeps on happening please report it to the Bot Developer to handle this issue at [Support Server](${client.unicron.serverInviteURL}).`)
+                .setDescription(`Something went wrong executing that command. If this keeps on happening please report it to the Bot Developer to handle this issue at [Support Server](${client.unicron.serverInviteURL}).\nError Message: \`${e.message}\``)
             );
             client.logger.error(e);
         }

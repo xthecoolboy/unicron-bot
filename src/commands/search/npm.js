@@ -36,7 +36,7 @@ module.exports = class extends BaseCommand {
         try {
             const response = await fetch(`https://registry.npmjs.com/${pkg}`);
             const body = await response.json();
-            if (body.time.unpublished) return message.channel.send('This package no longer exists.');
+            if (response.status === 404 || body.time.unpublished) return message.channel.send('This package no longer exists.');
             const version = body.versions[body['dist-tags'].latest];
             const maintainers = client.trimArray(body.maintainers.map(user => user.name));
             const dependencies = version.dependencies ? client.trimArray(Object.keys(version.dependencies)) : null;
