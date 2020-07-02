@@ -106,7 +106,7 @@ module.exports = (client, message, member) => {
                     .setTitle(`You have been ${action} from ${message.guild.name}`)
                     .setDescription(`Reason : ${reason}`)
                     .setFooter(`Moderator : ${client.user.tag} / ${client.user.id}`, client.user.displayAvatarURL({ dynamic: true }))
-                ).catch(() => {}).catch(() => {});
+                ).catch(() => {});
             } catch (e) {
                 //
             }

@@ -34,5 +34,5 @@ module.exports = class {
      * @param {Message} message 
      * @param {Array<String>} args
      */
-    async run(client, message, args);
+    async run(client, message, args) {}
 }

@@ -40,14 +40,14 @@ module.exports = class extends BaseEvent {
                             }
                         ]
                     }).then(channel => {
-                        newState.setChannel(channel)
-                    });
+                        newState.setChannel(channel).catch(() => {});
+                    }).catch(() => {});;
             }
         }
         if (!!oldState.channel) {
             if (oldState.channel.parent.id === category && oldState.channel.id !== waitingRoom) {
                 if (oldState.channel.members.size === 0) {
-                    oldState.channel.delete();
+                    oldState.channel.delete().catch(() => {});;
                 }
             }
         }

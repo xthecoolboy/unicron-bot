@@ -33,13 +33,13 @@ module.exports = class extends BaseEvent {
             ) return;
             const member = await reaction.message.guild.members.fetch(user.id);
             if (member) {
-                if (member.roles.cache.has(role)) await member.roles.remove(role);
+                if (member.roles.cache.has(role)) await member.roles.remove(role).catch(() => {});;
                 reaction.message.channel.send(new MessageEmbed()
                     .setColor(0x00FF00)
                     .setTimestamp()
                     .setDescription(`You have been unverified <@${user.id}>`)
                 ).then(async m => {
-                    await m.delete({ timeout: 5000 });
+                    await m.delete({ timeout: 5000 }).catch(() => {});
                 });
             }
         } catch (e) {

@@ -16,7 +16,8 @@ const UnicronDB = new Sequelize(
         storage: `./database/${process.env.UNICRON_DATABASE_FILE}.sqlite`,
         retry: {
             max: 10,
-        }
+        },
+        transactionType: 'IMMEDIATE',
     }
 );
 const UserDB = new Sequelize(
@@ -30,7 +31,8 @@ const UserDB = new Sequelize(
         storage: `./database/${process.env.USER_DATABASE_FILE}.sqlite`,
         retry: {
             max: 10,
-        }
+        },
+        transactionType: 'IMMEDIATE',
     }
 )
 const GuildDB = new Sequelize(
@@ -45,6 +47,7 @@ const GuildDB = new Sequelize(
         retry: {
             max: 10,
         },
+        transactionType: 'IMMEDIATE',
     }
 )
 

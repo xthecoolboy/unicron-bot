@@ -26,5 +26,5 @@ module.exports = class {
      * @param {Client} client 
      * @param {Message} message 
      */
-    async run(client, message);
+    async run(client, message) {}
 }
