@@ -7,8 +7,15 @@ module.exports = class POSTManager extends BaseManager {
         super(client, options);
     }
 
-    startInterval() {
+    async startInterval() {
         const services = Object.keys(BotLists);
+         for (let service of services) {
+                service = BotLists[service];
+                const server_count = await this.client.getCount('guilds');
+                const shard_count = this.client.shard.count;
+                const member_count = await this.client.getCount('users');
+                await this.post({ service, server_count, shard_count, member_count });
+            }
         setInterval(async () => {
             for (let service of services) {
                 service = BotLists[service];
@@ -34,7 +41,8 @@ module.exports = class POSTManager extends BaseManager {
     async post(options) {
         if (!options.service || !options.service.token) return;
         try {
-            const response = await fetch.default(options.service.endpoint.replace(/:id/g, this.client.user.id),
+            const url = options.service.endpoint.replace(/:id/g, this.client.user.id);
+            const response = await fetch.default(url,
                 {
                     method: 'POST',
                     headers: {
@@ -43,10 +51,9 @@ module.exports = class POSTManager extends BaseManager {
                         'User-Agent': 'Unicron LLC'
                     },
                     body: JSON.stringify(options.service.parse(options.server_count, options.shard_count, options.member_count)),
-                    agent: 'Unicron LLC',
                 }
             );
-            this.client.logger.info(`${options.service.endpoint}: Status (${response.status})`);
+            this.client.logger.info(`${url}: Status (${response.status})`);
         } catch (e) {
             this.client.logger.error(`${options.service.endpoint}: ${e.message}`);
         }
