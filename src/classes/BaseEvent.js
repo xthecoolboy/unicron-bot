@@ -1,5 +1,9 @@
 
 module.exports = class {
+    /**
+     * 
+     * @param {String} eventName 
+     */
     constructor(eventName) {
         this.eventName = eventName;
     }

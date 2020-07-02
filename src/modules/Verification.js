@@ -15,7 +15,7 @@ module.exports = (client, message) => {
             const enabled = await message.guild.db.verification('enabled');
             const stat = (!enabled || !role || !channel_id) ? true : false;
             if (stat || (channel_id !== message.channel.id)) return resolve(false);
-            if (message.deletable) message.delete({ timeout: 1000 });
+            if (message.deletable) message.delete({ timeout: 1000 }).catch(() => {});
             if (type === 'react') return resolve(false);
             let verified = false;
             if (type === 'discrim') {
@@ -30,8 +30,8 @@ module.exports = (client, message) => {
                 .setTimestamp()
                 .setDescription(`<@${message.author.id}>, you have been verified!`)
             ).then((m) => {
-                m.delete({ timeout: 5000 });
-                if (!message.member.roles.cache.has(role)) message.member.roles.add(role);
+                m.delete({ timeout: 5000 }).catch(() => {});
+                if (!message.member.roles.cache.has(role)) message.member.roles.add(role).catch(() => {});;
                 resolve(true);
             });
         } catch (e) {

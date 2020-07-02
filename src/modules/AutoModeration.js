@@ -35,7 +35,7 @@ module.exports = (client, message, member) => {
                                 await channel.createOverwrite(role, {
                                     SEND_MESSAGES: false,
                                     ADD_REACTIONS: false
-                                }).catch(e => { throw e });
+                                }).catch(() => {});
                             }
                         }
                     } catch (e) {
@@ -44,7 +44,7 @@ module.exports = (client, message, member) => {
                     if (duration && !isNaN(duration)) {
                         try {
                             setTimeout(() => {
-                                member.roles.remove(role, 'Mute Duration expired');
+                                member.roles.remove(role, 'Mute Duration expired').catch(() => {});
                             }, Number(duration));
                         } catch (E) {
 
@@ -62,9 +62,9 @@ module.exports = (client, message, member) => {
                             days: 7,
                             reason,
                         }
-                    );
+                    ).catch(() => {});;
                     setTimeout(() => {
-                        message.guild.members.unban(member.user.id);
+                        message.guild.members.unban(member.user.id).catch(() => {});;
                     }, 1000);
                     break;
                 }
@@ -74,11 +74,11 @@ module.exports = (client, message, member) => {
                             days: 7,
                             reason,
                         }
-                    );
+                    ).catch(() => {});;
                     if (duration && !isNaN(duration)) {
                         try {
                             setTimeout(() => {
-                                message.guild.members.unban(member.user.id);
+                                message.guild.members.unban(member.user.id).catch(() => {});;
                             }, Number(duration));
                         } catch (E) {
 
@@ -97,7 +97,7 @@ module.exports = (client, message, member) => {
                     .setTimestamp()
                     .setThumbnail(message.author.displayAvatarURL({ dynamic: true }) || null)
                     .setDescription(`**Member** : ${message.author.tag} / ${message.author.id}\n**Action** : ${action}\n**Reason** : ${reason}\n${duration ? `**Length** : ${ms(duration)}` : ''}`)
-                );
+                ).catch(() => {});;
             }
             try {
                 const dm = await target.createDM();
@@ -106,7 +106,7 @@ module.exports = (client, message, member) => {
                     .setTitle(`You have been ${action} from ${message.guild.name}`)
                     .setDescription(`Reason : ${reason}`)
                     .setFooter(`Moderator : ${client.user.tag} / ${client.user.id}`, client.user.displayAvatarURL({ dynamic: true }))
-                );
+                ).catch(() => {}).catch(() => {});
             } catch (e) {
                 //
             }

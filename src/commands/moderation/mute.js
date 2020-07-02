@@ -85,7 +85,7 @@ module.exports = class extends BaseCommand {
                     await channel.createOverwrite(role, {
                         SEND_MESSAGES: false,
                         ADD_REACTIONS: false
-                    }).catch(e => { throw e });
+                    }).catch(() => {});
                 }
             }
         } catch (e) {
@@ -94,7 +94,7 @@ module.exports = class extends BaseCommand {
         if (duration && !isNaN(duration)) {
             try {
                 setTimeout(() => {
-                    member.roles.remove(role, 'Mute Duration expired');
+                    member.roles.remove(role, 'Mute Duration expired').catch(() => {});
                 }, Number(duration));
             } catch (E) {
 
@@ -118,7 +118,7 @@ module.exports = class extends BaseCommand {
                 .setTitle(`You have been muted from ${message.guild.name}`)
                 .setDescription(`Reason : ${_reason}`)
                 .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
-            );
+            ).catch(() => {});;
         } catch (e) {
             //
         }

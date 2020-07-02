@@ -10,7 +10,7 @@ module.exports = {
     BotLists: {
         glennbotlist: {
             token: process.env.GLENN_TOKEN,
-            endpoint: 'https://glennbotlist.xyz/api/bot/:id/stats',
+            endpoint: 'http://glennbotlist.xyz/api/bot/:id/stats',
             /**
              * 
              * @param {Number} a
@@ -25,7 +25,7 @@ module.exports = {
         },
         arcane: {
             token: process.env.ARCANE_TOKEN,
-            endpoint: 'https://arcane-botcenter.xyz/api/:id/stats',
+            endpoint: 'http://arcane-botcenter.xyz/api/:id/stats',
             /**
              * 
              * @param {Number} a
@@ -42,7 +42,7 @@ module.exports = {
         },
         mythicalbots: {
             token: process.env.MYTHICAL_TOKEN,
-            endpoint: 'https://mythicalbots.xyz/api/bot/:id',
+            endpoint: 'http://mythicalbots.xyz/api/bot/:id',
             /**
              * 
              * @param {Number} a
@@ -55,7 +55,7 @@ module.exports = {
         },
         listmybots: {
             token: process.env.LMB_TOKEN,
-            endpoint: 'https://listmybots.com/api/bot/:id',
+            endpoint: 'http://listmybots.com/api/bot/:id',
             /**
              * 
              * @param {Number} a
@@ -69,7 +69,7 @@ module.exports = {
         },
         discordboats: {
             token: process.env.BOAT_TOKEN,
-            endpoint: 'https://discord.boats/api/bot/:id',
+            endpoint: 'http://discord.boats/api/bot/:id',
             /**
              * 
              * @param {Number} a
@@ -82,7 +82,7 @@ module.exports = {
         },
         botsfordiscord: {
             token: process.env.BFD_TOKEN,
-            endpoint: 'https://botsfordiscord.com/api/bot/:id',
+            endpoint: 'http://botsfordiscord.com/api/bot/:id',
             /**
              * 
              * @param {Number} a
@@ -95,7 +95,7 @@ module.exports = {
         },
         topgg: {
             token: process.env.TOPGG_TOKEN,
-            endpoint: 'https://top.gg/api/bots/:id/stats',
+            endpoint: 'http://top.gg/api/bots/:id/stats',
             /**
              * 
              * @param {Number} a
@@ -108,7 +108,7 @@ module.exports = {
         },
         botsondiscord: {
             token: process.env.BOD_TOKEN,
-            endpoint: 'https://bots.ondiscord.xyz/bot-api/bot/:id/guilds',
+            endpoint: 'http://bots.ondiscord.xyz/bot-api/bot/:id/guilds',
             /**
              * 
              * @param {Number} a
@@ -121,7 +121,7 @@ module.exports = {
         },
         discordbotsgg: {
             token: process.env.DBG_TOKEN,
-            endpoint: 'https://discord.bots.gg/api/v1/bots/:id/stats',
+            endpoint: 'http://discord.bots.gg/api/v1/bots/:id/stats',
             /**
              * 
              * @param {Number} a
@@ -137,7 +137,7 @@ module.exports = {
         },
         discordbotlist: {
             token: process.env.DBL_TOKEN,
-            endpoint: 'https://discordbotlist.com/api/v1/bots/:id/stats',
+            endpoint: 'http://discordbotlist.com/api/v1/bots/:id/stats',
             /**
              * 
              * @param {Number} a
@@ -149,28 +149,6 @@ module.exports = {
             }
         },
     },
-    Authorizations: `
-    dVV9uPm847uSGgR2BVMn
-    RBUiJ7bRU46HnrlMR74I
-    fu2pcJ97jwuype1urh4u
-    XxI9k3THIEYiXQ6tfvSL
-    aAavIPIYGKpojXYUxJcY
-    DAZ5nFI5LgwVUv3vqTty
-    AWAZr9I2F25VUV6KXEB9
-    ZWeURMjxroQHjqC9bqFQ
-    m2R5gqTRHIWFjRxiL87C
-    klL6kyyK0unb3V0I4CSN
-    pRW7zRx6A3UOsHDwlHZx
-    F96ngeTPCnWA4gFDFMRa
-    TfEIcjNCYGvZwJS0Mn9j
-    sWmMc5Uds0uJWT12QYZB
-    cYQ6GRSs5dWlMdKf0hsr
-    1FwViqafCszU7As87qhe
-    u1n4jAYTpLVntCcjOYlZ
-    ueKngbQjNHZaxeVgtzq0
-    0Lb6oSxon3oLShI6hStb
-    AE7uogFqhS0s2dwDW48q
-    `,
     managers: {
         users: {
             maximumCacheSize: 0,

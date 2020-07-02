@@ -48,7 +48,7 @@ module.exports = class POSTManager extends BaseManager {
             );
             this.client.logger.info(`${options.service.endpoint}: Status (${response.status})`);
         } catch (e) {
-            this.client.logger.error(`${options.service.endpoint}: ${options.e.message}`);
+            this.client.logger.error(`${options.service.endpoint}: ${e.message}`);
         }
     }
 }
