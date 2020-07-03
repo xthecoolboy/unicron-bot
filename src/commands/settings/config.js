@@ -31,16 +31,16 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         const [action, key, ...value] = args;
-        const db = message.guild.db;
+        const db = await client.database.guilds.fetch(message.guild.id, true);
         if (action === 'view') {
             let embed = new Discord.MessageEmbed()
                 .setColor(0x00FFFF)
                 .setTimestamp();
             switch (key) {
                 case '2': {
-                    const inviteFilter = await db.filters('inviteFilter') ? 'ON' : 'OFF';
-                    const mentionSpamFilter = await db.filters('mentionSpamFilter') ? 'ON' : 'OFF';
-                    const swearFilter = await db.filters('swearFilter') ? 'ON' : 'OFF';
+                    const inviteFilter = db.filters('inviteFilter') ? 'ON' : 'OFF';
+                    const mentionSpamFilter = db.filters('mentionSpamFilter') ? 'ON' : 'OFF';
+                    const swearFilter = db.filters('swearFilter') ? 'ON' : 'OFF';
                     embed.setFooter('Page 2 of 4', message.guild.iconURL() || client.user.displayAvatarURL({ dynamic: true }))
                         .addField('Key', `
                     \`inviteFilter\`
@@ -55,12 +55,12 @@ module.exports = class extends BaseCommand {
                     break;
                 }
                 case '3': {
-                    const welcomeChannel = await db.welcomer('channel') ? `<#${await db.welcomer('channel')}>` : '\`none\`';
-                    const welcomeMessage = await db.welcomer('message');
-                    const welcomer = await db.welcomer('enabled') ? 'ON' : 'OFF';
-                    const leaveChannel = await db.leaver('channel') ? `<#${await db.leaver('channel')}>` : '\`none\`';
-                    const leaveMessage = await db.leaver('message');
-                    const leaver = await db.leaver('enabled') ? 'ON' : 'OFF';
+                    const welcomeChannel = db.welcomer('channel') ? `<#${db.welcomer('channel')}>` : '\`none\`';
+                    const welcomeMessage = db.welcomer('message');
+                    const welcomer = db.welcomer('enabled') ? 'ON' : 'OFF';
+                    const leaveChannel = db.leaver('channel') ? `<#${db.leaver('channel')}>` : '\`none\`';
+                    const leaveMessage = db.leaver('message');
+                    const leaver = db.leaver('enabled') ? 'ON' : 'OFF';
                     embed.setDescription('Use command \`welcomer\` or \`farewell\` to change these values')
                     embed.setFooter('Page 3 of 4', message.guild.iconURL() || client.user.displayAvatarURL({ dynamic: true }))
                         .addField('Key', `
@@ -82,12 +82,12 @@ module.exports = class extends BaseCommand {
                     break;
                 }
                 case '4': {
-                    const memberVerification = await db.verification('enabled') ? 'ON' : 'OFF';
-                    const verificationChannel = await db.verification('channel') ? `<#${await db.verification('channel')}>` : '\`none\`';
-                    const verifiedRole = await db.verification('role') ? `<@&${await db.verification('role')}>` : '\`none\`';
-                    const verificationType = await db.verification('type');
-                    const ticketSystem = await db.ticket('enabled') ? 'ON' : 'OFF';
-                    const ticketCategory = await db.ticket('category') ? `<#${await db.ticket('category')}>` : '\`none\`';
+                    const memberVerification = db.verification('enabled') ? 'ON' : 'OFF';
+                    const verificationChannel = db.verification('channel') ? `<#${db.verification('channel')}>` : '\`none\`';
+                    const verifiedRole = db.verification('role') ? `<@&${db.verification('role')}>` : '\`none\`';
+                    const verificationType = db.verification('type');
+                    const ticketSystem = db.ticket('enabled') ? 'ON' : 'OFF';
+                    const ticketCategory = db.ticket('category') ? `<#${db.ticket('category')}>` : '\`none\`';
                     embed.setDescription('Use command \`verification\` or \`ticketconfig\` / \`ticketsetup\` to change these values.')
                     embed.setFooter('Page 4 of 4', message.guild.iconURL() || client.user.displayAvatarURL({ dynamic: true }))
                         .addField('Key', `
@@ -110,14 +110,14 @@ module.exports = class extends BaseCommand {
                 }
                 case '1':
                 default: {
-                    const prefix = await db.settings('prefix');
-                    const modLogChannel = await db.moderation('modLogChannel') ? `<#${await db.moderation('modLogChannel')}>` : '\`none\`';
-                    const autoModeration = await db.moderation('autoModeration') ? 'ON' : 'OFF';
-                    const autoModAction = `${await db.moderation('autoModAction')} MEMBER`;
-                    const maxWarnTreshold = await db.moderation('maxWarnTreshold');
-                    const warnTresholdAction = `${await db.moderation('warnTresholdAction')} MEMBER`;
-                    const warnActionExpiresOn = await db.moderation('warnActionExpiresOn') ? ms(await db.moderation('warnActionExpiresOn')) : '0s';
-                    const warningExpiresOn = await db.moderation('warningExpiresOn') ? ms(await db.moderation('warningExpiresOn')) : '0s';
+                    const prefix = db.settings('prefix');
+                    const modLogChannel = db.moderation('modLogChannel') ? `<#${db.moderation('modLogChannel')}>` : '\`none\`';
+                    const autoModeration = db.moderation('autoModeration') ? 'ON' : 'OFF';
+                    const autoModAction = `${db.moderation('autoModAction')} MEMBER`;
+                    const maxWarnTreshold = db.moderation('maxWarnTreshold');
+                    const warnTresholdAction = `${db.moderation('warnTresholdAction')} MEMBER`;
+                    const warnActionExpiresOn = db.moderation('warnActionExpiresOn') ? ms(db.moderation('warnActionExpiresOn')) : '0s';
+                    const warningExpiresOn = db.moderation('warningExpiresOn') ? ms(db.moderation('warningExpiresOn')) : '0s';
                     embed.addField('Key', `
                     \`prefix\`
                     \`modLogChannel\`
@@ -147,7 +147,7 @@ module.exports = class extends BaseCommand {
                 case 'all': {
                     const yn = await client.awaitReply(message, 'Are you sure to reset Unicron\'s configurations for this server (yes/no)? _You have 15 seconds to comply_', 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    Promise.all([db.destroy(false, false)]).then(() => {
+                    Promise.all([await db.destroy(false, false)]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RANDOM')
                             .setDescription(`Successfully reseted Unicron\'s configurations for this server.`)
@@ -168,7 +168,7 @@ module.exports = class extends BaseCommand {
                 case 'prefix': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.settings(true);
+                    const settings = db.settings(true);
                     settings.prefix = '?';
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -191,7 +191,7 @@ module.exports = class extends BaseCommand {
                 case 'welcomeChannel': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.welcomer(true);
+                    const settings = db.welcomer(true);
                     settings.channel = '';
                     settings.enabled = false;
                     Promise.all([await settings.save()]).then(() => {
@@ -215,7 +215,7 @@ module.exports = class extends BaseCommand {
                 case 'welcomeMessage': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.welcomer(true);
+                    const settings = db.welcomer(true);
                     settings.message = 'Welcome {user} to the server!';
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -238,7 +238,7 @@ module.exports = class extends BaseCommand {
                 case 'farewellChannel': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.leaver(true);
+                    const settings = db.leaver(true);
                     settings.channel = '';
                     settings.enabled = false;
                     Promise.all([await settings.save()]).then(() => {
@@ -262,7 +262,7 @@ module.exports = class extends BaseCommand {
                 case 'farewellMessage': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.leaver(true);
+                    const settings = db.leaver(true);
                     settings.message = '{user} has left the server.';
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -285,7 +285,7 @@ module.exports = class extends BaseCommand {
                 case 'modLogChannel': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.moderation(true);
+                    const settings = db.moderation(true);
                     settings.modLogChannel = '';
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -308,7 +308,7 @@ module.exports = class extends BaseCommand {
                 case 'autoModeration': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.moderation(true);
+                    const settings = db.moderation(true);
                     settings.autoModeration = false;
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -331,7 +331,7 @@ module.exports = class extends BaseCommand {
                 case 'autoModAction': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.moderation(true);
+                    const settings = db.moderation(true);
                     settings.autoModAction = 'WARN';
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -354,7 +354,7 @@ module.exports = class extends BaseCommand {
                 case 'maxWarnTreshold': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.moderation(true);
+                    const settings = db.moderation(true);
                     settings.maxWarnTreshold = Number(0);
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -377,7 +377,7 @@ module.exports = class extends BaseCommand {
                 case 'warnActionExpiresOn': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.moderation(true);
+                    const settings = db.moderation(true);
                     settings.warnActionExpiresOn = Number(0);
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -400,7 +400,7 @@ module.exports = class extends BaseCommand {
                 case 'warningExpiresOn': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.moderation(true);
+                    const settings = db.moderation(true);
                     settings.autoModeration = Number(0);
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -423,7 +423,7 @@ module.exports = class extends BaseCommand {
                 case 'memberVerification': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.verification(true);
+                    const settings = db.verification(true);
                     settings.enabled = false;
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -446,7 +446,7 @@ module.exports = class extends BaseCommand {
                 case 'verificationChannel': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.verification(true);
+                    const settings = db.verification(true);
                     settings.enabled = false;
                     settings.channel = '';
                     Promise.all([await settings.save()]).then(() => {
@@ -470,7 +470,7 @@ module.exports = class extends BaseCommand {
                 case 'verifiedRole': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.verification(true);
+                    const settings = db.verification(true);
                     settings.enabled = false;
                     settings.role = '';
                     Promise.all([await settings.save()]).then(() => {
@@ -494,7 +494,7 @@ module.exports = class extends BaseCommand {
                 case 'verificationType': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.verification(true);
+                    const settings = db.verification(true);
                     settings.type = 'discrim';
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -517,7 +517,7 @@ module.exports = class extends BaseCommand {
                 case 'inviteFilter': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.filters(true);
+                    const settings = db.filters(true);
                     settings.inviteFilter = false;
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -540,7 +540,7 @@ module.exports = class extends BaseCommand {
                 case 'swearFilter': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.filters(true);
+                    const settings = db.filters(true);
                     settings.swearFilter = false;
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -563,7 +563,7 @@ module.exports = class extends BaseCommand {
                 case 'mentionSpamFilter': {
                     const yn = await client.awaitReply(message, `Are you sure to reset Unicron\'s \`${key}\` for this server (yes/no)? _You have 15 seconds to comply_`, 15000);
                     if (!['y', 'yes', 'YES'].includes(yn)) return message.channel.send('Request terminated.');
-                    const settings = await db.filters(true);
+                    const settings = db.filters(true);
                     settings.mentionSpamFilter = false;
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -602,7 +602,7 @@ module.exports = class extends BaseCommand {
                             .setDescription('TypeError: invalid type.\nActions: \`MUTE\`, \`KICK\`, \`SOFTBAN\`,\`BAN\`\nCASE SENSITIVE')
                         );
                     }
-                    if (value[0] === 'MUTE' && !await db.moderation('mutedRole')) {
+                    if (value[0] === 'MUTE' && !db.moderation('mutedRole')) {
                         return message.channel.send(new Discord.MessageEmbed()
                             .setColor('RED')
                             .setTimestamp()
@@ -610,7 +610,7 @@ module.exports = class extends BaseCommand {
                             .setDescription('Error: Muted Role not setup, use \`config set mutedRole [RoleMention|RoleID|RoleName]\` to set it up and use this command again!')
                         );
                     }
-                    const settings = await db.moderation(true);
+                    const settings = db.moderation(true);
                     settings[key] = value[0];
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -639,7 +639,7 @@ module.exports = class extends BaseCommand {
                             .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }
-                    const settings = await db.settings(true);
+                    const settings = db.settings(true);
                     settings.prefix = value[0];
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -677,7 +677,7 @@ module.exports = class extends BaseCommand {
                             .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }
-                    const settings = await db.moderation(true);
+                    const settings = db.moderation(true);
                     settings.modLogChannel = channel.id;
                     Promise.all([await settings.save()]).then(() => {
                         channel.send(`${key} synced`);
@@ -708,7 +708,7 @@ module.exports = class extends BaseCommand {
                         );
                     }
                     const bool = (value[0] === 'on') ? true : false;
-                    const settings = await db.moderation(true);
+                    const settings = db.moderation(true);
                     settings.autoModeration = bool;
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -738,7 +738,7 @@ module.exports = class extends BaseCommand {
                             .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }
-                    const settings = await db.moderation(true);
+                    const settings = db.moderation(true);
                     settings.maxWarnTreshold = Number(time);
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -769,7 +769,7 @@ module.exports = class extends BaseCommand {
                             .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
                         );
                     }
-                    const settings = await db.moderation(true);
+                    const settings = db.moderation(true);
                     settings[key] = num;
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()
@@ -801,7 +801,7 @@ module.exports = class extends BaseCommand {
                         );
                     }
                     const bool = (value[0] === 'on') ? true : false;
-                    const settings = await db.filters(true);
+                    const settings = db.filters(true);
                     settings[key] = bool;
                     Promise.all([await settings.save()]).then(() => {
                         return message.channel.send(new Discord.MessageEmbed()

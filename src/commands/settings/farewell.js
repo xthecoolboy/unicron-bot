@@ -45,7 +45,7 @@ module.exports = class extends BaseCommand {
             if (response2 === 'cancel') return message.channel.send(`Exiting setup...`);
             if (!response2.content.includes('{user}')) return message.channel.send(`Missing placeholer \`{user}\`... Exiting setup...Try again...`);
 
-            const model = await message.guild.db.leaver(true);
+            const model = message.guild.db.leaver(true);
             model.channel = channel.id;
             model.message = response2.content.replace(/`/g, '`' + String.fromCharCode(8203))
                 .replace(/@/g, '@' + String.fromCharCode(8203));
@@ -70,7 +70,7 @@ module.exports = class extends BaseCommand {
                 const msg = value.join(' ').replace(/`/g, '`' + String.fromCharCode(8203))
                     .replace(/@/g, '@' + String.fromCharCode(8203));
                 if (!msg.includes('{user}')) return message.channel.send(`Missing placeholer \`{user}\`... Please try again...`);
-                const model = await message.guild.db.leaver(true);
+                const model = message.guild.db.leaver(true);
                 model.message = msg;
                 await model.save();
                 client.emit('guildMemberRemove', message.member);
@@ -79,7 +79,7 @@ module.exports = class extends BaseCommand {
             case 'enable':
             case 'disable': {
                 const stat = key === 'enable';
-                const model = await message.guild.db.leaver(true);
+                const model = message.guild.db.leaver(true);
                 model.enabled = stat;
                 await model.save();
                 return message.channel.send(`Farewell has been \`${stat ? 'enabled' : 'disabled'}\`.`);

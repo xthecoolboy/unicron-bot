@@ -1,26 +1,33 @@
-
+const { Model } = require('sequelize');
 const { Admin } = require('../database/database.js');
-const { Random } = require('../utils/');
 
 module.exports = class Unicron {
     /**
      * 
      * @param {Object} options Options
+     * @param {Map<String, Model>} data
      */
-    constructor(options) {
+    constructor(options, data = new Map()) {
         this.owner = options.owner;
         this.server = options.server;
         this.serverInviteURL = options.inviteURL;
         this.channel = options.channel;
         this.modChannel = options.modChannel;
         this.host = options.hostURL;
+        this.data = data;
     }
-    database(table, model) {
+    /**
+     * @returns {JSON|Model}
+     * @param {String} table 
+     * @param {Boolean} model if true, returns the actuall model instance
+     */
+    database(table, model = false) {
         return new Promise(async (resolve, reject) => {
-            let data = await Admin.findOne({ where: { table: table }});
+            if (this.data.has(table)) return resolve(model ? this.data.get(table): this.data.get(table).data);
+            let data = await Admin.findOne({ where: { table: table } });
             if (!data) data = await Admin.create({ table });
-            if (typeof model === 'boolean') return resolve(data);
-            return resolve(data.data);
+            this.data.set(table, data);
+            return resolve(model ? this.data.get(table): this.data.get(table).data);
         });
     }
 };

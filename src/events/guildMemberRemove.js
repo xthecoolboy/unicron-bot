@@ -18,9 +18,9 @@ module.exports = class extends BaseEvent {
         const tmp = new Member(member.user.id, member.guild.id);
         await tmp.captcha.regenerate();
         const guild = await client.database.guilds.fetch(member.guild.id);
-        const channel_id = await guild.leaver('channel');
-        const message = await guild.leaver('message');
-        const enabled = await guild.leaver('enabled');
+        const channel_id = guild.leaver('channel');
+        const message = guild.leaver('message');
+        const enabled = guild.leaver('enabled');
         if (!channel_id || !enabled || !message) return;
         const channel = await client.channels.fetch(channel_id);
         if (!channel) return;

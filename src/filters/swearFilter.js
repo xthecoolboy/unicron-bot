@@ -12,7 +12,7 @@ const swearWords = fs.readFileSync('assets/swearWords.txt').toString().split('\r
 module.exports = (client, message) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const status = await message.guild.db.filters('swearFilter');
+            const status = message.guild.db.filters('swearFilter');
             const strat = (status && !message.channel.nsfw && message.author.permLevel < 3 &&
                 (
                     message.content.match(new RegExp(swearWords.map(client.escapeRegex).join('|'), 'gi'))
@@ -22,7 +22,7 @@ module.exports = (client, message) => {
             if (message.deletable) message.delete().catch(() => {});;
             message.channel.send(`No Swearing! ${message.author}.`)
                 .then(msg => msg.delete({ timeout: 5000 }));
-            const mChannel = message.guild.channels.resolve(await message.guild.db.moderation('modLogChannel'));
+            const mChannel = message.guild.channels.cache.get(message.guild.db.moderation('modLogChannel'));
             if (mChannel) {
                 mChannel.send(new MessageEmbed()
                     .setTimestamp()

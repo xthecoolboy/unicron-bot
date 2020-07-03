@@ -40,7 +40,7 @@ module.exports = class extends BaseCommand {
             if (!channel || channel.type !== 'category') return message.channel.send(`Invalid channel category... Exiting setup...Try again...`);
             if (!channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES', 'MANAGE_CHANNELS', 'VIEW_CHANNEL'])) return message.channel.send('Unicron doesn\'t have permissions to that channel, please give Unicron access to that channel for this to work and try again...Exiting Setup');
 
-            const model = await message.guild.db.ticket(true);
+            const model = message.guild.db.ticket(true);
             model.category = channel.id;
             model.enabled = true;
             await model.save();
@@ -53,7 +53,7 @@ module.exports = class extends BaseCommand {
                     const channel = message.guild.channels.cache.get(args[0]);
                     if (!channel || channel.type !== 'category') return message.channel.send(`Invalid channel category... Exiting setup...Try again...`);
                     if (!channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES', 'MANAGE_CHANNELS', 'VIEW_CHANNEL'])) return message.channel.send('Unicron doesn\'t have permissions to that channel, please give Unicron access to that channel for this to work and try again...Exiting Setup');
-                    const model = await message.guild.db.ticket(true);
+                    const model = message.guild.db.ticket(true);
                     model.category = channel.id;
                     await model.save();
                     return message.channel.send(`Ticket System Category has been set to \`${channel.name}\`.`);
@@ -61,7 +61,7 @@ module.exports = class extends BaseCommand {
                 case 'enable':
                 case 'disable': {
                     const stat = message.flags[0] === 'enable';
-                    const model = await message.guild.db.ticket(true);
+                    const model = message.guild.db.ticket(true);
                     model.enabled = stat;
                     await model.save();
                     return message.channel.send(`Ticket System has been \`${stat ? 'enabled' : 'disabled'}\`.`);

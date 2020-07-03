@@ -18,11 +18,11 @@ module.exports = class extends BaseEvent {
         const tmp = new Member(member.user.id, member.guild.id);
         await tmp.captcha.regenerate();
         const guild = await client.database.guilds.fetch(member.guild.id);
-        const verifier = await guild.verification('type');
+        const verifier = guild.verification('type');
         if (['discrim', 'captcha'].includes(verifier)) {
-            const enabled = await guild.verification('enabled');
-            const channel = await guild.verification('channel');
-            const role = await guild.verification('role');
+            const enabled = guild.verification('enabled');
+            const channel = guild.verification('channel');
+            const role = guild.verification('role');
             if (enabled && channel && role) {
                 try {
                     const dm = await member.user.createDM();
@@ -33,7 +33,7 @@ module.exports = class extends BaseEvent {
                                 .setColor(0xD3D3D3)
                                 .setTitle(`Welcome to ${member.guild.name}`)
                                 .setAuthor(client.user.tag, client.user.displayAvatarURL({ dynamic: true }))
-                                .setDescription(`This server is protected by [Unicron](${client.unicron.serverInviteURL} 'Unicron's Support Server'), a powerful bot that prevents servers from being raided\nTo get yourself verified use \`I am XXXX\`, where \`XXXX\` is your discriminator at ${member.guild.channels.resolve(await guild.verification('channel'))}\nEg: \`I am ${member.user.discriminator}\``)
+                                .setDescription(`This server is protected by [Unicron](${client.unicron.serverInviteURL} 'Unicron's Support Server'), a powerful bot that prevents servers from being raided\nTo get yourself verified use \`I am XXXX\`, where \`XXXX\` is your discriminator at ${member.guild.channels.resolve(guild.verification('channel'))}\nEg: \`I am ${member.user.discriminator}\``)
                             );
                             break;
                         }
@@ -43,7 +43,7 @@ module.exports = class extends BaseEvent {
                                 .setColor(0xD3D3D3)
                                 .setTitle(`Welcome to ${member.guild.name}`)
                                 .setAuthor(client.user.tag, client.user.displayAvatarURL({ dynamic: true }))
-                                .setDescription(`This server is protected by [Unicron](${client.unicron.serverInviteURL} 'Unicron's Support Server'), a powerful bot that prevents servers from being raided\nTo get yourself verified use \`>verify [Captcha]\` at ${member.guild.channels.resolve(await guild.verification('channel'))}.\nEg: \`>verify ${await tmp.captcha.fetch()}\`\n\nCaptcha: \`${await tmp.captcha.fetch()}\``)
+                                .setDescription(`This server is protected by [Unicron](${client.unicron.serverInviteURL} 'Unicron's Support Server'), a powerful bot that prevents servers from being raided\nTo get yourself verified use \`>verify [Captcha]\` at ${member.guild.channels.resolve(guild.verification('channel'))}.\nEg: \`>verify ${await tmp.captcha.fetch()}\`\n\nCaptcha: \`${await tmp.captcha.fetch()}\``)
                             );
                             break;
                         }
@@ -57,9 +57,9 @@ module.exports = class extends BaseEvent {
                 }
             }
         }
-        const channel_id = await guild.welcomer('channel');
-        const message = await guild.welcomer('message');
-        const enabled = await guild.welcomer('enabled');
+        const channel_id = guild.welcomer('channel');
+        const message = guild.welcomer('message');
+        const enabled = guild.welcomer('enabled');
         if (!channel_id || !enabled || !message) return;
         const channel = await client.channels.fetch(channel_id);
         if (!channel) return;

@@ -29,7 +29,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const toggle = await message.guild.db.filters(true);
+        const toggle = message.guild.db.filters(true);
         toggle.swearFilter = !toggle.swearFilter;
         await toggle.save();
         message.channel.send(`No Swear has been ${toggle.swearFilter ? 'enabled' : 'disabled'}`);

@@ -36,7 +36,7 @@ module.exports = class extends BaseCommand {
                 case 'enable':
                 case 'disable': {
                     const stat = message.flags[0] === 'enable';
-                    const model = await message.guild.db.verification(true);
+                    const model = message.guild.db.verification(true);
                     model.enabled = stat;
                     await model.save();
                     return message.channel.send(`Member Verification has been \`${stat ? 'enabled' : 'disabled'}\`.`);
@@ -96,7 +96,7 @@ module.exports = class extends BaseCommand {
 
         }
 
-        const model = await message.guild.db.verification(true);
+        const model = message.guild.db.verification(true);
         model.channel = channel.id;
         model.type = response3.content;
         model.role = role.id;

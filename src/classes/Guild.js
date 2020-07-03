@@ -1,5 +1,5 @@
 const Base = require('./Base');
-
+const { Model } = require('sequelize');
 const {
     GuildSettings,
     GuildDynamicVoice,
@@ -17,10 +17,11 @@ module.exports = class Guild extends Base {
     /**
      * 
      * @param {String} id 
-     * @param {Object} data 
+     * @param {Map<String, Model>} data
      */
-    constructor(id) {
+    constructor(id, data) {
         super(id);
+        this.data = data;
     }
     /**
      * 
@@ -44,17 +45,11 @@ module.exports = class Guild extends Base {
      * * premium
      * * data
      * @param {String|Boolean} value Search value
-     * @returns {Promise<String>|Promise<Object>}
+     * @returns {String|JSON}
      */
     settings(value) {
-        return new Promise(async (resolve, reject) => {
-            let retval = await GuildSettings.findOne({ where: { guild_id: this.id } });
-            if (!retval) retval = await GuildSettings.create({ guild_id: this.id });
-            if (typeof value === 'boolean') {
-                return resolve(retval);
-            }
-            return resolve(retval[value]);
-        });
+        const retval = this.data.get('GuildSettings');
+        return typeof value === 'boolean' ? retval : retval[value];
     }
     /**
      * Values:
@@ -63,17 +58,12 @@ module.exports = class Guild extends Base {
      * * data
      * * enabled
      * @param {String|Boolean} value Search value
-     * @returns {Promise<String>|Promise<Object>}
+     * @returns {String|JSON}
+     * 
      */
     dynamicVoice(value) {
-        return new Promise(async (resolve, reject) => {
-            let retval = await GuildDynamicVoice.findOne({ where: { guild_id: this.id } });
-            if (!retval) retval = await GuildDynamicVoice.create({ guild_id: this.id });
-            if (typeof value === 'boolean') {
-                return resolve(retval);
-            }
-            return resolve(retval[value]);
-        });
+        const retval = this.data.get('GuildDynamicVoice');
+        return typeof value === 'boolean' ? retval : retval[value];
     }
     /**
      * Values:
@@ -82,18 +72,11 @@ module.exports = class Guild extends Base {
      * * type
      * * enabled
      * @param {String|Boolean} value Search value
-     * @returns {Promise<String>|Promise<Object>}
+     * @returns {String|JSON}
      */
     verification(value) {
-        return new Promise(async (resolve, reject) => {
-            let retval = await GuildVerification.findOne({ where: { guild_id: this.id } });
-            if (!retval) retval = await GuildVerification.create({ guild_id: this.id });
-            if (typeof value === 'boolean') {
-                return resolve(retval);
-            }
-            return resolve(retval[value]);
-        });
-
+        const retval = this.data.get('GuildVerification');
+        return typeof value === 'boolean' ? retval : retval[value];
     }
     /**
      * Values:
@@ -104,15 +87,8 @@ module.exports = class Guild extends Base {
      * @returns {Promise<String>|Promise<Object>}
      */
     ticket(value) {
-        return new Promise(async (resolve, reject) => {
-            let retval = await GuildTicket.findOne({ where: { guild_id: this.id } });
-            if (!retval) retval = await GuildTicket.create({ guild_id: this.id });
-            if (typeof value === 'boolean') {
-                return resolve(retval);
-            }
-            return resolve(retval[value]);
-        });
-
+        const retval = this.data.get('GuildTicket');
+        return typeof value === 'boolean' ? retval : retval[value];
     }
     /**
      * Values:
@@ -131,15 +107,8 @@ module.exports = class Guild extends Base {
      * @returns {Promise<String>|Promise<Object>}
      */
     moderation(value) {
-        return new Promise(async (resolve, reject) => {
-            let retval = await GuildModeration.findOne({ where: { guild_id: this.id } });
-            if (!retval) retval = await GuildModeration.create({ guild_id: this.id });
-            if (typeof value === 'boolean') {
-                return resolve(retval);
-            }
-            return resolve(retval[value]);
-        });
-
+        const retval = this.data.get('GuildModeration');
+        return typeof value === 'boolean' ? retval : retval[value];
     }
     /**
      * Values:
@@ -148,17 +117,11 @@ module.exports = class Guild extends Base {
      * * mentionSpamFilter
      * * data
      * @param {String|Boolean} value Search value
-     * @returns {Promise<String>|Promise<Object>}
+     * @returns {String|JSON}
      */
     filters(value) {
-        return new Promise(async (resolve, reject) => {
-            let retval = await GuildFilter.findOne({ where: { guild_id: this.id } });
-            if (!retval) retval = await GuildFilter.create({ guild_id: this.id });
-            if (typeof value === 'boolean') {
-                return resolve(retval);
-            }
-            return resolve(retval[value]);
-        });
+        const retval = this.data.get('GuildFilter');
+        return typeof value === 'boolean' ? retval : retval[value];
     }
     /**
      * Values:
@@ -166,18 +129,11 @@ module.exports = class Guild extends Base {
      * * message
      * * enabled
      * @param {String|Boolean} value Search value
-     * @returns {Promise<String>|Promise<Object>}
+     * @returns {String|JSON}
      */
     welcomer(value) {
-        return new Promise(async (resolve, reject) => {
-            let retval = await GuildWelcome.findOne({ where: { guild_id: this.id } });
-            if (!retval) retval = await GuildWelcome.create({ guild_id: this.id });
-            if (typeof value === 'boolean') {
-                return resolve(retval);
-            }
-            return resolve(retval[value]);
-        });
-
+        const retval = this.data.get('GuildWelcome');
+        return typeof value === 'boolean' ? retval : retval[value];
     }
     /**
      * Values:
@@ -185,17 +141,11 @@ module.exports = class Guild extends Base {
      * * message
      * * enabled
      * @param {String|Boolean} value Search value
-     * @returns {Promise<String>|Promise<Object>}
+     * @returns {String|JSON}
      */
     leaver(value) {
-        return new Promise(async (resolve, reject) => {
-            let retval = await GuildLeave.findOne({ where: { guild_id: this.id } });
-            if (!retval) retval = await GuildLeave.create({ guild_id: this.id });
-            if (typeof value === 'boolean') {
-                return resolve(retval);
-            }
-            return resolve(retval[value]);
-        });
+        const retval = this.data.get('GuildLeave');
+        return typeof value === 'boolean' ? retval : retval[value];
     }
     /**
      * 

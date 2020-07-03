@@ -31,8 +31,8 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const stat = await message.guild.db.ticket('enabled');
-        const strat = await message.guild.db.ticket('category');
+        const stat = message.guild.db.ticket('enabled');
+        const strat = message.guild.db.ticket('category');
         if (!stat || !strat) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')

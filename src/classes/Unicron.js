@@ -29,6 +29,7 @@ module.exports = class UnicronClient extends Client {
         this.commands = new Collection();
         this.events = new Collection();
         this.shopitems = new Collection();
+        this.botEmojis = new Collection();
         this.utils = require('../utils/');
         this.logger = this.utils.Logger;
         this.wait = promisify(setTimeout);
@@ -44,6 +45,7 @@ module.exports = class UnicronClient extends Client {
      * @param {String} name 
      */
     getEmoji(name) {
+        if (this.botEmojis.has(name)) return this.botEmojis.get(name);
         function findEmoji(id) {
             const temp = this.emojis.cache.get(id);
             if (!temp) return null;
@@ -63,6 +65,7 @@ module.exports = class UnicronClient extends Client {
                             .then(raw => {
                                 const guild = new Guild(this, raw);
                                 const emoji = new GuildEmoji(this, femoji, guild);
+                                this.botEmojis.set(name, emoji);
                                 return emoji;
                             });
                     })

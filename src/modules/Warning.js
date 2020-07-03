@@ -12,9 +12,9 @@ module.exports = (client, message, user_id, member) => {
     return new Promise(async (resolve, reject) => {
         try {
             const db = new Member(user_id, message.guild.id);
-            const maxTreshold = await message.guild.db.moderation('maxWarnTreshold');
-            const action = await message.guild.db.moderation('warnTresholdAction');
-            const duration = await message.guild.db.moderation('warnActionExpiresOn');
+            const maxTreshold = message.guild.db.moderation('maxWarnTreshold');
+            const action = message.guild.db.moderation('warnTresholdAction');
+            const duration = message.guild.db.moderation('warnActionExpiresOn');
             const warns = await db.warnings.fetchAll();
             const faction = action.toLowerCase();
             const reason = 'Maximum Warn Threshold Reached!';
@@ -89,7 +89,7 @@ module.exports = (client, message, user_id, member) => {
                 default:
                     return resolve(false);
             }
-            const modchannel = await client.channels.fetch(await message.guild.db.moderation('modLogChannel'));
+            const modchannel = await client.channels.fetch(message.guild.db.moderation('modLogChannel'));
             if (modchannel && modchannel.type === 'text') {
                 modchannel.send(new MessageEmbed()
                     .setColor('RANDOM')

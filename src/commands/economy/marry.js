@@ -55,8 +55,8 @@ module.exports = class extends BaseCommand {
             );
         }
         const ttarget = await client.database.users.fetch(target.id);
-        const tID = await ttarget.profile('married_id');
-        const mID = await message.author.db.profile('married_id');
+        const tID = ttarget.profile('married_id');
+        const mID = message.author.db.profile('married_id');
         if (tID === message.author.id) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor(0x00FF00)

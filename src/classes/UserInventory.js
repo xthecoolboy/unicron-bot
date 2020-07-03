@@ -6,11 +6,9 @@ module.exports = class UserInventory extends Base {
     /**
      * 
      * @param {User} parent 
-     * @param {String} id 
      */
-    constructor(parent, id) {
-        super(id);
-        this.parent = parent;
+    constructor(parent) {
+        super(parent.id);
     }
     /**
      * @returns {Promise<Boolean>}
@@ -18,14 +16,18 @@ module.exports = class UserInventory extends Base {
      */
     add(item) {
         return new Promise(async (resolve, reject) => {
-            let useritem = await inv.findOne({ where: { user_id: this.id, item_id: item } });
-            if (!useritem) {
-                useritem = await inv.create({ user_id: this.id, item_id: item, amount: 1 });
-                return resolve(true);
+            try {
+                let useritem = await inv.findOne({ where: { user_id: this.id, item_id: item } });
+                if (!useritem) {
+                    useritem = await inv.create({ user_id: this.id, item_id: item, amount: 1 });
+                    return resolve(true);
+                }
+                useritem.amount += 1;
+                useritem.save();
+                resolve(true);
+            } catch (e) {
+                reject(e)
             }
-            useritem.amount += 1;
-            useritem.save();
-            return resolve(true);
         });
     }
     /**
@@ -34,15 +36,19 @@ module.exports = class UserInventory extends Base {
      */
     remove(item) {
         return new Promise(async (resolve, reject) => {
-            const useritem = await inv.findOne({ where: { user_id: this.id, item_id: item } });
-            if (!useritem) return resolve(true);
-            if (useritem.amount === 1) {
-                await inv.destroy({ where: { user_id: this.id, item_id: item } })
+            try {
+                const useritem = await inv.findOne({ where: { user_id: this.id, item_id: item } });
+                if (!useritem) return resolve(true);
+                if (useritem.amount === 1) {
+                    await inv.destroy({ where: { user_id: this.id, item_id: item } })
+                    return resolve(true);
+                }
+                useritem.amount -= 1;
+                useritem.save();
                 return resolve(true);
+            } catch (e) {
+                reject(e);
             }
-            useritem.amount -= 1;
-            useritem.save();
-            return resolve(true);
         });
 
     }
@@ -52,9 +58,13 @@ module.exports = class UserInventory extends Base {
      */
     has(item) {
         return new Promise(async (resolve, reject) => {
-            const useritem = await inv.findOne({ where: { user_id: this.id, item_id: item } });
-            if (!useritem) return resolve(0);
-            return resolve(useritem.amount);
+            try {
+                const useritem = await inv.findOne({ where: { user_id: this.id, item_id: item } });
+                if (!useritem) return resolve(0);
+                return resolve(useritem.amount);
+            } catch (e) {
+                reject(e);
+            }
         });
     }
     /**
@@ -62,8 +72,12 @@ module.exports = class UserInventory extends Base {
      */
     fetch() {
         return new Promise(async (resolve, reject) => {
-            const items = await inv.findAll({ where: { user_id: this.id } });
-            return resolve(items ? items : []);
+            try {
+                const items = await inv.findAll({ where: { user_id: this.id } });
+                return resolve(items ? items : []);
+            } catch (e) {
+                reject(e);
+            }
         });
     }
     async destroy() {

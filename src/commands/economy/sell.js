@@ -41,7 +41,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setDescription(`You cannot sell this item.`));
         }
-        if (!message.author.db.inventory.has(item.config.id)) {
+        if (!await message.author.db.inventory.has(item.config.id)) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setDescription(`You don\'t have that item to sell.`));

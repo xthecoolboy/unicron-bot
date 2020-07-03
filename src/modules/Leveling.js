@@ -4,10 +4,10 @@ const ReqLvlChart = [];
 const graph = new Collection();
 
 (function () {
-    for (var i = 0; i < 101; i++) {
+    for (let i = 0; i < 101; i++) {
         ReqLvlChart.push(2 * (i * i) + (50 * i) + 69);
     }
-    for (var i = 0; i < 101; i++) {
+    for (let i = 0; i < 101; i++) {
         if (i === 0) {
             LvlChart.push(i);
             continue;

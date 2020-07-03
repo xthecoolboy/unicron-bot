@@ -37,7 +37,7 @@ module.exports = class extends BaseCommand {
         if (!response1) return message.channel.send('No response was given, Exiting setup...') //Stops execution if no response
         if (response1.content === 'cancel') return message.channel.send('Exiting setup...') //Stops execution if command cancel is run
         const chan = await message.guild.channels.create(`${response1}`, { type: 'voice', parent: channel });
-        const model = await message.guild.db.dynamicVoice(true);
+        const model = message.guild.db.dynamicVoice(true);
         model.category = channel.id;
         model.waitingRoom = chan.id;
         model.enabled = true;

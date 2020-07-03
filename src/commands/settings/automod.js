@@ -29,7 +29,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const toggle = await message.guild.db.moderation(true);
+        const toggle = message.guild.db.moderation(true);
         toggle.autoModeration = !toggle.autoModeration;
         await toggle.save();
         message.channel.send(`Auto Moderation has been ${toggle.autoModeration ? 'enabled' : 'disabled'}`);

@@ -29,9 +29,9 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const db = await client.database.guilds.fetch(message.guild.id);
-        const category = await db.dynamicVoice('category');
-        const enabled = await db.dynamicVoice('enabled');
+        const db = await client.database.guilds.fetch(message.guild.id, true);
+        const category = db.dynamicVoice('category');
+        const enabled = db.dynamicVoice('enabled');
         if (!category || !enabled) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')

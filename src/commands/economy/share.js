@@ -29,7 +29,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const currentAmount = await message.author.db.coins.fetch();
+        const currentAmount = message.author.db.coins.fetch();
         let transferAmount = args[0];
         if (isNaN(transferAmount)) {
             if (transferAmount === 'all') { transferAmount = currentAmount; }

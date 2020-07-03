@@ -42,7 +42,7 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         const user = await client.database.users.fetch(message.author.id);
-        const cur = await user.coins.fetch();
+        const cur = user.coins.fetch();
         if (cur < 500) {
             message.channel.send('Sorry, but you need atleast **500** coins to start a crime.');
             return false;

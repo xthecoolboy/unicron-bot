@@ -1,57 +1,49 @@
 const Base = require('./Base');
 const User = require('./User');
-const { UserProfile } = require('../database/database');
 
 module.exports = class UserCoin extends Base {
     /**
      * 
      * @param {User} parent 
-     * @param {String} id 
      */
-    constructor(parent, id) {
-        super(id);
-        this.parent = parent;
+    constructor(parent) {
+        super(parent.id);
+        this.data = parent.data;
     }
     /**
-     * @returns {Promise<User>}
+     * @returns {Promise<void>}
      * @param {Number} amount 
      */
     add(amount) {
         return new Promise(async (resolve, reject) => {
-            let user = await UserProfile.findOne({ where: { user_id: this.id } });
-            if (!user) {
-                await UserProfile.create({ user_id: this.id, balance: amount });
-                return resolve(this.parent);
+            try {
+                this.data.balance += Number(amount);
+                await this.data.save();
+                resolve();
+            } catch (e) {
+                reject(e);
             }
-            user.balance += Number(amount);
-            await user.save();
-            return resolve(this.parent);
         });
     }
     /**
-     * @returns {Promise<User>}
+     * @returns {Promise<void>}
      * @param {Number} amount 
      */
     remove(amount) {
-        return new Promise(async (resolve, reject)=> {
-            let user = await UserProfile.findOne({ where: { user_id: this.id } });
-            if (!user) {
-                await UserProfile.create({ user_id: this.id, balance: amount });
-                return resolve(this.parent);
+        return new Promise(async (resolve, reject) => {
+            try {
+                this.data.balance -= Number(amount);
+                await this.data.save();
+                resolve();
+            } catch (e) {
+                reject(e);
             }
-            user.balance -= Number(amount);
-            await user.save();
-            return resolve(this.parent);
         });
     }
     /**
-     * @returns {Promise<Number>}
+     * @returns {Number}
      */
-    fetch(){
-        return new Promise(async (resolve, reject) => {
-            let user = await UserProfile.findOne({ where: { user_id: this.id } });
-            if (!user) user = await UserProfile.create({ user_id: this.id });
-            return resolve(user ? user.balance : 0);
-        });
+    fetch() {
+        return this.data.balance;
     }
 }

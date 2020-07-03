@@ -44,10 +44,10 @@ module.exports = class extends BaseCommand {
                 .setDescription('This item is not for sale.'));
             return false;
         }
-        if (item.options.price > await message.author.db.coins.fetch()) {
+        if (item.options.price > message.author.db.coins.fetch()) {
             message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
-                .setDescription(`You need **${item.options.price - await message.author.db.coins.fetch()}** more coins to buy this item.`));
+                .setDescription(`You need **${item.options.price - message.author.db.coins.fetch()}** more coins to buy this item.`));
             return false;
         }
         await message.author.db.coins.remove(item.options.price);

@@ -1,6 +1,5 @@
 const Base = require('./Base');
 const User = require('./User');
-const { UserProfile } = require('../database/database');
 
 function removeElement(arr, key) {
     return arr.filter((item) => { return item !== key });
@@ -10,11 +9,10 @@ module.exports = class UserBadge extends Base {
     /**
      * 
      * @param {User} parent 
-     * @param {String} id 
      */
-    constructor(parent, id) {
-        super(id);
-        this.parent = parent;
+    constructor(parent) {
+        super(parent.id);
+        this.data = parent.data;
     }
     /**
      * @returns {Promise<Boolean>}
@@ -22,14 +20,17 @@ module.exports = class UserBadge extends Base {
      */
     add(badge) {
         return new Promise(async (resolve, reject) => {
-            let user = await UserProfile.findOne({ where: { user_id: this.id } });
-            if (!user) user = await UserProfile.create({ user_id: this.id });
-            if (!user.data) user.data = {};
-            const copy = user.data;
-            if (copy['badges'] && copy['badges'].includes(badge)) return resolve(false);
-            (copy['badges'] || (copy['badges'] = [])).push(badge);
-            await UserProfile.update({ data: copy }, { where: { user_id: this.id } });
-            return resolve(true);
+            try {
+                if (!this.data.data) this.data.data = {};
+                const copy = this.data.data;
+                if (copy['badges'] && copy['badges'].includes(badge)) return resolve(false);
+                (copy['badges'] || (copy['badges'] = [])).push(badge);
+                this.data.data['badges'] = copy;
+                await this.data.save();
+                return resolve(true);
+            } catch (e) {
+                reject(e);
+            }
         });
     }
     /**
@@ -38,39 +39,28 @@ module.exports = class UserBadge extends Base {
      */
     remove(badge) {
         return new Promise(async (resolve, reject) => {
-            let user = await UserProfile.findOne({ where: { user_id: this.id } });
-            if (!user) user = await UserProfile.create({ user_id: this.id });
-            if (!user.data) user.data = {};
-            if (user.data['badges'] && !user.data['badges'].includes(badge)) return resolve(false);
-            const mcpy = removeElement(user.data['badges'], badge);
-            user.data['badges'] = mcpy;
-            await UserProfile.update({ data: user.data }, { where: { user_id: this.id } });
+            if (!this.data.data) this.data.data = {};
+            if (this.data.data['badges'] && !this.data.data['badges'].includes(badge)) return resolve(false);
+            const mcpy = removeElement(this.data.data['badges'], badge);
+            this.data.data['badges'] = mcpy;
+            await this.data.save();
             return resolve(true);
         });
     }
     /**
-     * @returns {Promise<Boolean>}
+     * @returns {Boolean}
      * @param {String} badge 
      */
     has(value) {
-        return new Promise(async (resolve, reject) => {
-            let user = await UserProfile.findOne({ where: { user_id: this.id } });
-            if (!user) user = await UserProfile.create({ user_id: this.id });
-            if (!user.data) user.data = {};
-            if (!user.data['badges']) user.data['badges'] = [];
-            await user.save();
-            return resolve(user.data['badges'].includes(value) ? true : false);
-        });
+        if (!this.data.data) this.data.data = {};
+        if (!this.data.data['badges']) this.data.data['badges'] = [];
+        return this.data.data['badges'].includes(value);
     }
     /**
-     * @returns {Promise<Array<String>>}
+     * @returns {Array<String>}
      */
     fetch() {
-        return new Promise(async (resolve, reject) => {
-            let user = await UserProfile.findOne({ where: { user_id: this.id } });
-            if (!user) user = await UserProfile.create({ user_id: this.id });
-            if (!user.data) user.data = {};
-            return resolve(user.data['badges'] ? user.data['badges'] : []);
-        });
+        if (!this.data.data) this.data.data = {};
+        return this.data.data['badges'] ? this.data.data['badges'] : [];
     }
 }

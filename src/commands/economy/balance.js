@@ -38,7 +38,7 @@ module.exports = class extends BaseCommand {
                 .setDescription('Error: Cannot show balance of a bot user.'));
         }
         const user = await client.database.users.fetch(target.id);
-        const coins = await user.coins.fetch();
+        const coins = user.coins.fetch();
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setAuthor(target.tag, target.displayAvatarURL({ dynamic: true }))

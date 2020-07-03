@@ -1,5 +1,6 @@
 const BaseManager = require('../classes/BaseManager');
 const User = require('../classes/User');
+const { UserProfile } = require('../database/database');
 
 module.exports = class UserManager extends BaseManager {
     constructor(client, options) {
@@ -8,11 +9,20 @@ module.exports = class UserManager extends BaseManager {
     /**
      * @returns {Promise<User>}
      * @param {String} user_id 
+     * @param {Boolean} cache
      */
-    fetch(user_id) {
+    fetch(user_id, cache = false) {
         return new Promise(async (resolve, reject) => {
-            const instance = new User(user_id);
-            return resolve(instance);
+            try {
+                if (this.cache.has(user_id)) return resolve(this.cache.get(user_id));
+                let data = await UserProfile.findOne({ where: { user_id }});
+                if (!data) data = await UserProfile.create({ user_id });
+                const instance = new User(user_id, data);
+                if (cache) this.cache.set(user_id, instance);
+                return resolve(instance);
+            } catch (e) {
+                reject(e);
+            }
         });
     }
 }

@@ -14,10 +14,10 @@ module.exports = class extends BaseEvent {
      */
     async run(client, oldState, newState) {
         if (await Blacklist(client, newState.member.user.id, newState.guild.id)) return;
-        const db = await client.database.guilds.fetch(oldState.guild.id);
-        const enabled = await db.dynamicVoice('enabled');
-        const waitingRoom = await db.dynamicVoice('waitingRoom');
-        const category = await db.dynamicVoice('category');
+        const db = await client.database.guilds.fetch(oldState.guild.id, true);
+        const enabled = db.dynamicVoice('enabled');
+        const waitingRoom = db.dynamicVoice('waitingRoom');
+        const category = db.dynamicVoice('category');
         if (!enabled 
             || oldState.member.user.bot
             || newState.member.user.bot

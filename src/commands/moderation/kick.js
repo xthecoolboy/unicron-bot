@@ -77,7 +77,7 @@ module.exports = class extends BaseCommand {
         }
         const _reason = reason ? reason.join(' ') : 'No reason provided.';
         try {
-            await member.kick(_reason);
+            await member.kick(_reason).catch((e) => { throw e });
         } catch (e) {
             console.log(e);
             return message.channel.send(new Discord.MessageEmbed()
@@ -105,7 +105,7 @@ module.exports = class extends BaseCommand {
                 .setTitle(`You have been kicked from ${message.guild.name}`)
                 .setDescription(`Reason : ${_reason}`)
                 .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
-            );
+            ).catch(() => {});
         } catch (e) {
 
         }

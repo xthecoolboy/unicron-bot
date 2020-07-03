@@ -15,34 +15,26 @@ module.exports = class User extends Base {
      * @param {String} id 
      * @param {UserProfile} data 
      */
-    constructor(id) {
+    constructor(id, data) {
         super(id);
-        this.inventory = new UserInventory(this, id);
-        this.coins = new UserCoin(this, id);
-        this.badges = new UserBadge(this, id);
-        this.experience = new UserXP(this, id);
+        this.data = data;
+        this.inventory = new UserInventory(this);
+        this.coins = new UserCoin(this);
+        this.badges = new UserBadge(this);
+        this.experience = new UserXP(this);
     }
-    async destroy() {
-        await UserProfile.destroy({ where: { user_id: this.id } }).catch((e) => { throw e });
+    destroy() {
+        this.data.destroy();
     }
     /**
      * Searches:
      * - premium
      * - data {Object}
-     * @returns {Promise<Object>|Promise<String>|Promise<JSON>|Promise<Boolean>}
+     * @returns {JSON|String|Boolean}
      * @param {Boolean|String} value 
      */
     profile(value) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                let user = await UserProfile.findOne({ where: { user_id: this.id } });
-                if (!user) user = await UserProfile.create({ user_id: this.id });
-                if (typeof value === 'boolean') return resolve(user);
-                return resolve(user[value]);
-            } catch (e) {
-                reject(e);
-            }
-        });
+        return typeof value === 'boolean' ? this.data : this.data[value];
     }
     /**
      * @returns {Promise<Message|Boolean>}

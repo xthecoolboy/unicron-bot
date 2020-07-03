@@ -32,7 +32,7 @@ module.exports = class extends BaseCommand {
     async run(client, message, args) {
         const target = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
         const t = await client.database.users.fetch(target.id);
-        if (! await t.profile('married_id')) {
+        if (!t.profile('married_id')) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
                 .setTimestamp()

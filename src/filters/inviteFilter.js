@@ -11,13 +11,13 @@ const { Regex } = require('../utils/');
 module.exports = (client, message) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const status = await message.guild.db.filters('inviteFilter');
+            const status = message.guild.db.filters('inviteFilter');
             const strat = (status && (message.author.permLevel < 2) && message.content.match(Regex.discord.invite)) ? true : false;
             if (!strat) return resolve(false);
             if (message.deletable) message.delete().catch(() => {});;
             message.channel.send(`No Advertising! ${message.author}.`)
                 .then(msg => msg.delete({ timeout: 5000}).catch(() => {}));
-            const mChannel = message.guild.channels.resolve(await message.guild.db.moderation('modLogChannel'));
+            const mChannel = message.guild.channels.cache.get(message.guild.db.moderation('modLogChannel'));
             if (mChannel) {
                 mChannel.send(new MessageEmbed()
                     .setTimestamp()

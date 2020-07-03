@@ -30,7 +30,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        return message.channel.send(Crypto.createHmac('sha512').update(args.join(' ')).digest('hex'));
+        return message.channel.send(client.hash(args.join(' '), 'sha512'));
 
     }
 }

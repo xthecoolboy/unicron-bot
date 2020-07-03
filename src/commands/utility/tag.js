@@ -12,7 +12,7 @@ module.exports = class extends BaseCommand {
 Creating/Removing/Editing a tag requires permission level \`Server Moderator\`
 \`\`\`html
 tag <Tag Name>
-<Tag Name>
+{PREFIX}<Tag Name>
 tag list
 tag <create|edit> <Tag Name> <...Value>
 tag delete <Tag Name>

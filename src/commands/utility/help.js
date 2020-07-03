@@ -41,8 +41,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const prefix = await message.guild.db.settings('prefix');
-        const OWNER = await client.users.fetch(client.unicron.owner);
+        const prefix = message.guild.db.settings('prefix');
         if (args.length) {
             if (category.has(args[0])) {
                 let embed = new Discord.MessageEmbed()
@@ -95,7 +94,6 @@ module.exports = class extends BaseCommand {
             .setColor(0x00FFFF)
             .setTitle('Unicron\'s Commands')
             .setDescription(`Join our [Support Server](${client.unicron.serverInviteURL}) for help and updates!\n\`\`\`xl\n${prefix}help [Category]\n\`\`\``)
-            .setFooter(`Made by ${OWNER.tag}`, OWNER.displayAvatarURL({ dynamic: true }))
             .addField(`${await client.getEmoji('staff')} Moderation`, `\`moderation\``, true)
             .addField(`${await client.getEmoji('settings')} Settings`, `\`settings\``, true)
             .addField(`🎫 Ticket System`, `\`ticket\``, true)

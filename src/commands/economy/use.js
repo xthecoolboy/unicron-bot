@@ -50,6 +50,6 @@ module.exports = class extends BaseCommand {
                 .setDescription('Sorry, you cannot use this item'));
             return false;
         }
-        return await item.run(client, message).catch(client.logger.error);
+        return await item.run(client, message).catch((e) => { throw e });
     }
 }

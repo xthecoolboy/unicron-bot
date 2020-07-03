@@ -45,7 +45,7 @@ module.exports = class extends BaseCommand {
             if (response2 === 'cancel') return message.channel.send(`Exiting setup...`);
             if (!response2.content.includes('{user}')) return message.channel.send(`Missing placeholer \`{user}\`... Exiting setup...Try again...`);
 
-            const model = await message.guild.db.welcomer(true);
+            const model = message.guild.db.welcomer(true);
             model.channel = channel.id;
             model.message = response2.content.replace(/`/g, '`' + String.fromCharCode(8203))
                 .replace(/@/g, '@' + String.fromCharCode(8203));
@@ -60,7 +60,7 @@ module.exports = class extends BaseCommand {
                 const channel = message.mentions.channels.first();
                 if (!channel || channel.type !== 'text') return message.channel.send(`\`ERROR\`: Invalid channel... Try again...`);
                 if (!channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES'])) return message.channel.send('Unicron doesn\'t have permissions to that channel, please give Unicron access to that channel for this to work and try again.');
-                const model = await message.guild.db.welcomer(true);
+                const model = message.guild.db.welcomer(true);
                 model.channel = channel.id;
                 await model.save();
                 client.emit('guildMemberAdd', message.member);
@@ -70,7 +70,7 @@ module.exports = class extends BaseCommand {
                 const msg = value.join(' ').replace(/`/g, '`' + String.fromCharCode(8203))
                     .replace(/@/g, '@' + String.fromCharCode(8203));
                 if (!msg.includes('{user}')) return message.channel.send(`Missing placeholer \`{user}\`... Please try again...`);
-                const model = await message.guild.db.welcomer(true);
+                const model = message.guild.db.welcomer(true);
                 model.message = msg;
                 await model.save();
                 client.emit('guildMemberAdd', message.member);
@@ -79,7 +79,7 @@ module.exports = class extends BaseCommand {
             case 'enable':
             case 'disable': {
                 const stat = key === 'enable';
-                const model = await message.guild.db.welcomer(true);
+                const model = message.guild.db.welcomer(true);
                 model.enabled = stat;
                 await model.save();
                 return message.channel.send(`Welcomer has been \`${stat ? 'enabled' : 'disabled'}\`.`);

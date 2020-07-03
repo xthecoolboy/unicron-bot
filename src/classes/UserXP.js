@@ -1,17 +1,15 @@
 const Base = require('./Base');
 const User = require('./User');
-const { UserProfile } = require('../database/database');
 const Leveling = require('../modules/Leveling');
 
 module.exports = class UserXP extends Base {
     /**
      * 
      * @param {User} parent 
-     * @param {String} id 
      */
-    constructor(parent, id) {
-        super(id);
-        this.parent = parent;
+    constructor(parent) {
+        super(parent.id);
+        this.data = parent.data;
     }
     /**
      * @returns {Promise<User>}
@@ -19,14 +17,13 @@ module.exports = class UserXP extends Base {
      */
     add(amount) {
         return new Promise(async (resolve, reject) => {
-            let user = await UserProfile.findOne({ where: { user_id: this.id } });
-            if (!user) {
-                await UserProfile.create({ user_id: this.id, experience: amount });
-                return resolve(this.parent);
+            try {
+                this.data.experience += Number(amount);
+                await this.data.save();
+                resolve();
+            } catch (e) {
+                reject(e);
             }
-            user.experience += Number(amount);
-            await user.save();
-            return resolve(this.parent);
         });
     }
     /**
@@ -34,91 +31,71 @@ module.exports = class UserXP extends Base {
      * @param {Number} amount 
      */
     remove(amount) {
-        return new Promise(async (resolve, reject)=> {
-            let user = await UserProfile.findOne({ where: { user_id: this.id } });
-            if (!user) {
-                await UserProfile.create({ user_id: this.id, experience: amount });
-                return resolve(this.parent);
-            }
-            user.experience -= Number(amount);
-            await user.save();
-            return resolve(this.parent);
-        });
-    }
-    /**
-     * @returns {Promise<Number>}
-     */
-    fetch(){
         return new Promise(async (resolve, reject) => {
-            let user = await UserProfile.findOne({ where: { user_id: this.id } });
-            if (!user) user = await UserProfile.create({ user_id: this.id });
-            return resolve(user ? user.experience : 0);
+            try {
+                this.data.experience -= Number(amount);
+                await this.data.save();
+                resolve();
+            } catch (e) {
+                reject(e);
+            }
         });
     }
     /**
-     * @returns {Promise<Number>}
+     * @returns {Number}
+     */
+    fetch() {
+        return this.data.experience;
+    }
+    /**
+     * @returns {Number}
      */
     getLevel() {
-        return new Promise(async (resolve, reject) => {
-            let lvl = 0;
-            const cur = await this.fetch();
-            for (let i = 0; i < 101; i++) {
-                lvl = i;
-                if (cur >= Leveling.LevelChart[i] && cur <= Leveling.LevelChart[i + 1])
-                    break;
-            }
-            return resolve(lvl);
-        });
+        let lvl = 0;
+        const cur = this.data.experience;
+        for (let i = 0; i < 101; i++) {
+            lvl = i;
+            if (cur >= Leveling.LevelChart[i] && cur <= Leveling.LevelChart[i + 1])
+                break;
+        }
+        return lvl;
     }
     /**
-     * @returns {Promise<Number>}
+     * @returns {Number}
      */
     getLevelXP() {
-        return new Promise(async (resolve, reject) => {
-            return resolve(Leveling.LevelChart[await this.getLevel()]);
-        });
+        return Leveling.LevelChart[this.getLevel()];
     }
     /**
-     * @returns {Promise<Number>}
+     * @returns {Number}
      */
     getNextLevel() {
-        return new Promise(async (resolve, reject) => {
-            return resolve(await this.getLevel() + 1);
-        });
+        return this.getLevel() + 1;
     }
     /**
-     * @returns {Promise<Number>}
+     * @returns {Number}
      */
     getNextLevelXP() {
-        return new Promise(async (resolve, reject) => {
-            return resolve(Leveling.LevelChart[await this.getNextLevel()]);
-        });
-
+        return Leveling.LevelChart[this.getNextLevel()];
     }
     /**
-     * @returns {Promise<String>}
+     * @returns {String}
      */
     getProgressBar() {
-        return new Promise(async (resolve, reject) => {
-            return resolve(Leveling.ProgressBar(await this.getPercentageProgressToNextLevel()));
-        });
+        return Leveling.ProgressBar(this.getPercentageProgressToNextLevel());
     }
     /**
-     * @returns {Promise<Number>}
+     * @returns {Number}
      */
     getPercentageProgressToNextLevel() {
-        return new Promise(async (resolve, reject) => {
-            return resolve(((await this.fetch() - await this.getLevelXP()) /
-                (await this.getNextLevelXP() - await this.getLevelXP())) * 100); // (xp - lxp / nxp - lxp) * 100 = n
-        });
+        return ((this.data.experience - this.getLevelXP()) /
+            (this.getNextLevelXP() - this.getLevelXP())) * 100; // (xp - lxp / nxp - lxp) * 100 = n
 
     };
     /**
-     * @returns {Promise<Number>}
+     * @returns {Number}
      */
     getRequiredExpToNextLevel() {
-        return new Promise(async (resolve, reject) => {
-            return resolve(await this.getNextLevelXP() - await this.fetch());
-        });
+        return this.getNextLevelXP() - this.data.experience;
     }
 }

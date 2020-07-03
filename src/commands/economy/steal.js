@@ -3,6 +3,7 @@ const { Random } = require('../../utils');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
+const User = require('../../classes/User');
 
 const MINIMUM_COINS = 500;
 

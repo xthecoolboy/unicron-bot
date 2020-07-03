@@ -30,7 +30,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const id = await message.author.db.profile('married_id');
+        const id = message.author.db.profile('married_id');
         if (!id) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
@@ -40,8 +40,8 @@ module.exports = class extends BaseCommand {
             );
         }
         const waifu = await client.database.users.fetch(id);
-        const m1 = await waifu.profile(true);
-        const m2 = await message.author.db.profile(true);
+        const m1 = waifu.profile(true);
+        const m2 = message.author.db.profile(true);
         m1['married_id'] = '';
         m2['married_id'] = '';
         await m1.save();

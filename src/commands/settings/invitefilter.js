@@ -29,7 +29,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const toggle = await message.guild.db.filters(true);
+        const toggle = message.guild.db.filters(true);
         toggle.inviteFilter = !toggle.inviteFilter;
         await toggle.save();
         message.channel.send(`inviteFilter has been ${toggle.inviteFilter ? 'enabled' : 'disabled'}`);

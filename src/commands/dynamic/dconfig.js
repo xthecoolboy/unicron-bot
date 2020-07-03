@@ -33,11 +33,11 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         const [action, key, ...value] = args;
-        const db = message.guild.db;
+        const db = await client.database.guilds.fetch(message.guild.id, true);
         switch (action) {
             case 'view': {
-                const cid = await db.dynamicVoice('category');
-                const wid = await db.dynamicVoice('waitingRoom');
+                const cid = db.dynamicVoice('category');
+                const wid = db.dynamicVoice('waitingRoom');
                 const category = message.guild.channels.cache.get(cid) ? `${message.guild.channels.cache.get(cid).name}` : `\`none\``;
                 const waitingRoom = message.guild.channels.cache.get(wid) ? `${message.guild.channels.cache.get(wid).name}` : `\`none\``;
                 const embed = new Discord.MessageEmbed()
@@ -60,7 +60,7 @@ module.exports = class extends BaseCommand {
                         const channel = message.guild.channels.cache.get(value[0]);
                         if (!channel || channel.type !== 'category') return message.channel.send(`Invalid channel category, try again`);
                         if (!channel.permissionsFor(message.guild.me).has(['MANAGE_CHANNELS', 'MOVE_MEMBERS'])) return message.channel.send('Unicron doesn\'t have permissions to that channel, please give Unicron access to that channel for this to work and try again...');
-                        const model = await db.dynamicVoice(true);
+                        const model = db.dynamicVoice(true);
                         model.category = channel.id;
                         await model.save();
                         message.channel.send('Dynamic Voice Category set!');
@@ -70,7 +70,7 @@ module.exports = class extends BaseCommand {
                         const channel = message.guild.channels.cache.get(value[0]);
                         if (!channel || channel.type !== 'voice') return message.channel.send(`Invalid voice channel, try again`);
                         if (!channel.permissionsFor(message.guild.me).has(['MANAGE_CHANNELS', 'MOVE_MEMBERS'])) return message.channel.send('Unicron doesn\'t have permissions to that channel, please give Unicron access to that channel for this to work and try again...');
-                        const model = await db.dynamicVoice(true);
+                        const model = db.dynamicVoice(true);
                         model.waitingRoom = channel.id;
                         await model.save();
                         message.channel.send('Dynamic Voice Waiting Room set!');
@@ -90,7 +90,7 @@ module.exports = class extends BaseCommand {
             case 'enable':
             case 'disable': {
                 const bo = action === 'enable';
-                const model = await db.dynamicVoice(true);
+                const model = db.dynamicVoice(true);
                 model.enabled = bo;
                 await model.save();
                 message.channel.send(`Dynamic Voice has been ${bo ? 'enabled' : 'disabled'}`);

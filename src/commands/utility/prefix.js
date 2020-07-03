@@ -26,7 +26,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>} args 
      */
     async run(client, message, args) {
-        const prefix = await message.guild.db.settings('prefix');
+        const prefix = message.guild.db.settings('prefix');
         return message.channel.send(new Discord.MessageEmbed()
             .setColor(0x00FFFF)
             .setDescription(`
