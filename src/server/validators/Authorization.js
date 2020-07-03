@@ -12,9 +12,13 @@ function validateKey(authorization) {
         try {
             if (!authorization) throw { status: 400, message: 'Bad Request: No Authorization Provided' };
             const [table, key] = authorization.split(/ +/g);
-            if (!ValidTables.includes(table)) throw { status: 400, message: 'Bad Request: Invalid Authorization Type Provided'}
-            if (!key) throw { status: 400, message: 'Bad Request: Authorization Key not provided' };
-            const authKeys = await Admin.findOne({ where: { table: table } });
+            if (!key) {
+                const keylines = await Admin.findOne({ where: { table: 'WebHook' }});
+                if (!keylines.data.includes(table)) throw { status: 403, message: 'Forbidden: Invalid Authorization Key' };
+                return resolve(true);
+            }
+            if (!ValidTables.includes(table)) throw { status: 400, message: 'Bad Request: Invalid Authorization Type Provided'};
+            const authKeys = await Admin.findOne({ where: { table } });
             if (!authKeys.data.includes(key)) throw { status: 403, message: 'Forbidden: Invalid Authorization Key' };
             return resolve(true);
         } catch (e) {
@@ -30,7 +34,7 @@ function validateKey(authorization) {
  * @param {function} next 
  */
 async function Authorization(req, res, next) { 
-    await validateKey(req.headers.authorization).then((result) => {
+    await validateKey(req.headers.authorization).then(() => {
         next();
     }).catch((e) => {
         console.log(e);

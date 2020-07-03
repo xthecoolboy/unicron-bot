@@ -9,13 +9,19 @@ class Webhook extends Endpoint {
             discordboats: function (body) {
                 return {
                     id: body.user.id,
-                    site: 'DiscordBoats'
+                    site: 'Discord.boats'
                 };
             },
             glennbotlist: function (body) {
                 return {
                     id: body.id,
                     site: 'Glenn Bot List'
+                }
+            },
+            arcanecenter: function (body) {
+                return {
+                    id: body.user.id,
+                    site: 'Arcane Center xyz'
                 }
             }
         }

@@ -30,6 +30,11 @@ class Help extends Command {
             if (!action) throw { message: 'No Action?' };
             if (!table && action !== 'all') throw { message: 'No table?' };
             switch (action) {
+                case 'add': {
+                    if (!value[0]) throw { message: 'No Key?' };
+                    this.add(table, value[0]);
+                    break;
+                }
                 case 'revoke': {
                     if (!value[0]) throw { message: 'No Key?' };
                     this.revoke(terminal, table, value[0]).catch((e) => { throw e });
@@ -59,6 +64,21 @@ class Help extends Command {
         } catch (e) {
             terminal.logger.error(e.message, 'Terminal');
         }
+    }
+    /**
+     * 
+     * @param {Terminal} terminal 
+     * @param {String} table 
+     * @param {String} token 
+     */
+    async add(table, token) {
+        if (!token) throw { message: 'No such token' };
+        const keys = await Admin.findOne({ where: { table } });
+        if (!keys) throw { message: 'No such table' };
+        if (keys.data.includes(token)) throw { message: 'Token already exists in the database' };
+        keys.data.push(token);
+        await keys.save();
+        console.log(`Token added to table ${table}`);
     }
     /**
      * 
