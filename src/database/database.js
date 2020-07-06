@@ -67,29 +67,32 @@ const GuildTicket = GuildDB.import('../models/guild/ticket');
 const GuildDynamicVoice = GuildDB.import('../models/guild/dynamicVoice');
 const GuildMember = GuildDB.import('../models/guild/member');
 
-if (process.argv.includes('--database')) {
-    const force = process.argv.includes('--reset');
-    Logger.info('Connecting to databases...');
-    if (process.argv.includes('--all') || process.argv.includes('--unicron')) {
-        UnicronDB.sync({ force }).then(() => {
-            Logger.info('Unicron Database Synced!');
-            UnicronDB.close();
-        }).catch(Logger.error);
+(async function () {
+    if (process.argv.includes('--database')) {
+        const force = process.argv.includes('--reset');
+        Logger.info('Connecting to databases...');
+        if (process.argv.includes('--all') || process.argv.includes('--unicron')) {
+            await UnicronDB.sync({ force }).then(() => {
+                Logger.info('Unicron Database Synced!');
+                UnicronDB.close();
+            }).catch(Logger.error);
+        }
+        if (process.argv.includes('--all') || process.argv.includes('--user')) {
+            await UserDB.sync({ force }).then(() => {
+                Logger.info('User Database Synced!');
+                UserDB.close();
+            }).catch(Logger.error);
+        }
+        if (process.argv.includes('--all') || process.argv.includes('--guild')) {
+            await GuildDB.sync({ force }).then(() => {
+                Logger.info('Guild Database Synced!');
+                GuildDB.close();
+            }).catch(Logger.error);
+        }
+        process.exit(0);
     }
-    if (process.argv.includes('--all') || process.argv.includes('--user')) {
-        UserDB.sync({ force }).then(() => {
-            Logger.info('User Database Synced!');
-            UserDB.close();
-        }).catch(Logger.error);
-    }
-    if (process.argv.includes('--all') || process.argv.includes('--guild')) {
-        GuildDB.sync({ force }).then(() => {
-            Logger.info('Guild Database Synced!');
-            GuildDB.close();
-        }).catch(Logger.error);
-    }
-    process.exit(0);
-}
+})();
+
 
 module.exports = {
     UnicronDB,
