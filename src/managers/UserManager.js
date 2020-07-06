@@ -1,15 +1,21 @@
 const BaseManager = require('../classes/BaseManager');
 const User = require('../classes/User');
 const { UserProfile } = require('../database/database');
+const Client = require('../classes/Unicron');
 
 module.exports = class UserManager extends BaseManager {
+    /**
+     * 
+     * @param {Client} client 
+     * @param {Object<string, any>} options 
+     */
     constructor(client, options) {
         super(client, options);
     }
     /**
      * @returns {Promise<User>}
-     * @param {String} user_id 
-     * @param {Boolean} cache
+     * @param {string} user_id 
+     * @param {boolean} cache
      */
     fetch(user_id, cache = false) {
         return new Promise(async (resolve, reject) => {

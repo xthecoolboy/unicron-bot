@@ -26,10 +26,10 @@ module.exports = class extends BaseCommand {
         });
     }
     /**
-     * @returns {Promise<Message|Boolean>}
+     * @returns {Promise<Message|boolean>}
      * @param {Client} client 
      * @param {Message} message 
-     * @param {Array<String>} args 
+     * @param {Array<string>} args 
      */
     async run(client, message, args) {
         return message.channel.send(client.hash(args.join(' '), 'md5'));

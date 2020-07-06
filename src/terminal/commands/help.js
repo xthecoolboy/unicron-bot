@@ -8,8 +8,8 @@ class Help extends Command {
     /**
      * 
      * @param {Terminal} terminal 
-     * @param {String} content 
-     * @param {Array<String>} args 
+     * @param {string} content 
+     * @param {Array<string>} args 
      */
     async run(terminal, content, args) {
         console.log(`

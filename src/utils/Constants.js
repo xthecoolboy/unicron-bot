@@ -1,20 +1,12 @@
 module.exports = {
-    unicron: {
-        owner: process.env.BOT_OWNER_ID,
-        server: process.env.BOT_SERVER_ID,
-        channel: process.env.BOT_CHANNEL_ID,
-        modChannel: process.env.BOT_MODCHANNEL_ID,
-        hostURL: process.env.BOT_HOST_URL,
-        inviteURL: process.env.BOT_SERVER_URL
-    },
     BotLists: {
         glennbotlist: {
             token: process.env.GLENN_TOKEN,
             endpoint: 'http://glennbotlist.xyz/api/bot/:id/stats',
             /**
              * 
-             * @param {Number} a
-             * @param {Number} b
+             * @param {number} a
+             * @param {number} b
              */
             parse: function (a, b) {
                 return {
@@ -28,9 +20,9 @@ module.exports = {
             endpoint: 'http://arcane-botcenter.xyz/api/:id/stats',
             /**
              * 
-             * @param {Number} a
-             * @param {Number} b
-             * @param {Number} c
+             * @param {number} a
+             * @param {number} b
+             * @param {number} c
              */
             parse: function (a, b, c) {
                 return {
@@ -45,7 +37,7 @@ module.exports = {
             endpoint: 'http://mythicalbots.xyz/api/bot/:id',
             /**
              * 
-             * @param {Number} a
+             * @param {number} a
              */
             parse: function (a) {
                 return {
@@ -58,7 +50,7 @@ module.exports = {
             endpoint: 'http://listmybots.com/api/bot/:id',
             /**
              * 
-             * @param {Number} a
+             * @param {number} a
              */
             parse: function (a) {
                 return {
@@ -72,7 +64,7 @@ module.exports = {
             endpoint: 'http://discord.boats/api/bot/:id',
             /**
              * 
-             * @param {Number} a
+             * @param {number} a
              */
             parse: function (a) {
                 return {
@@ -85,7 +77,7 @@ module.exports = {
             endpoint: 'http://botsfordiscord.com/api/bot/:id',
             /**
              * 
-             * @param {Number} a
+             * @param {number} a
              */
             parse: function (a) {
                 return {
@@ -98,7 +90,7 @@ module.exports = {
             endpoint: 'http://top.gg/api/bots/:id/stats',
             /**
              * 
-             * @param {Number} a
+             * @param {number} a
              */
             parse: function (a) {
                 return {
@@ -111,7 +103,7 @@ module.exports = {
             endpoint: 'http://bots.ondiscord.xyz/bot-api/bot/:id/guilds',
             /**
              * 
-             * @param {Number} a
+             * @param {number} a
              */
             parse: function (a) {
                 return {
@@ -124,8 +116,8 @@ module.exports = {
             endpoint: 'http://discord.bots.gg/api/v1/bots/:id/stats',
             /**
              * 
-             * @param {Number} a
-             * @param {Number} b
+             * @param {number} a
+             * @param {number} b
              */
             parse: function (a, b) {
                 return {
@@ -140,21 +132,13 @@ module.exports = {
             endpoint: 'http://discordbotlist.com/api/v1/bots/:id/stats',
             /**
              * 
-             * @param {Number} a
+             * @param {number} a
              */
             parse: function (a) {
                 return {
                     guilds: a,
                 }
             }
-        },
-    },
-    managers: {
-        users: {
-            maximumCacheSize: 0,
-        },
-        guilds: {
-            maximumCacheSize: 0,
         },
     },
 }

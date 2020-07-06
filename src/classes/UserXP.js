@@ -13,7 +13,7 @@ module.exports = class UserXP extends Base {
     }
     /**
      * @returns {Promise<User>}
-     * @param {Number} amount 
+     * @param {number} amount 
      */
     add(amount) {
         return new Promise(async (resolve, reject) => {
@@ -28,7 +28,7 @@ module.exports = class UserXP extends Base {
     }
     /**
      * @returns {Promise<User>}
-     * @param {Number} amount 
+     * @param {number} amount 
      */
     remove(amount) {
         return new Promise(async (resolve, reject) => {
@@ -42,13 +42,13 @@ module.exports = class UserXP extends Base {
         });
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
     fetch() {
         return this.data.experience;
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
     getLevel() {
         let lvl = 0;
@@ -61,31 +61,31 @@ module.exports = class UserXP extends Base {
         return lvl;
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
     getLevelXP() {
         return Leveling.LevelChart[this.getLevel()];
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
     getNextLevel() {
         return this.getLevel() + 1;
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
     getNextLevelXP() {
         return Leveling.LevelChart[this.getNextLevel()];
     }
     /**
-     * @returns {String}
+     * @returns {string}
      */
     getProgressBar() {
         return Leveling.ProgressBar(this.getPercentageProgressToNextLevel());
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
     getPercentageProgressToNextLevel() {
         return ((this.data.experience - this.getLevelXP()) /
@@ -93,7 +93,7 @@ module.exports = class UserXP extends Base {
 
     };
     /**
-     * @returns {Number}
+     * @returns {number}
      */
     getRequiredExpToNextLevel() {
         return this.getNextLevelXP() - this.data.experience;

@@ -1,28 +1,29 @@
 const Command = require('../classes/Command');
 const Terminal = require('../Terminal');
 const { Admin } = require('../../database/database');
-const crypto = require('crypto');
+const lureneight = require('../../utils/lureneight');
 
 class Help extends Command {
     constructor() {
         super('auth');
         this.authTypes = [
             'WebHook',
-            'Bearer',
+            'UserAPI',
+            'GuildAPI',
         ]
     }
     /**
-     * @returns {String}
+     * @returns {string}
      * @param {Terminal} terminal 
      */
     createHash(terminal) {
-        return crypto.createHmac('sha256', 'SuperSecretBlahBlahBlah').update(terminal.utils.Random.string(64)).digest('hex');
+        return lureneight(terminal.utils.Random.string(17));
     }
     /**
      * 
      * @param {Terminal} terminal 
-     * @param {String} content 
-     * @param {Array<String>} args 
+     * @param {string} content 
+     * @param {Array<string>} args 
      */
     async run(terminal, content, args) {
         const [action, table, ...value] = args;
@@ -68,8 +69,8 @@ class Help extends Command {
     /**
      * 
      * @param {Terminal} terminal 
-     * @param {String} table 
-     * @param {String} token 
+     * @param {string} table 
+     * @param {string} token 
      */
     async add(table, token) {
         if (!token) throw { message: 'No such token' };
@@ -83,9 +84,9 @@ class Help extends Command {
     /**
      * 
      * @param {Terminal} terminal 
-     * @param {String} table 
-     * @param {String} token 
-     * @var {Array<String>} tokens
+     * @param {string} table 
+     * @param {string} token 
+     * @var {Array<string>} tokens
      */
     async revoke(terminal, table, token) {
         if (!token) throw { message: 'No such token' };
@@ -102,9 +103,9 @@ class Help extends Command {
     /**
      * 
      * @param {Terminal} terminal 
-     * @param {String} table 
-     * @param {Number} amount 
-     * @param {Boolean} force
+     * @param {string} table 
+     * @param {number} amount 
+     * @param {boolean} force
      */
     async regenerate(terminal, table, amount, force) {
         let keys = await Admin.findOne({ where: { table } });

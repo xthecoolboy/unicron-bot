@@ -21,7 +21,7 @@ module.exports = class MemberWarns {
      * }
      * ```
      * @param {JSON} value Value
-     * @returns {Promise<Number>} case number
+     * @returns {Promise<number>} case number
      */
     add(value) {
         return new Promise(async (resolve, reject) => {
@@ -39,8 +39,8 @@ module.exports = class MemberWarns {
     }
     /**
      * 
-     * @param {Number} case_number Case Number
-     * @returns {Promise<Boolean>}
+     * @param {number} case_number Case number
+     * @returns {Promise<boolean>}
      */
     remove(case_number) {
         return new Promise(async (resolve, reject) => {
@@ -56,8 +56,8 @@ module.exports = class MemberWarns {
     }
     /**
      * 
-     * @param {Number} case_number Case Number
-     * @returns {Promise<JSON|Boolean>}
+     * @param {number} case_number Case number
+     * @returns {Promise<JSON|boolean>}
      */
     fetch(case_number) {
         return new Promise(async (resolve, reject) => {

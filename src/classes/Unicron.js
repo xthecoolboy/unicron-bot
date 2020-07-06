@@ -16,8 +16,6 @@ const GuildManager = require('../managers/GuildManager');
 const PermissionManager = require('../managers/PermissionManager');
 const POSTManager = require('../managers/POSTManager');
 
-const options = require('../utils/Constants');
-
 module.exports = class UnicronClient extends Client {
     constructor() {
         super({
@@ -25,7 +23,14 @@ module.exports = class UnicronClient extends Client {
             messageCacheMaxSize: 100,
             messageSweepInterval: 30,
         });
-        this.unicron = new Unicron(options.unicron)
+        this.unicron = new Unicron({
+            owner: process.env.BOT_OWNER_ID,
+            server: process.env.BOT_SERVER_ID,
+            channel: process.env.BOT_CHANNEL_ID,
+            modChannel: process.env.BOT_MODCHANNEL_ID,
+            hostURL: process.env.BOT_HOST_URL,
+            inviteURL: process.env.BOT_SERVER_URL
+        });
         this.commands = new Collection();
         this.events = new Collection();
         this.shopitems = new Collection();
@@ -34,15 +39,15 @@ module.exports = class UnicronClient extends Client {
         this.logger = this.utils.Logger;
         this.wait = promisify(setTimeout);
         this.database = {
-            users: new UserManager(this, options.managers.users),
-            guilds: new GuildManager(this, options.managers.guilds),
+            users: new UserManager(this, {}),
+            guilds: new GuildManager(this, {}),
         }
         this.permission = new PermissionManager(this, {});
         this.poster = new POSTManager(this, {});
     }
     /**
      * @returns {Promise<Emoji>}
-     * @param {String} name 
+     * @param {string} name 
      */
     getEmoji(name) {
         if (this.botEmojis.has(name)) return this.botEmojis.get(name);
@@ -75,11 +80,11 @@ module.exports = class UnicronClient extends Client {
     /**
      * 
      * @param {Message} message 
-     * @param {String|MessageEmbed} question 
-     * @param {Number} limit millieseconds
-     * @param {Boolean} obj Put `true` to return the message class instead of returning the message content
+     * @param {string|MessageEmbed} question 
+     * @param {number} limit millieseconds
+     * @param {boolean} obj Put `true` to return the message class instead of returning the message content
      * 
-     * @returns {Promise<Boolean|String|Message>}
+     * @returns {Promise<boolean|string|Message>}
      */
     async awaitReply(message, question, limit = 60000, obj = false) {
         const filter = m => m.author.id === message.author.id;
@@ -93,8 +98,8 @@ module.exports = class UnicronClient extends Client {
         }
     }
     /**
-     * @returns {Promise<String>|String}
-     * @param {Promise<String>} text 
+     * @returns {Promise<string>|string}
+     * @param {Promise<string>} text 
      */
     async clean(text) {
         if (text && text.constructor && text.constructor.name == 'Promise') text = await text;
@@ -105,8 +110,8 @@ module.exports = class UnicronClient extends Client {
         return text;
     }
     /**
-     * @returns {Boolean|String} if an error occured
-     * @param {String} itemName 
+     * @returns {boolean|string} if an error occured
+     * @param {string} itemName 
      */
     registerItem(dir) {
         try {
@@ -122,7 +127,7 @@ module.exports = class UnicronClient extends Client {
     }
     /**
      * 
-     * @param {String} dir 
+     * @param {string} dir 
      */
     async registerItems(dir) {
         const filePath = path.join(__dirname, dir);
@@ -135,8 +140,8 @@ module.exports = class UnicronClient extends Client {
         }
     }
     /**
-     * @returns {Boolean|String}
-     * @param {String} itemName 
+     * @returns {boolean|string}
+     * @param {string} itemName 
      */
     unregisterItem(itemName) {
         const item = this.shopitems.get(itemName);
@@ -153,8 +158,8 @@ module.exports = class UnicronClient extends Client {
         return false;
     }
     /**
-     * @returns {String|Boolean}
-     * @param {String} dir
+     * @returns {string|boolean}
+     * @param {string} dir
      */
     registerCommand(dir, category) {
         try {
@@ -171,7 +176,7 @@ module.exports = class UnicronClient extends Client {
     }
     /**
      * 
-     * @param {String} dir 
+     * @param {string} dir 
      */
     async registerCommands(dir) {
         const filePath = path.join(__dirname, dir);
@@ -188,15 +193,15 @@ module.exports = class UnicronClient extends Client {
         }
     }
     /**
-     * @returns {String}
-     * @param {String} str 
+     * @returns {string}
+     * @param {string} str 
      */
     escapeRegex(str) {
         return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
     /**
-     * @returns {String}
-     * @param {String} str 
+     * @returns {string}
+     * @param {string} str 
      */
     trim(str, max) {
         return (str.length > max) ? `${str.slice(0, max - 3)}...` : str;
@@ -204,7 +209,7 @@ module.exports = class UnicronClient extends Client {
     /**
      * @returns {Array<Array<Any>>}
      * @param {Array} array 
-     * @param {Number} chunkSize 
+     * @param {number} chunkSize 
      */
     chunk(array, chunkSize = 0) {
         return array.reduce(function (previous, current) {
@@ -222,7 +227,7 @@ module.exports = class UnicronClient extends Client {
     }
     /**
      * 
-     * @param {String} dir 
+     * @param {string} dir 
      */
     async registerEvents(dir) {
         const filePath = path.join(__dirname, dir);
@@ -239,8 +244,8 @@ module.exports = class UnicronClient extends Client {
         }
     }
     /**
-     * @returns {Promise<Number>}
-     * @param {String} props
+     * @returns {Promise<number>}
+     * @param {string} props
      */
     async getCount(props = 'guilds' || 'users') {
         return this.shard.fetchClientValues(`${props}.cache.size`).then((results) => results.reduce((prev, cur) => prev + cur, 0));
@@ -248,7 +253,7 @@ module.exports = class UnicronClient extends Client {
     /**
      * @returns {Array<any>}
      * @param {Array<any>} arr 
-     * @param {Number} maxLen 
+     * @param {number} maxLen 
      */
     trimArray(arr, maxLen = 10) {
         if (arr.length > maxLen) {

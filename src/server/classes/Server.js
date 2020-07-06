@@ -17,7 +17,7 @@ module.exports = class Server extends EventEmitter {
     }
     /**
      * @brief Register stufss
-     * @param {String} path 
+     * @param {string} path 
      */
     async register() {
         this.app = express();
@@ -40,7 +40,7 @@ module.exports = class Server extends EventEmitter {
     }
     /**
      * @private
-     * @param {String} dir 
+     * @param {string} dir 
      */
     async registerEndpoints(dir) {
         const filePath = path.join(__dirname, dir);
@@ -65,7 +65,7 @@ module.exports = class Server extends EventEmitter {
     }
     /**
      * 
-     * @param {String } dir 
+     * @param {string } dir 
      */
     async registerEvents(dir) {
         const filePath = path.join(__dirname, dir);
@@ -83,7 +83,7 @@ module.exports = class Server extends EventEmitter {
     }
     /**
      * 
-     * @param {Number} port 
+     * @param {number} port 
      */
     login(port = 4200) {
         return new Promise(async (resolve, reject) => {

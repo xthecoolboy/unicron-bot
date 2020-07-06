@@ -5,7 +5,7 @@ const Client = require('./Server');
 class Endpoint {
     /**
      * 
-     * @param {String} url 
+     * @param {string} url 
      * @param {Client} client 
      */
     constructor(url, client) {

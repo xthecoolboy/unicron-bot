@@ -6,8 +6,7 @@ module.exports = class BaseManager {
     /**
      * 
      * @param {Client} client 
-     * @param {Object} options 
-     * @param {Object} options.
+     * @param {Object<string, any>} options
      */
     constructor(client, options) {
         this.client = client;

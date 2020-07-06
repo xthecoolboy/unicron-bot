@@ -25,10 +25,10 @@ module.exports = class extends BaseCommand {
         });
     }
     /**
-     * @returns {Promise<Message|Boolean>}
+     * @returns {Promise<Message|boolean>}
      * @param {Client} client 
      * @param {Message} message 
-     * @param {Array<String>} args 
+     * @param {Array<string>} args 
      */
     async run(client, message, args) {
         message.channel.send(`htt${String.fromCharCode(8203)}ps://discord.${String.fromCharCode(8203)}gift/${client.utils.Random.string(16)}`, { files: [path.join(__dirname, '..', '..', '..', 'assets', 'nitro.png')] });

@@ -21,10 +21,10 @@ module.exports = class extends BaseCommand {
         });
     }
     /**
-     * @returns {Promise<Message|Boolean>}
+     * @returns {Promise<Message|boolean>}
      * @param {Client} client 
      * @param {Message} message 
-     * @param {Array<String>} args 
+     * @param {Array<string>} args 
      */
     async run(client, message, args) {
         let target = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;

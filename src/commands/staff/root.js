@@ -24,7 +24,7 @@ function encrypt(str) {
  * 
  * @param {Client} client Client
  * @param {Message} message Message
- * @param {Array<String>} args Arguments
+ * @param {Array<string>} args Arguments
  */
 const evaluation = async function (client, message, [key, ...value]) {
     try {
@@ -144,10 +144,10 @@ $ root -codes [-add|-remove|-fetch] [-user|-guild] [name]\`
         });
     }
     /**
-     * @returns {Promise<Message|Boolean>}
+     * @returns {Promise<Message|boolean>}
      * @param {Client} client 
      * @param {Message} message 
-     * @param {Array<String>} args 
+     * @param {Array<string>} args 
      */
     async run(client, message, args) {
         return message.channel.send(`\`Output:\`\n\`\`\`xl\n${await evaluation(client, message, args)}\n\`\`\`\n`);

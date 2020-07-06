@@ -62,7 +62,7 @@ module.exports = class extends BaseItem {
         ]
     }
     /**
-     * @returns {Promise<Boolean|Message>}
+     * @returns {Promise<boolean|Message>}
      * @param {Client} client 
      * @param {Message} message 
      */

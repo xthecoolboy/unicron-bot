@@ -1,8 +1,14 @@
 const BaseManager = require('../classes/BaseManager');
 const fetch = require('node-fetch');
 const { BotLists } = require('../utils/Constants');
+const UnicronClient = require('../classes/Unicron');
 
 module.exports = class POSTManager extends BaseManager {
+    /**
+     * 
+     * @param {UnicronClient} client 
+     * @param {Object<string, any>} options 
+     */
     constructor(client, options) {
         super(client, options);
     }
@@ -31,12 +37,12 @@ module.exports = class POSTManager extends BaseManager {
      * @private
      * @param {Object} options 
      * @param {Object} options.service
-     * @param {String} options.service.token
-     * @param {String} options.service.endpoint
+     * @param {string} options.service.token
+     * @param {string} options.service.endpoint
      * @param {Function} options.service.parse
-     * @param {Number} options.server_count
-     * @param {Number} options.shard_count
-     * @param {Number} options.member_count
+     * @param {number} options.server_count
+     * @param {number} options.shard_count
+     * @param {number} options.member_count
      */
     async post(options) {
         if (!options.service || !options.service.token) return;

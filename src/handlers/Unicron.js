@@ -5,7 +5,7 @@ module.exports = class Unicron {
     /**
      * 
      * @param {Object} options Options
-     * @param {Map<String, Model>} data
+     * @param {Map<string, Model>} data
      */
     constructor(options, data = new Map()) {
         this.owner = options.owner;
@@ -18,8 +18,8 @@ module.exports = class Unicron {
     }
     /**
      * @returns {JSON|Model}
-     * @param {String} table 
-     * @param {Boolean} model if true, returns the actuall model instance
+     * @param {string} table 
+     * @param {boolean} model if true, returns the actuall model instance
      */
     database(table, model = false) {
         return new Promise(async (resolve, reject) => {

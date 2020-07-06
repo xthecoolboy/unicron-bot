@@ -15,8 +15,8 @@ module.exports = class UserBadge extends Base {
         this.data = parent.data;
     }
     /**
-     * @returns {Promise<Boolean>}
-     * @param {String} badge 
+     * @returns {Promise<boolean>}
+     * @param {string} badge 
      */
     add(badge) {
         return new Promise(async (resolve, reject) => {
@@ -34,8 +34,8 @@ module.exports = class UserBadge extends Base {
         });
     }
     /**
-     * @returns {Promise<Boolean>}
-     * @param {String} badge 
+     * @returns {Promise<boolean>}
+     * @param {string} badge 
      */
     remove(badge) {
         return new Promise(async (resolve, reject) => {
@@ -48,8 +48,8 @@ module.exports = class UserBadge extends Base {
         });
     }
     /**
-     * @returns {Boolean}
-     * @param {String} badge 
+     * @returns {boolean}
+     * @param {string} badge 
      */
     has(value) {
         if (!this.data.data) this.data.data = {};
@@ -57,7 +57,7 @@ module.exports = class UserBadge extends Base {
         return this.data.data['badges'].includes(value);
     }
     /**
-     * @returns {Array<String>}
+     * @returns {Array<string>}
      */
     fetch() {
         if (!this.data.data) this.data.data = {};

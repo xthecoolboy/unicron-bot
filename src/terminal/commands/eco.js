@@ -9,8 +9,8 @@ class Eco extends Command {
     /**
      * 
      * @param {Terminal} terminal 
-     * @param {String} content 
-     * @param {Array<String>} args 
+     * @param {string} content 
+     * @param {Array<string>} args 
      */
     async run(terminal, content, args) {
         const [action, user_id, value] = args;

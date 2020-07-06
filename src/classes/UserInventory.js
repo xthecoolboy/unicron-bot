@@ -11,8 +11,8 @@ module.exports = class UserInventory extends Base {
         super(parent.id);
     }
     /**
-     * @returns {Promise<Boolean>}
-     * @param {String} item 
+     * @returns {Promise<boolean>}
+     * @param {string} item 
      */
     add(item) {
         return new Promise(async (resolve, reject) => {
@@ -31,8 +31,8 @@ module.exports = class UserInventory extends Base {
         });
     }
     /**
-     * @returns {Promise<Boolean>}
-     * @param {String} item 
+     * @returns {Promise<boolean>}
+     * @param {string} item 
      */
     remove(item) {
         return new Promise(async (resolve, reject) => {
@@ -53,8 +53,8 @@ module.exports = class UserInventory extends Base {
 
     }
     /**
-     * @returns {Promise<Number>}
-     * @param {String} item 
+     * @returns {Promise<number>}
+     * @param {string} item 
      */
     has(item) {
         return new Promise(async (resolve, reject) => {

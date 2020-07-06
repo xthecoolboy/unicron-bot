@@ -6,22 +6,21 @@ module.exports = class {
      * @param {Object} props 
      * 
      * @param {Object} props.config
-     * @param {String} props.config.name - Command Name
-     * @param {String} props.config.description - Command Description
-     * @param {String} props.config.permission - Command Required Permisison Level
+     * @param {string} props.config.name - Command Name
+     * @param {string} props.config.description - Command Description
+     * @param {string} props.config.permission - Command Required Permisison Level
      * 
      * @param {Object} props.options
-     * @param {Array<String>} props.options.aliases
-     * @param {Array<String>} props.options.clientPermissions
-     * @param {Number} props.options.cooldown
-     * @param {Boolean} props.options.nsfwCommand
-     * @param {Boolean} props.options.args
-     * @param {String} props.options.usage
-     * @param {Boolean} props.options.donatorOnly
-     * @param {Boolean} props.options.premiumServer
+     * @param {Array<string>} props.options.aliases
+     * @param {Array<string>} props.options.clientPermissions
+     * @param {number} props.options.cooldown
+     * @param {boolean} props.options.nsfwCommand
+     * @param {boolean} props.options.args
+     * @param {string} props.options.usage
+     * @param {boolean} props.options.donatorOnly
+     * @param {boolean} props.options.premiumServer
      * 
-     * @param {Object} props.argsDefinitions
-     * @param {Object} props.argsDefinitions.
+     * @param {Object<string, any>} props.argsDefinitions
      */
     constructor(props) {
         this.options = props.options;
@@ -29,10 +28,10 @@ module.exports = class {
         this.argsDefinitions = props.argsDefinitions;
     }
     /**
-     * @returns {Promise<Message|Boolean>}
+     * @returns {Promise<Message|boolean>}
      * @param {Client} client 
      * @param {Message} message 
-     * @param {Array<String>} args
+     * @param {Array<string>} args
      */
     async run(client, message, args) {}
 }

@@ -48,7 +48,7 @@ module.exports = class VoteBox extends BaseItem {
         ];
     }
     /**
-     * @returns {Promise<Boolean|Message>}
+     * @returns {Promise<boolean|Message>}
      * @param {Client} client 
      * @param {Message} message 
      */

@@ -1,5 +1,5 @@
 const Endpoint = require('../classes/Endpoint');
-const Authorization = require('../validators/Authorization');
+const Authorization = require('../auth/WebHook');
 const Voter = require('../../classes/Voter');
 
 class Webhook extends Endpoint {
@@ -9,7 +9,7 @@ class Webhook extends Endpoint {
             discordboats: function (body) {
                 return {
                     id: body.user.id,
-                    site: 'Discord.boats'
+                    site: 'Discord Boats'
                 };
             },
             glennbotlist: function (body) {
@@ -21,7 +21,7 @@ class Webhook extends Endpoint {
             arcanecenter: function (body) {
                 return {
                     id: body.user.id,
-                    site: 'Arcane Center xyz'
+                    site: 'Arcane Center'
                 }
             }
         }

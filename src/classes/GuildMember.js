@@ -8,8 +8,8 @@ const MemberWarns = require('./MemberWarns');
 module.exports = class Member extends Base {
     /**
      * 
-     * @param {String} id 
-     * @param {String} guild_id 
+     * @param {string} id 
+     * @param {string} guild_id 
      */
     constructor(id, guild_id) {
         super(id);

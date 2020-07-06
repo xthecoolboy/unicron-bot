@@ -24,10 +24,10 @@ module.exports = class extends BaseCommand {
         });
     }
     /**
-     * @returns {Promise<Message|Boolean>}
+     * @returns {Promise<Message|boolean>}
      * @param {Client} client 
      * @param {Message} message 
-     * @param {Array<String>} args 
+     * @param {Array<string>} args 
      */
     async run(client, message, args) {
         let user = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
@@ -60,8 +60,8 @@ module.exports = class extends BaseCommand {
             .setColor('RANDOM')
             .setThumbnail(user.displayAvatarURL({ dynamic: true }))
             .addField(`${user.bot ? 'Bot' : 'User'} Info`, `${user.tag} / ${user.id}`)
-            .addField(`Joined Server`, member.joinedAt.toUTCString(), true)
-            .addField(`Created At`, user.createdAt.toUTCString(), true)
+            .addField(`Joined Server`, member.joinedAt.toUTCstring(), true)
+            .addField(`Created At`, user.createdAt.toUTCstring(), true)
             .addField('\u200b', '\u200b', true)
             .addField(`Status`, status, true)
             .addField(`Nickname`, nick, true)

@@ -23,10 +23,10 @@ module.exports = class extends BaseCommand {
         });
     }
     /**
-     * @returns {Promise<Message|Boolean>}
+     * @returns {Promise<Message|boolean>}
      * @param {Client} client 
      * @param {Message} message 
-     * @param {Array<String>} args 
+     * @param {Array<string>} args 
      */
     async run(client, message, args) {
         const response = await client.awaitReply(message, 'Please select a name for the category of which to setup the dynamic text/voice channels in\n\nType `cancel` to cancel this command', 20000, true) //Asks for a category to set DVC In

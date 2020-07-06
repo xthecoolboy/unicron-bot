@@ -32,9 +32,7 @@ const Levels = [
         name: 'Bot Staff',
         level: 8,
         check: function (client, message) {
-            return new Promise(async (resolve, reject) => {
-                return resolve(await message.author.db.badges.has('staff'));
-            });
+            return message.author.db.badges.has('staff');
         }
     }, {
         name: 'Bot Owner',
@@ -49,9 +47,9 @@ module.exports = class PermissionManager extends BaseManager {
     /**
      * 
      * @param {UnicronClient} client 
-     * @param {Array<Object>} options 
+     * @param {Object<string, any>} options
      */
-    constructor(client, options = {}) {
+    constructor(client, options) {
         super(client, options);
         this.levels = [];
         for (const l of Levels) {
@@ -60,16 +58,14 @@ module.exports = class PermissionManager extends BaseManager {
         }
     }
     /**
-     * @returns {Promise<Number>}
+     * @returns {Promise<number>}
      * @param {Message} message 
      */
     level(message) {
-        return new Promise(async (resolve, reject) => {
-            let num = 0;
-            for await (const level of Levels) {
-                num = await level.check(this.client, message) ? level.level : num;
-            }
-            return resolve(num);
-        });
+        let num = 0;
+        for (const level of Levels) {
+            num = level.check(this.client, message) ? level.level : num;
+        }
+        return num;
     }
 }

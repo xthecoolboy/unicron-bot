@@ -12,7 +12,7 @@ module.exports = class UserCoin extends Base {
     }
     /**
      * @returns {Promise<void>}
-     * @param {Number} amount 
+     * @param {number} amount 
      */
     add(amount) {
         return new Promise(async (resolve, reject) => {
@@ -27,7 +27,7 @@ module.exports = class UserCoin extends Base {
     }
     /**
      * @returns {Promise<void>}
-     * @param {Number} amount 
+     * @param {number} amount 
      */
     remove(amount) {
         return new Promise(async (resolve, reject) => {
@@ -41,7 +41,7 @@ module.exports = class UserCoin extends Base {
         });
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
     fetch() {
         return this.data.balance;

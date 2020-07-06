@@ -1,4 +1,5 @@
 const BaseManager = require('../classes/BaseManager');
+const Client = require('../classes/Unicron');
 const Guild = require('../classes/Guild');
 const {
     GuildDynamicVoice,
@@ -14,6 +15,11 @@ const {
 } = require('../database/database');
 
 module.exports = class GuildManager extends BaseManager {
+    /**
+     * 
+     * @param {Client} client 
+     * @param {Object<string, any>} options 
+     */
     constructor(client, options) {
         super(client, options);
         this.models = {
@@ -33,7 +39,7 @@ module.exports = class GuildManager extends BaseManager {
      * 
      * @returns {Promise<Model>}
      * @param {typeof GuildSettings} model 
-     * @param {String} guild_id 
+     * @param {string} guild_id 
      */
     findOrCreate(model, guild_id) {
         return new Promise(async (resolve, reject) => {
@@ -47,8 +53,8 @@ module.exports = class GuildManager extends BaseManager {
         });
     }
     /**
-     * @param {String} guild_id 
-     * @param {Boolean} cache
+     * @param {string} guild_id 
+     * @param {boolean} cache
      * @returns {Promise<Guild>}
      */
     fetch(guild_id, cache = false) {

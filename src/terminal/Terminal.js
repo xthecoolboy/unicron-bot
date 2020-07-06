@@ -14,7 +14,7 @@ class Terminal extends BaseClient {
     }
     /**
      * @private
-     * @param {String} dir 
+     * @param {string} dir 
      */
     async registerCommands(dir) {
         const filePath = path.join(__dirname,  dir);

@@ -1,7 +1,7 @@
 module.exports = class Base {
     /**
      * 
-     * @param {String} id 
+     * @param {string} id 
      */
     constructor(id) {
         this.id = id;

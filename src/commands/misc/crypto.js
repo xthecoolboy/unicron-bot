@@ -27,8 +27,8 @@ module.exports = class extends BaseCommand {
     }
     /**
      * Return the exchange rate for one crypto currency in terms of other currencies.
-     * @param  {String} fsym
-     * @param  {Array<String>} tsyms
+     * @param  {string} fsym
+     * @param  {Array<string>} tsyms
      * @param  {Message} message
      */
     CrytpoComparePrice(fsym, tsyms, message) {
@@ -53,9 +53,9 @@ module.exports = class extends BaseCommand {
     }
     /**
      * Pad a string on the left or right for better alignment.
-     * @param {String} pad
-     * @param {String} str
-     * @param {Boolean} padLeft
+     * @param {string} pad
+     * @param {string} str
+     * @param {boolean} padLeft
      */
     pad(pad, str, padLeft) {
         if (typeof str === 'undefined') return pad;
@@ -63,10 +63,10 @@ module.exports = class extends BaseCommand {
         else return (str + pad).substring(0, pad.length);
     }
     /**
-     * @returns {Promise<Message|Boolean>}
+     * @returns {Promise<Message|boolean>}
      * @param {Client} client 
      * @param {Message} message 
-     * @param {Array<String>} args 
+     * @param {Array<string>} args 
      */
     async run(client, message, args) {
         const symbols = args.map((str) => str.toUpperCase());

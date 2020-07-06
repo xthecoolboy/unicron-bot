@@ -1,10 +1,8 @@
 
 class Command {
     /**
-     * @returns {this}
-     * @param {String} name
-     * @param {Object} options
-     * @param {Object} options.
+     * @param {string} name
+     * @param {Object<string, any>} options
      */
     constructor(name, options) {
         this.name = name;

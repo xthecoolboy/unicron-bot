@@ -1,5 +1,4 @@
 const Base = require('./Base');
-const { Model } = require('sequelize');
 const {
     GuildSettings,
     GuildDynamicVoice,
@@ -16,8 +15,8 @@ const {
 module.exports = class Guild extends Base {
     /**
      * 
-     * @param {String} id 
-     * @param {Map<String, Model>} data
+     * @param {string} id 
+     * @param {Map<string, typeof GuildSettings>} data
      */
     constructor(id, data) {
         super(id);
@@ -40,12 +39,61 @@ module.exports = class Guild extends Base {
         await GuildDynamicVoice.destroy({ where: { guild_id: this.id } });
     }
     /**
+     * @returns {Promise<JSON>}
+     */
+    async toJSON() {
+        return {
+            guild_id: this.id,
+            prefix: this.settings('prefix'),
+            premium: this.settings('premium'),
+            raw: this.settings('data'),
+            moderation: {
+                modLogChannel: this.moderation('modLogChannel'),
+                autoModeration: this.moderation('autoModeration'),
+                autoModAction: this.moderation('autoModAction'),
+                maxWarnTreshhold: this.moderation('maxWarnTreshhold'),
+                warnTresholdAction: this.moderation('warnTresholdAction'),
+                warnActionExpiresOn: this.moderation('warnActionExpiresOn'),
+                warningExpiresOn: this.moderation('warningExpiresOn'),
+                raw: this.moderation('data'),
+            },
+            filters: {
+                inviteFilter: this.filters('inviteFilter'),
+                swearFilter: this.filters('swearFilter'),
+                mentionSpamFilter: this.filters('mentionSpamFilter'),
+                raw: this.filters('data'),
+            },
+            dynamic: {
+                category: this.dynamicVoice('category'),
+                waitingRoom: this.dynamicVoice('waitingRoom'),
+                enabled: this.dynamicVoice('enabled'),
+                raw: this.dynamicVoice('data'),
+            },
+            ticket: {
+                category: this.ticket('category'),
+                enabled: this.ticket('enabled'),
+                raw: this.ticket('data'),
+            },
+            welcomer: {
+                channel: this.welcomer('channel'),
+                message: this.welcomer('message'),
+                enabled: this.welcomer('enabled'),
+            },
+            farewell: {
+                channel: this.leaver('channel'),
+                message: this.leaver('message'),
+                enabled: this.leaver('enabled'),
+            },
+            tags: (await GuildTags.findAll({ where: { guild_id: this.id } })).map((v) => { return { name: v.tag_name, value: v.value } }),
+        }
+    }
+    /**
      * Values:
      * * prefix
      * * premium
      * * data
-     * @param {String|Boolean} value Search value
-     * @returns {String|JSON}
+     * @param {string|boolean} value Search value
+     * @returns {string|JSON}
      */
     settings(value) {
         const retval = this.data.get('GuildSettings');
@@ -57,8 +105,8 @@ module.exports = class Guild extends Base {
      * * waitingRoom
      * * data
      * * enabled
-     * @param {String|Boolean} value Search value
-     * @returns {String|JSON}
+     * @param {string|boolean} value Search value
+     * @returns {string|JSON}
      * 
      */
     dynamicVoice(value) {
@@ -71,8 +119,8 @@ module.exports = class Guild extends Base {
      * * role
      * * type
      * * enabled
-     * @param {String|Boolean} value Search value
-     * @returns {String|JSON}
+     * @param {string|boolean} value Search value
+     * @returns {string|JSON}
      */
     verification(value) {
         const retval = this.data.get('GuildVerification');
@@ -83,8 +131,8 @@ module.exports = class Guild extends Base {
      * * category
      * * data
      * * enabled
-     * @param {String|Boolean} value Search value
-     * @returns {Promise<String>|Promise<Object>}
+     * @param {string|boolean} value Search value
+     * @returns {Promise<string>|Promise<Object>}
      */
     ticket(value) {
         const retval = this.data.get('GuildTicket');
@@ -103,8 +151,8 @@ module.exports = class Guild extends Base {
      * * warnTresholdAction
      * * warnActionExpiresOn
      * * warningExpiresOn
-     * @param {String|Boolean} value Search value
-     * @returns {Promise<String>|Promise<Object>}
+     * @param {string|boolean} value Search value
+     * @returns {string|JSON}
      */
     moderation(value) {
         const retval = this.data.get('GuildModeration');
@@ -116,8 +164,8 @@ module.exports = class Guild extends Base {
      * * swearFilter
      * * mentionSpamFilter
      * * data
-     * @param {String|Boolean} value Search value
-     * @returns {String|JSON}
+     * @param {string|boolean} value Search value
+     * @returns {string|JSON}
      */
     filters(value) {
         const retval = this.data.get('GuildFilter');
@@ -128,8 +176,8 @@ module.exports = class Guild extends Base {
      * * channel
      * * message
      * * enabled
-     * @param {String|Boolean} value Search value
-     * @returns {String|JSON}
+     * @param {string|boolean} value Search value
+     * @returns {string|JSON}
      */
     welcomer(value) {
         const retval = this.data.get('GuildWelcome');
@@ -140,8 +188,8 @@ module.exports = class Guild extends Base {
      * * channel
      * * message
      * * enabled
-     * @param {String|Boolean} value Search value
-     * @returns {String|JSON}
+     * @param {string|boolean} value Search value
+     * @returns {string|JSON}
      */
     leaver(value) {
         const retval = this.data.get('GuildLeave');
@@ -150,7 +198,7 @@ module.exports = class Guild extends Base {
     /**
      * 
      * @param {Object} options Options
-     * @returns {Promise<String>}
+     * @returns {Promise<string>}
      * 
      * Actions:
      * * fetch

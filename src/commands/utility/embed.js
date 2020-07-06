@@ -32,10 +32,10 @@ $ embed -json {"fields": [{"name": "My field name", "value": "My field value"}, 
         });
     }
     /**
-     * @returns {Promise<Message|Boolean>}
+     * @returns {Promise<Message|boolean>}
      * @param {Client} client 
      * @param {Message} message 
-     * @param {Array<String>} args 
+     * @param {Array<string>} args 
      */
     async run(client, message, args) {
         if (message.flags.includes('json')) {
