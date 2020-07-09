@@ -1,7 +1,7 @@
 {
     "name": "unicron-bot",
-    "version": "1.2.1",
-    "description": "Multipurpose fun discord bot :)",
+    "version": "1.2.4",
+    "description": "Multipurpose discord bot :)",
     "main": "src/index.js",
     "dependencies": {
         "bufferutil": "^4.0.1",
@@ -18,16 +18,14 @@
         "node-fetch": "^2.6.0",
         "one-liner-joke": "^1.2.0",
         "pretty-ms": "^7.0.0",
-        "query-string": "^6.12.1",
-        "querystring": "^0.2.0",
         "sequelize": "^5.21.10",
-        "sqlite3": "^4.2.0",
-        "utf-8-validate": "^5.0.2"
+        "sqlite3": "^4.2.0"
     },
     "devDependencies": {},
     "scripts": {
         "test": "node tests/index.js",
         "start": "node src/index.js",
+        "dbInit": "node src/index.js --database --reset --all",
         "terminal": "node src/terminal/index.js"
     },
     "engines": {

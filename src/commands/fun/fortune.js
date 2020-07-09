@@ -29,7 +29,7 @@ module.exports = class extends BaseCommand {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTitle('Your fortune says...')
-            .setDescription(fortune.random())
+            .setDescription(fortune[Math.floor(Math.random() * fortune.length)])
         );
     }
 }

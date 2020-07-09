@@ -18,7 +18,7 @@ module.exports = class extends BaseEvent {
             if (user.bot) return;
             if (!reaction.message.guild) return;
             if (await Blacklist(client, user.id, reaction.message.guild.id)) return;
-            const guild = await client.database.guilds.fetch(reaction.message.guild.id);
+            const guild = await client.database.guilds.fetch(reaction.message.guild.id, true);
             const isReact = guild.verification('type');
             const channel_id = guild.verification('channel');
             const status = guild.verification('enabled');

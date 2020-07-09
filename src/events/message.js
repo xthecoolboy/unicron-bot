@@ -4,10 +4,9 @@ const { Collection, MessageEmbed, Message } = require('discord.js');
 const Client = require('../classes/Unicron');
 const BaseEvent = require('../classes/BaseEvent');
 const cooldowns = new Collection();
-
 const LevelingCD = new Collection();
+
 const Blacklist = require('../modules/Blacklist');
-const Tags = require('../modules/Tags');
 const inviteFilter = require('../filters/inviteFilter');
 const mentionSpamFilter = require('../filters/mentionSpamFilter');
 const swearFilter = require('../filters/swearFilter');
@@ -22,27 +21,30 @@ module.exports = class extends BaseEvent {
     /**
      * @param {Message} message
      * @param {Client} client
+     * @param {boolean} triggerCommand 
      */
-    async run(client, message) {
+    async run(client, message, triggerCommand = true) {
         if (message.author.bot) return;
 
         if (await Blacklist(client, message.author.id, message.guild.id)) return;
 
-        if (message.channel.type === 'dm') {
-            await client.emit('directMessage', message);
-            return;
-        }
+        if (message.channel.type === 'dm') return await client.emit('directMessage', message);
+        if (!message.guild) return;
 
         if (!message.member) await message.member.fetch();
 
-        message.author.db = await client.database.users.fetch(message.author.id);
-        message.guild.db = await client.database.guilds.fetch(message.guild.id);
+        if (!message.channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES'])) return;
+
+        if (!message.author.db) message.author.db = await client.database.users.fetch(message.author.id, true);
+        if (!message.guild.db) message.guild.db = await client.database.guilds.fetch(message.guild.id, true);
         message.author.permLevel = await client.permission.level(message);
 
         if (await memberVerification(client, message)) return;
         if (await swearFilter(client, message)) return;
         if (await inviteFilter(client, message)) return;
         if (await mentionSpamFilter(client, message)) return;
+
+        if (!triggerCommand) return;
 
         const prefix = await message.guild.db.settings('prefix');
         const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${client.escapeRegex(prefix)})\\s*`);
@@ -52,7 +54,7 @@ module.exports = class extends BaseEvent {
         const commandName = args.shift().toLowerCase();
         const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.options.aliases && cmd.options.aliases.includes(commandName));
         if (!command) {
-            const msg = await Tags(message, commandName);
+            const msg = await message.guild.db.tags({ action: 'fetch', name: commandName });
             if (msg === '[TAG_DOESNT_EXISTS]') return;
             return message.channel.send(msg.replace(/@/g, '@' + String.fromCharCode(2803)));
         }
@@ -140,7 +142,7 @@ ${command.options.clientPermissions.join(' ')}
             else setTimeout(() => LevelingCD.delete(message.author.id), 55000);
         }
         try {
-            client.logger.info(`Shard (${message.guild.shardID} / ${message.guild.id}) ${message.author.tag} / ${message.author.id} : ${commandName} ${args.join(' ')}`);
+            client.logger.info(`Shard[${message.guild.shardID}][${message.guild.id}] (${message.author.tag}/${message.author.id}) ${commandName} ${args.join(' ')}`);
             const argv = command.argsDefinitions ? Parse(args, command.argsDefinitions) : args;
             const success = await command.run(client, message, argv).catch((e) => { throw e });
             if (success !== false) {
@@ -151,7 +153,7 @@ ${command.options.clientPermissions.join(' ')}
             message.channel.send(new MessageEmbed()
                 .setColor('RED')
                 .setTimestamp()
-                .setDescription(`Something went wrong executing that command. If this keeps on happening please report it to the Bot Developer to handle this issue at [Support Server](${client.unicron.serverInviteURL}).\nError Message: \`${e.message}\``)
+                .setDescription(`Something went wrong executing that command\nError Message: \`${e.message ? e.message : e}\``)
             );
             client.logger.error(e);
         }

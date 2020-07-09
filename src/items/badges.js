@@ -20,46 +20,13 @@ module.exports = class extends BaseItem {
             }
         });
         this.badges = [
-            "ZeroTwoDab",
-            "wumpus",
-            "Weeb",
-            "wtf",
-            "wlove",
-            "weSmart",
-            "wBrilliance",
-            "wBravery",
-            "wBalance",
-            "waitWhat",
-            "uwu",
-            "troll",
-            "thonker",
-            "salute",
-            "PizzaCat",
-            "Pickachu",
-            "PepoShrug",
-            "PepoOk",
-            "Pepolove",
-            "Pepolaugh",
-            "PepoKing",
-            "PepoHmm",
-            "PepoHigh",
-            "PepoCry",
-            "owo",
-            "lewd",
-            "javascript",
-            "Hellolove",
-            "happy",
-            "goodgirl",
-            "goodboy",
-            "FeelsHappyMan",
-            "FeelsEvilMan",
-            "FeelsBadMan",
-            "drakeLUL",
-            "CryCat",
-            "PepoClown",
-            "Blush",
-            "admirer"
-        ]
+            "ZeroTwoDab", "wumpus", "Weeb", "wtf", "wlove", "weSmart", "wBrilliance",
+            "wBravery", "wBalance", "waitWhat", "uwu", "troll", "thonker", "salute",
+            "PizzaCat", "Pickachu", "PepoShrug", "PepoOk", "Pepolove", "Pepolaugh",
+            "PepoKing", "PepoHmm", "PepoHigh", "PepoCry", "owo", "lewd", "javascript",
+            "Hellolove", "happy", "goodgirl", "goodboy", "FeelsHappyMan", "FeelsEvilMan",
+            "FeelsBadMan", "drakeLUL", "CryCat", "PepoClown", "Blush", "admirer"
+        ];
     }
     /**
      * @returns {Promise<boolean|Message>}
@@ -73,7 +40,7 @@ module.exports = class extends BaseItem {
         await client.wait(3000);
         await msg.edit('WAIT WAIT WAIT');
         await msg.delete({ timeout: 3000 });
-        const badge = this.badges.random();
+        const badge = this.badges[Math.floor(Math.random() * this.badges.length)];
         const badges = await message.author.db.badges.fetch();
         if (badges.length > 23) {
             return message.channel.send('Oh oh...it seems you already exceeded the maximum amount of badges ;(');

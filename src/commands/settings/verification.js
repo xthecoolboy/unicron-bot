@@ -63,7 +63,7 @@ module.exports = class extends BaseCommand {
         const response2 = await client.awaitReply(message, `Enter Verified Role:\nEg: \`[RoleMention|RoleID|RoleName]\``, 20000, true);
         if (!response2) return message.channel.send(`No response... Exiting setup...`);
         if (response2.content === 'cancel') return message.channel.send(`Exiting setup...`);
-        const role = response2.mentions.roles.first() || await message.guild.roles.fetch(response2.content) || message.guild.roles.cache.find((r) => r.name === response2.content);
+        const role = client.resolveRole(response2.content, message.guild);
         if (!role) return message.channel.send(`Invalid Role... Exiting setup...Try again...`);
 
         const response3 = await client.awaitReply(message, `Enter Verification Type:\nEg: \`[discrim|captcha|react]\``, 20000, true);

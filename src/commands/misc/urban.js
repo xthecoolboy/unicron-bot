@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const querystring = require('querystring');
 const fetch = require('node-fetch');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
@@ -30,7 +29,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        const query = querystring.stringify({ term: args.join(' ') });
+        const query = `?term=${encodeURIComponent(args.join(' '))}`;
         const { list } = await fetch(`https://api.urbandictionary.com/v0/define?${query}`).then(response => response.json());
         if (!list.length) {
             return message.channel.send(new Discord.MessageEmbed()
@@ -42,8 +41,8 @@ module.exports = class extends BaseCommand {
             .setColor('RANDOM')
             .setTitle(answer.word)
             .setURL(answer.permalink)
-            .addField('Definition', client.trim(answer.definition, 1024), false)
-            .addField('Example', client.trim(answer.example, 1024), false)
+            .addField('Definition', client.shorten(answer.definition, 1024), false)
+            .addField('Example', client.shorten(answer.example, 1024), false)
             .setFooter(`Rating: ${answer.thumbs_up - answer.thumbs_down} Upvotes.`)
         );
     }

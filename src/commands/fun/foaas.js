@@ -59,7 +59,7 @@ module.exports = class extends BaseCommand {
     async run(client, message, args) {
         const from = message.author.tag;
         try {
-            const response = await fetch.default(`https://www.foaas.com${this.endpoints.random()}${from}`, {
+            const response = await fetch.default(`https://www.foaas.com${this.endpoints[Math.floor(Math.random() * this.endpoints.length)]}${from}`, {
                 headers: {
                     Accept: 'application/json'
                 }

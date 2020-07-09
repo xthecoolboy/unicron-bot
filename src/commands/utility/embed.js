@@ -45,12 +45,12 @@ $ embed -json {"fields": [{"name": "My field name", "value": "My field value"}, 
                     embed: json
                 })
             } catch (error) {
-                return message.channel.send(`\`ERROR\`\n\`\`\`xl\n${client.trim(error, 512)}\n\`\`\``);
+                return message.channel.send(`\`ERROR\`\n\`\`\`xl\n${client.shorten(error, 512)}\n\`\`\``);
             }
         }
         return message.channel.send(new Discord.MessageEmbed()
             .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
-            .setDescription(client.trim(args.join(' '), 2048))
+            .setDescription(client.shorten(args.join(' '), 2048))
         );
     }
 }

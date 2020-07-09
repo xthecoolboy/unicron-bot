@@ -36,7 +36,7 @@ module.exports = class extends BaseCommand {
             .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setTitle('Calculator 101')
-            .addField(`Expression`, `\`\`\`m\n${client.trim(args.join(' '))}\n\`\`\``, 1000)
+            .addField(`Expression`, `\`\`\`m\n${client.shorten(args.join(' '))}\n\`\`\``, 1000)
             ;
         try {
             result = evaluate(args.join(' '));
@@ -44,7 +44,7 @@ module.exports = class extends BaseCommand {
                 throw 1;
             }
             embed.setColor(0x00FF00)
-                .addField(`Output`, `\`\`\`m\n${client.trim(result, 1000)}\n\`\`\``);
+                .addField(`Output`, `\`\`\`m\n${client.shorten(result, 1000)}\n\`\`\``);
         } catch (error) {
             embed.setColor('RED')
                 .addField(`Output`, `\`\`\`xl\nError while evaluating the math expression.\n\`\`\``);

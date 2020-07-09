@@ -23,7 +23,7 @@ const Random = {
      * @return {number}
     */
     nextInt: function (options = { max: 100, min: 0 }) {
-        if (options.max <= options.min) throw new RangeError('Max cannot be lower than or equal to Min');
+        if (options.max <= options.min) throw new RangeError('options.max cannot be less than or equal to options.min');
         return Math.floor(Math.random() * (options.max - options.min + 1) + options.min);
     },
 }

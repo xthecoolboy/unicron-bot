@@ -49,7 +49,7 @@ module.exports = class extends BaseCommand {
                 .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
-        const member = await message.guild.members.fetch(target.id);
+        const member = await message.guild.members.fetch(target.id).catch((e) => { throw e; });
         if (member) {
             if (message.author.id !== message.guild.ownerID && message.member.roles.highest.comparePositionTo(member.roles.highest) <= 0) {
                 return message.channel.send(new Discord.MessageEmbed()
@@ -96,7 +96,7 @@ module.exports = class extends BaseCommand {
             );
         }
         message.channel.send(`Successfully soft banned ${target.tag}`);
-        const modchannel = await client.channels.fetch(await message.guild.db.moderation('modLogChannel'));
+        const modchannel = await client.channels.fetch(message.guild.db.moderation('modLogChannel')).catch(() => { });
         if (modchannel && modchannel.type === 'text') {
             modchannel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')

@@ -75,7 +75,7 @@ module.exports = class Server extends EventEmitter {
                 const Event = require(path.join(filePath, file));
                 if (Event.prototype instanceof BaseEvent) {
                     const instance = new Event();
-                    this.on(instance.eventName.split('.')[0], instance.run.bind(instance, this));
+                    this.on(instance.eventName, instance.run.bind(instance, this));
                 }
                 delete require.cache[require.resolve(path.join(filePath, file))];
             }

@@ -32,7 +32,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        const pkg = encodeURIComponent(args.join(' ').replace(/ /g, '-'));
+        const pkg = encodeURIComponent(args.join(' ').replace(/ +/g, '-'));
         try {
             const response = await fetch(`https://registry.npmjs.com/${pkg}`);
             const body = await response.json();

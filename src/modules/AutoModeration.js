@@ -17,11 +17,11 @@ module.exports = (client, message, member) => {
     return new Promise(async (resolve, reject) => {
         try {
             const g = await client.database.guilds.fetch(message.guild.id);
-            const strat = await g.moderation('autoModeration');
-            const act = await g.moderation('autoModAction');
+            const strat = g.moderation('autoModeration');
+            const act = g.moderation('autoModAction');
             const action = act.toLowerCase();
             if (!strat) return resolve(false);
-            const duration = await g.moderation('warnActionExpiresOn');
+            const duration = g.moderation('warnActionExpiresOn');
             const reason = 'Auto Moderation';
             switch (act) {
                 case 'MUTE': {
@@ -89,7 +89,7 @@ module.exports = (client, message, member) => {
                 default:
                     return resolve(false);
             }
-            const modchannel = await client.channels.fetch(await g.moderation('modLogChannel'));
+            const modchannel = await client.channels.fetch(g.moderation('modLogChannel'));
             if (modchannel && modchannel.type === 'text') {
                 modchannel.send(new MessageEmbed()
                     .setColor('RANDOM')

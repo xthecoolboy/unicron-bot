@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const { Admin } = require('../../database/database');
-const { Crypto } = require('../../utils');
+const BaseCommand = require('../../classes/BaseCommand');
 
 function removeItemOnce(arr, value) {
     var index = arr.indexOf(value);
@@ -11,11 +11,6 @@ function removeItemOnce(arr, value) {
     }
     return arr;
 }
-
-function encrypt(str) {
-    return Crypto({ text: str, hash: 'sha256', salt: 'oadpoaw' });
-}
-const BaseCommand = require('../../classes/BaseCommand');
 
 module.exports = class extends BaseCommand {
     constructor() {
@@ -44,7 +39,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        const code = encrypt(args[0]);
+        const code = client.hash(args[0], 'sha256');
         const dbUser = await client.unicron.database('user', true);
         const dbGuilds = await client.unicron.database('guild', true);
         const users = dbUser.data;

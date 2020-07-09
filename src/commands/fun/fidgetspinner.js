@@ -1,11 +1,4 @@
-
 const Discord = require('discord.js');
-
-const gateway = [
-    'https://i.imgur.com/KJJxVi4.gif',
-    'https://media.giphy.com/media/1Ubrzxvik2puE/giphy.gif',
-    'https://media.giphy.com/media/l1KVaE9P0XcwJMwrC/giphy.gif'
-]
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
@@ -26,6 +19,11 @@ module.exports = class extends BaseCommand {
                 donatorOnly: false,
             }
         });
+        this.gateway = [
+            'https://i.imgur.com/KJJxVi4.gif',
+            'https://media.giphy.com/media/1Ubrzxvik2puE/giphy.gif',
+            'https://media.giphy.com/media/l1KVaE9P0XcwJMwrC/giphy.gif'
+        ]
     }
     /**
      * @returns {Promise<Message|boolean>}
@@ -37,7 +35,7 @@ module.exports = class extends BaseCommand {
         let spinning = await message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setDescription(`${message.author.tag} is spinning a fidget spinner...`)
-            .setImage(gateway.random())
+            .setImage(this.gateway[Math.floor(Math.random() * this.gateway.length)])
         );
 
         let timeout = (Math.random() * (60 - 5 + 1)) + 5;

@@ -100,7 +100,7 @@ module.exports = class extends BaseCommand {
             );
         }
         message.channel.send(`Successfully banned ${target.tag}`);
-        const modchannel = await client.channels.fetch(await message.guild.db.moderation('modLogChannel'));
+        const modchannel = await client.channels.fetch(await message.guild.db.moderation('modLogChannel')).catch(() => { });
         if (modchannel && modchannel.type === 'text') {
             modchannel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')

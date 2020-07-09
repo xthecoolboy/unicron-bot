@@ -1,49 +1,60 @@
-const Emotes = require('../../assets/Emotes.json');
-const crypto = require('crypto')
+const { Client: DiscordClient, Collection,
+    Message, MessageEmbed, Emoji, Guild,
+    GuildEmoji, User, Channel, Role, GuildMember
+} = require('discord.js');
+const { promisify } = require('util');
 const fs = require('fs').promises;
 const path = require('path');
-const { inspect, promisify } = require('util');
-
-const { Client, Collection, Message, MessageEmbed, Emoji, Guild, GuildEmoji, User, Channel, Role, GuildMember } = require('discord.js');
-
-const Unicron = require('../handlers/Unicron');
+const crypto = require('crypto');
+const { Admin } = require('../database/database.js');
+const Emotes = require('../../assets/Emotes.json');
 const BaseCommand = require('./BaseCommand');
 const BaseItem = require('./BaseItem');
 const BaseEvent = require('./BaseEvent');
-
 const UserManager = require('../managers/UserManager');
 const GuildManager = require('../managers/GuildManager');
 const PermissionManager = require('../managers/PermissionManager');
 const POSTManager = require('../managers/POSTManager');
 
-module.exports = class UnicronClient extends Client {
+class Client extends DiscordClient {
     constructor() {
         super({
             partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
             messageCacheMaxSize: 100,
             messageSweepInterval: 30,
         });
-        this.unicron = new Unicron({
-            owner: process.env.BOT_OWNER_ID,
-            server: process.env.BOT_SERVER_ID,
-            channel: process.env.BOT_CHANNEL_ID,
-            modChannel: process.env.BOT_MODCHANNEL_ID,
-            hostURL: process.env.BOT_HOST_URL,
-            inviteURL: process.env.BOT_SERVER_URL
-        });
         this.commands = new Collection();
-        this.events = new Collection();
         this.shopitems = new Collection();
         this.botEmojis = new Collection();
+        this.unicron = {
+            owner: process.env.BOT_OWNER_ID,
+            serverInviteURL: process.env.BOT_SERVER_URL,
+            channel: process.env.BOT_CHANNEL_ID,
+            data: new Collection(),
+            /**
+             * @returns {Promise<JSON|typeof Admin>}
+             * @param {string} table 
+             * @param {boolean} model if true, returns the actuall model instance
+             */
+            database: function (table, model = false) {
+                return new Promise(async (resolve, reject) => {
+                    if (this.data.has(table)) return resolve(model ? this.data.get(table) : this.data.get(table).data);
+                    let data = await Admin.findOne({ where: { table: table } });
+                    if (!data) data = await Admin.create({ table });
+                    this.data.set(table, data);
+                    return resolve(model ? this.data.get(table) : this.data.get(table).data);
+                });
+            }
+        }
         this.utils = require('../utils/');
         this.logger = this.utils.Logger;
         this.wait = promisify(setTimeout);
         this.database = {
-            users: new UserManager(this, {}),
-            guilds: new GuildManager(this, {}),
+            users: new UserManager(this),
+            guilds: new GuildManager(this),
         }
-        this.permission = new PermissionManager(this, {});
-        this.poster = new POSTManager(this, {});
+        this.permission = new PermissionManager(this);
+        this.poster = new POSTManager(this);
     }
     /**
      * @returns {Promise<User>|null}
@@ -90,7 +101,7 @@ module.exports = class UnicronClient extends Client {
     resolveChannel(search, guild) {
         if (!search || typeof search !== 'string') return null;
         let channel = null;
-        if (search.match(/^<@#!?(\d+)>$/)) channel = guild.channels.cache.get(search.match(/^<@#!?(\d+)>$/)[1]).catch(() => { });
+        if (search.match(/^<@#!?(\d+)>$/)) channel = guild.channels.cache.get(search.match(/^<@#!?(\d+)>$/)[1]);
         if (!channel) channel = guild.channels.cache.find((c) => c.name === search);
         if (!channel) channel = guild.channels.cache.get(search);
         return channel;
@@ -103,13 +114,13 @@ module.exports = class UnicronClient extends Client {
      */
     async presence(status, activity, message) {
         this.shard.broadcastEval(`
-        this.user.setPresence({
-            status: ['online', 'idle', 'dnd', 'invisible'].includes(${status}) ? ${status} : 'online',
-            activity: {
-                type: ['PLAYING', 'STREAMING', 'LISTENING', 'WATCHING'].includes(${activity.toUpperCase()}) ? ${activity.toUpperCase()} : 'PLAYING',
-                name: ${message},
-            }
-        });
+            this.user.setPresence({
+                status: ['online', 'idle', 'dnd', 'invisible'].includes(${status}) ? ${status} : 'online',
+                activity: {
+                    type: ['PLAYING', 'STREAMING', 'LISTENING', 'WATCHING'].includes(${activity.toUpperCase()}) ? ${activity.toUpperCase()} : 'PLAYING',
+                    name: ${message},
+                }
+            });
         `)
     }
     /**
@@ -165,18 +176,7 @@ module.exports = class UnicronClient extends Client {
         }
     }
     /**
-     * @returns {Promise<string>|string}
-     * @param {Promise<string>} text 
-     */
-    async clean(text) {
-        if (text && text.constructor && text.constructor.name == 'Promise') text = await text;
-        if (typeof text !== 'string') text = inspect(text, { depth: 1 });
-        text = text.replace(/`/g, '`' + String.fromCharCode(8203))
-            .replace(/@/g, '@' + String.fromCharCode(8203))
-            .replace(this.token, '12u32i1h32 FUCK YOU 12h3i1ih32');
-        return text;
-    }
-    /**
+     * @private
      * @returns {boolean|string} if an error occured
      * @param {string} itemName 
      */
@@ -207,24 +207,7 @@ module.exports = class UnicronClient extends Client {
         }
     }
     /**
-     * @returns {boolean|string}
-     * @param {string} itemName 
-     */
-    unregisterItem(itemName) {
-        const item = this.shopitems.get(itemName);
-        if (!item) return `The item \`${itemName}\` doesn\'t seem to exists. Try again!`;
-        this.shopitems.delete(itemName);
-        const mod = require.cache[require.resolve(`../items/${item.config.id}`)];
-        delete require.cache[require.resolve(`../items/${item.config.id}.js`)];
-        for (let i = 0; i < mod.parent.children.length; i++) {
-            if (mod.parent.children[i] === mod) {
-                mod.parent.children.splice(i, 1);
-                break;
-            }
-        }
-        return false;
-    }
-    /**
+     * @private
      * @returns {string|boolean}
      * @param {string} dir
      */
@@ -260,39 +243,6 @@ module.exports = class UnicronClient extends Client {
         }
     }
     /**
-     * @returns {string}
-     * @param {string} str 
-     */
-    escapeRegex(str) {
-        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
-    /**
-     * @returns {string}
-     * @param {string} str 
-     */
-    trim(str, max) {
-        return (str.length > max) ? `${str.slice(0, max - 3)}...` : str;
-    }
-    /**
-     * @returns {Array<Array<Any>>}
-     * @param {Array} array 
-     * @param {number} chunkSize 
-     */
-    chunk(array, chunkSize = 0) {
-        return array.reduce(function (previous, current) {
-            let chunk;
-            if (previous.length === 0 || previous[previous.length - 1].length === chunkSize) {
-                chunk = [];
-                previous.push(chunk);
-            }
-            else {
-                chunk = previous[previous.length - 1];
-            }
-            chunk.push(current);
-            return previous;
-        }, []);
-    }
-    /**
      * 
      * @param {string} dir 
      */
@@ -304,7 +254,7 @@ module.exports = class UnicronClient extends Client {
                 const Event = require(path.join(filePath, file));
                 if (Event.prototype instanceof BaseEvent) {
                     const instance = new Event();
-                    this.on(instance.eventName.split('.')[0], instance.run.bind(instance, this));
+                    this.on(instance.eventName, instance.run.bind(instance, this));
                 }
                 delete require.cache[require.resolve(path.join(filePath, file))];
             }
@@ -315,8 +265,9 @@ module.exports = class UnicronClient extends Client {
      * @param {string} props
      */
     async getCount(props = 'guilds' || 'users') {
-        return this.shard.fetchClientValues(`${props}.cache.size`).then((results) => results.reduce((prev, cur) => prev + cur, 0));
+        return await this.shard.fetchClientValues(`${props}.cache.size`).then((results) => results.reduce((prev, cur) => prev + cur, 0));
     }
+
     /**
      * @returns {Array<any>}
      * @param {Array<any>} arr 
@@ -324,64 +275,102 @@ module.exports = class UnicronClient extends Client {
      */
     trimArray(arr, maxLen = 10) {
         if (arr.length > maxLen) {
-            const len = arr.length - maxLen;
             arr = arr.slice(0, maxLen);
-            arr.push(`${len} more...`);
+            arr.push(`${arr.length - maxLen} more...`);
         }
         return arr;
     }
-    list(arr, conj = 'and') {
-        const len = arr.length;
-        if (len === 0) return '';
-        if (len === 1) return arr[0];
-        return `${arr.slice(0, -1).join(', ')}${len > 1 ? `${len > 2 ? ',' : ''} ${conj} ` : ''}${arr.slice(-1)}`;
-    }
-
+    /**
+     * 
+     * @param {string} text 
+     * @param {number} maxLen 
+     * @default maxLen=2000
+     */
     shorten(text, maxLen = 2000) {
         return text.length > maxLen ? `${text.substr(0, maxLen - 3)}...` : text;
     }
-
-    removeDuplicates(arr) {
-        if (arr.length === 0 || arr.length === 1) return arr;
-        const newArr = [];
-        for (let i = 0; i < arr.length; i++) {
-            if (newArr.includes(arr[i])) continue;
-            newArr.push(arr[i]);
-        }
-        return newArr;
-    }
-
-    sortByName(arr, prop) {
-        return arr.sort((a, b) => {
-            if (prop) return a[prop].toLowerCase() > b[prop].toLowerCase() ? 1 : -1;
-            return a.toLowerCase() > b.toLowerCase() ? 1 : -1;
-        });
-    }
-
-    firstUpperCase(text, split = ' ') {
-        return text.split(split).map(word => `${word.charAt(0).toUpperCase()}${word.slice(1)}`).join(' ');
-    }
-
+    /**
+     * 
+     * @param {number} number 
+     * @param {number} minimumFractionDigits 
+     */
     formatNumber(number, minimumFractionDigits = 0) {
         return Number.parseFloat(number).toLocaleString(undefined, {
             minimumFractionDigits,
             maximumFractionDigits: 2
         });
     }
-
-    formatNumberK(number) {
-        return number > 999 ? `${(number / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}K` : number;
-    }
-
+    /**
+     * 
+     * @param {string} text 
+     * @param {"encode"|"decode"} mode 
+     */
     base64(text, mode = 'encode') {
         if (mode === 'encode') return Buffer.from(text).toString('base64');
         if (mode === 'decode') return Buffer.from(text, 'base64').toString('utf8') || null;
-        throw new TypeError(`${mode} is not a supported base64 mode.`);
+        return null;
     }
+    /**
+     * 
+     * @param {string} title 
+     * @param {string} url 
+     * @param {string} display 
+     */
     embedURL(title, url, display) {
         return `[${title}](${url.replace(/\)/g, '%27')}${display ? ` "${display}"` : ''})`;
     }
+    /**
+     * 
+     * @param {string} text 
+     * @param {"sha256"|"md5"|"sha1"|"sha512"} algorithm 
+     */
     hash(text, algorithm) {
         return crypto.createHash(algorithm).update(text).digest('hex');
     }
+    /**
+     * 
+     * @param {string} str 
+     */
+    escapeRegex(str) {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    /**
+     * @returns {Array<Array>}
+     * @param {Array} array 
+     * @param {number} chunkSize 
+     */
+    chunk(array, chunkSize = 0) {
+        return array.reduce((previous, current) => {
+            let chunk;
+            if (previous.length === 0 || previous[previous.length - 1].length === chunkSize) {
+                chunk = [];
+                previous.push(chunk);
+            } else {
+                chunk = previous[previous.length - 1];
+            }
+            chunk.push(current);
+            return previous;
+        }, []);
+    }
+    /**
+     * @returns {string|Array<any>}
+     * @param {string|Array<any>} obj 
+     */
+    shuffle(obj) {
+        if (!obj) return obj;
+        if (Array.isArray(obj)) {
+            let i = obj.length;
+            while (i) {
+                let j = Math.floor(Math.random() * i);
+                let t = obj[--i];
+                obj[i] = obj[j];
+                obj[j] = t;
+            }
+            return obj;
+        }
+        if (typeof obj === 'string') return this.shuffle(obj.split('')).join('');
+        return obj;
+    }
 }
+
+module.exports = Client;

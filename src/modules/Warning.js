@@ -25,8 +25,9 @@ module.exports = (client, message, user_id, member) => {
                     if (!role) {
                         role = await message.guild.roles.create({
                             name: 'Muted',
-                        });
+                        }).catch(() => { });
                     }
+                    if (!role) return;
                     await member.roles.add(role, reason);
                     try {
                         for (let channel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
@@ -35,25 +36,21 @@ module.exports = (client, message, user_id, member) => {
                                 await channel.createOverwrite(role, {
                                     SEND_MESSAGES: false,
                                     ADD_REACTIONS: false
-                                }).catch(() => {});
+                                }).catch(() => { });
                             }
                         }
                     } catch (e) {
 
                     }
                     if (duration && !isNaN(duration)) {
-                        try {
-                            setTimeout(() => {
-                                member.roles.remove(role, 'Mute Duration expired').catch(() => {});
-                            }, Number(duration));
-                        } catch (E) {
-
-                        }
+                        setTimeout(() => {
+                            member.roles.remove(role, 'Mute Duration expired').catch(() => { });
+                        }, Number(duration));
                     }
                     break;
                 }
                 case 'KICK': {
-                    await member.kick(reason);
+                    await member.kick(reason).catch(() => { });
                     break;
                 }
                 case 'SOFTBAN': {
@@ -62,9 +59,9 @@ module.exports = (client, message, user_id, member) => {
                             days: 7,
                             reason,
                         }
-                    ).catch(() => {});;
+                    ).catch(() => { });;
                     setTimeout(() => {
-                        message.guild.members.unban(member.user.id).catch(() => {});;
+                        message.guild.members.unban(member.user.id).catch(() => { });
                     }, 1000);
                     break;
                 }
@@ -74,22 +71,18 @@ module.exports = (client, message, user_id, member) => {
                             days: 7,
                             reason,
                         }
-                    ).catch(() => {});;
+                    ).catch(() => { });
                     if (duration && !isNaN(duration)) {
-                        try {
-                            setTimeout(() => {
-                                message.guild.members.unban(member.user.id).catch(() => {});;
-                            }, Number(duration));
-                        } catch (E) {
-
-                        }
+                        setTimeout(() => {
+                            message.guild.members.unban(member.user.id).catch(() => { });
+                        }, Number(duration));
                     }
                     break;
                 }
                 default:
                     return resolve(false);
             }
-            const modchannel = await client.channels.fetch(message.guild.db.moderation('modLogChannel'));
+            const modchannel = await client.channels.fetch(message.guild.db.moderation('modLogChannel')).catch(() => { });
             if (modchannel && modchannel.type === 'text') {
                 modchannel.send(new MessageEmbed()
                     .setColor('RANDOM')
@@ -97,19 +90,15 @@ module.exports = (client, message, user_id, member) => {
                     .setTimestamp()
                     .setThumbnail(message.author.displayAvatarURL({ dynamic: true }) || null)
                     .setDescription(`**Member** : ${message.author.tag} / ${message.author.id}\n**Action** : ${faction}\n**Reason** : ${reason}\n${duration ? `**Length** : ${ms(duration)}` : ''}`)
-                );
+                ).catch(() => { });
             }
-            try {
-                const dm = await target.createDM();
-                await dm.send(new MessageEmbed()
-                    .setTimestamp()
-                    .setTitle(`You have been ${faction} from ${message.guild.name}`)
-                    .setDescription(`Reason : ${reason}`)
-                    .setFooter(`Moderator : ${client.user.tag} / ${client.user.id}`, client.user.displayAvatarURL({ dynamic: true }))
-                );
-            } catch (e) {
-                //
-            }
+            const dm = await member.user.createDM();
+            await dm.send(new MessageEmbed()
+                .setTimestamp()
+                .setTitle(`You have been ${faction} from ${message.guild.name}`)
+                .setDescription(`Reason : ${reason}`)
+                .setFooter(`Moderator : ${client.user.tag} / ${client.user.id}`, client.user.displayAvatarURL({ dynamic: true }))
+            ).catch(() => { });
             resolve(true);
         } catch (e) {
             console.log(e);

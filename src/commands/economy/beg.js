@@ -2,7 +2,6 @@
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
-const { Random } = require('../../utils/');
 
 module.exports = class extends BaseCommand {
     constructor() {
@@ -55,14 +54,14 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        const chance = Random.nextInt({ max: 100, min: 0 }) <= 60;
+        const chance = client.utils.Random.nextInt({ max: 100, min: 0 }) <= 60;
         if (chance) {
             const user = await client.database.users.fetch(message.author.id);
-            const prize = chance + Random.nextInt({ max: 250, min: 50 });
+            const prize = chance + client.utils.Random.nextInt({ max: 250, min: 50 });
             await user.coins.add(prize);
-            message.channel.send(this.messages.on_begged.random()(prize));
+            message.channel.send(this.messages.on_begged[Math.floor(Math.random() * this.messages.on_begged.length)](prize));
             return true;
         }
-        message.channel.send(this.messages.not_given.random());
+        message.channel.send(this.messages.not_given[Math.floor(Math.random() * this.messages.not_given.length)]);
     }
 }

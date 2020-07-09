@@ -2,7 +2,6 @@
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
-const { Random } = require('../../utils/');
 
 module.exports = class extends BaseCommand {
     constructor() {
@@ -47,16 +46,16 @@ module.exports = class extends BaseCommand {
             message.channel.send('Sorry, but you need atleast **500** coins to start a crime.');
             return false;
         }
-        const chance = Random.nextInt({ max: 100, min: 0 }) <= 65;
+        const chance = client.utils.Random.nextInt({ max: 100, min: 0 }) <= 55;
         if (chance) {
-            const prize = chance + Random.nextInt({ max: 2500, min: 1000 });
+            const prize = chance + client.utils.Random.nextInt({ max: 2250, min: 1000 });
             await user.coins.add(prize);
-            message.channel.send(this.messages.on_begged.random()(prize));
+            message.channel.send(this.messages.on_begged[Math.floor(Math.random() * this.messages.on_begged.length)](prize));
             return true;
         }
-        const lmao = Random.nextInt({ max: cur - Math.floor(cur * 0.45), min: cur - Math.floor(cur * .75) });
+        const lmao = client.utils.Random.nextInt({ max: cur - Math.floor(cur * 0.45), min: cur - Math.floor(cur * .75) });
         await user.coins.remove(lmao);
-        message.channel.send(this.messages.caught.random()(lmao))
+        message.channel.send(this.messages.caught[Math.floor(Math.random() * this.messages.caught.length)](lmao))
         return true;
     }
 }

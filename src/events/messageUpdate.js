@@ -12,6 +12,6 @@ module.exports = class extends Event {
      * @param {Message} message 
      */
     async run(client, oldMessage, newMessage) {
-        client.emit('message', newMessage);
+        client.emit('message', newMessage, false);
     }
 }

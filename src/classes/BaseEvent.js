@@ -1,5 +1,4 @@
-
-module.exports = class {
+module.exports = class Event {
     /**
      * 
      * @param {string} eventName 
@@ -8,17 +7,3 @@ module.exports = class {
         this.eventName = eventName;
     }
 }
-
-/**
-const BaseEvent = require('../classes/BaseEvent');
-
-module.exports = class extends BaseEvent {
-    constructor() {
-        super('');
-    }
-    
-    async run(client) {
-
-    }
-}
- */

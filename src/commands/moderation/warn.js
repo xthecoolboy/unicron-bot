@@ -89,7 +89,7 @@ module.exports = class extends BaseCommand {
         } catch (e) {
             return message.channel.send('Member was not warned. unexpected error occured.');
         }
-        const modChannel = await client.channels.fetch(await message.guild.db.moderation('modLogChannel'));
+        const modChannel = await client.channels.fetch(message.guild.db.moderation('modLogChannel')).catch(() => { });
         if (modChannel) {
             modChannel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')

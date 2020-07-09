@@ -21,6 +21,7 @@ module.exports = class extends BaseCommand {
                 premiumServer: false,
             }
         });
+        this.answers = ['🤴 Heads!', '🐛 Tails!'];
     }
     /**
      * @returns {Promise<Message|boolean>}
@@ -29,6 +30,6 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        return message.channel.send(['🤴 Heads!', '🐛 Tails!'].random());
+        return message.channel.send(this.answers[Math.floor(Math.random() * this.answers.length)]);
     }
 }

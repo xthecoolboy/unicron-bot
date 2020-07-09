@@ -1,14 +1,14 @@
 const Client = require('./Unicron');
 const { Message } = require('discord.js')
-module.exports = class {
+module.exports = class Command {
     /**
      * 
      * @param {Object} props 
      * 
      * @param {Object} props.config
-     * @param {string} props.config.name - Command Name
-     * @param {string} props.config.description - Command Description
-     * @param {string} props.config.permission - Command Required Permisison Level
+     * @param {string} props.config.name Command Name
+     * @param {string} props.config.description Command Description
+     * @param {string} props.config.permission Command Permission Level
      * 
      * @param {Object} props.options
      * @param {Array<string>} props.options.aliases

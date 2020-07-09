@@ -125,7 +125,7 @@ module.exports = class extends BaseCommand {
         args = args.replace(/./g, x => `${morse(x)}\u2001`).trim();
         message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setDescription(`\`${client.trim(args, 1024)}\``)
+            .setDescription(`\`${client.shorten(args, 1024)}\``)
         );
     }
 }

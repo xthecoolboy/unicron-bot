@@ -35,7 +35,7 @@ module.exports = class extends BaseCommand {
             const member = await message.guild.fetchBan(user_id);
             try {
                 const user = await message.guild.members.unban(member.user.id, reason ? reason.join(' ') : 'No reason provided');
-                const modChannel = await client.channels.fetch(await message.guild.db.moderation('modLogChannel'));
+                const modChannel = await client.channels.fetch(message.guild.db.moderation('modLogChannel')).catch(() => { });
                 if (modChannel) {
                     modChannel.send(new Discord.MessageEmbed()
                         .setColor('RANDOM')

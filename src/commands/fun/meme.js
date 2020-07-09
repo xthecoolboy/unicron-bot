@@ -31,7 +31,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        https.get(url.random(), (result) => {
+        https.get(url[Math.floor(Math.random() * url.length)], (result) => {
             let body = '';
             result.on('data', (chunk) => {
                 body += chunk;

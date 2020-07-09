@@ -1,4 +1,4 @@
-const Crypto = require('crypto');
+
 const { Message } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');

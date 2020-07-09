@@ -55,10 +55,10 @@ module.exports = class VoteBox extends BaseItem {
     async run(client, message) {
         const coins = client.utils.Random.nextInt({ max: 3000, min: 1000 });
         const msg = await message.channel.send('Rolling the Vote Box...');
-        const theItem = this.prizes.random();
+        const theItem = this.prizes[Math.floor(Math.random() * this.prizes.length)];
         let content = ``;
         await client.wait(1500);
-        this.prizes.shuffle();
+        this.prizes = client.shuffle(this.prizes);
         for (let i = 0; i < this.prizes.length; i++) {
             content = '';
             const prev = this.prizes[i - 1] ? this.prizes[i - 1] : this.prizes.lastItem;

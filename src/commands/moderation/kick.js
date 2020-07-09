@@ -88,7 +88,7 @@ module.exports = class extends BaseCommand {
             );
         }
         message.channel.send(`Successfully kick ${target.tag}`);
-        const modchannel = await client.channels.fetch(await message.guild.db.moderation('modLogChannel'));
+        const modchannel = await client.channels.fetch(message.guild.db.moderation('modLogChannel')).catch(() => { });
         if (modchannel && modchannel.type === 'text') {
             modchannel.send(new Discord.MessageEmbed()
                 .setColor('RANDOM')
@@ -105,7 +105,7 @@ module.exports = class extends BaseCommand {
                 .setTitle(`You have been kicked from ${message.guild.name}`)
                 .setDescription(`Reason : ${_reason}`)
                 .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
-            ).catch(() => {});
+            ).catch(() => { });
         } catch (e) {
 
         }
