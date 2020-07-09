@@ -4,7 +4,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const { inspect, promisify } = require('util');
 
-const { Client, Collection, Message, MessageEmbed, Emoji, Guild, GuildEmoji } = require('discord.js');
+const { Client, Collection, Message, MessageEmbed, Emoji, Guild, GuildEmoji, User, Channel, Role, GuildMember } = require('discord.js');
 
 const Unicron = require('../handlers/Unicron');
 const BaseCommand = require('./BaseCommand');
@@ -44,6 +44,73 @@ module.exports = class UnicronClient extends Client {
         }
         this.permission = new PermissionManager(this, {});
         this.poster = new POSTManager(this, {});
+    }
+    /**
+     * @returns {Promise<User>|null}
+     * @param {string} search
+     */
+    async resolveUser(search) {
+        if (!search || typeof search !== 'string') return null;
+        let user = null;
+        if (search.match(/^<@!?(\d+)>$/)) user = await this.users.fetch(search.match(/^<@!?(\d+)>$/)[1]).catch(() => { });
+        if (search.match(/^!?(\w+)#(\d+)$/) && !user) user = this.users.cache.find((u) => u.username === search.match(/^!?(\w+)#(\d+)$/)[0] && u.discriminator === search.match(/^!?(\w+)#(\d+)$/)[1]);
+        if (search.match(/.{2,32}/) && !user) user = this.users.cache.find((u) => u.username === search);
+        if (!user) user = await this.users.fetch(search).catch(() => { });
+        return user;
+    }
+    /**
+     * @returns {Promise<GuildMember>|null}
+     * @param {string} search 
+     * @param {Guild} guild 
+     */
+    async resolveMember(search, guild) {
+        if (!search || typeof search !== 'string') return null;
+        const user = await this.resolveUser(search);
+        if (!user) return null;
+        return await guild.members.fetch(user);
+    }
+    /**
+     * @returns {Role|null}
+     * @param {string} search
+     * @param {Guild} guild 
+     */
+    resolveRole(search, guild) {
+        if (!search || typeof search !== 'string') return null;
+        let role = null;
+        if (search.match(/^<@&!?(\d+)>$/)) role = guild.roles.cache.get(search.match(/^<@&!?(\d+)>$/)[1]);
+        if (!role) role = guild.roles.cache.find((r) => r.name === search);
+        if (!role) role = guild.roles.cache.get(search);
+        return role;
+    }
+    /**
+     * @returns {Channel|null}
+     * @param {string} search
+     * @param {Guild} guild
+     */
+    resolveChannel(search, guild) {
+        if (!search || typeof search !== 'string') return null;
+        let channel = null;
+        if (search.match(/^<@#!?(\d+)>$/)) channel = guild.channels.cache.get(search.match(/^<@#!?(\d+)>$/)[1]).catch(() => { });
+        if (!channel) channel = guild.channels.cache.find((c) => c.name === search);
+        if (!channel) channel = guild.channels.cache.get(search);
+        return channel;
+    }
+    /**
+     * 
+     * @param {string} status 
+     * @param {string} activity 
+     * @param {string} message 
+     */
+    async presence(status, activity, message) {
+        this.shard.broadcastEval(`
+        this.user.setPresence({
+            status: ['online', 'idle', 'dnd', 'invisible'].includes(${status}) ? ${status} : 'online',
+            activity: {
+                type: ['PLAYING', 'STREAMING', 'LISTENING', 'WATCHING'].includes(${activity.toUpperCase()}) ? ${activity.toUpperCase()} : 'PLAYING',
+                name: ${message},
+            }
+        });
+        `)
     }
     /**
      * @returns {Promise<Emoji>}
@@ -312,8 +379,8 @@ module.exports = class UnicronClient extends Client {
         throw new TypeError(`${mode} is not a supported base64 mode.`);
     }
     embedURL(title, url, display) {
-		return `[${title}](${url.replace(/\)/g, '%27')}${display ? ` "${display}"` : ''})`;
-	}
+        return `[${title}](${url.replace(/\)/g, '%27')}${display ? ` "${display}"` : ''})`;
+    }
     hash(text, algorithm) {
         return crypto.createHash(algorithm).update(text).digest('hex');
     }

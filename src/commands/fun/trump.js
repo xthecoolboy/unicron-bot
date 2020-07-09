@@ -9,7 +9,7 @@ module.exports = class extends BaseCommand {
         super({
             config: {
                 name: 'trump',
-                description: 'Sends a Random Donald Trump joke/quote!',
+                description: 'Sends a random stupid thing that Donald Trump said!',
                 permission: 'User',
             },
             options: {

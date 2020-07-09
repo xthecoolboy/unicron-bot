@@ -28,14 +28,4 @@ Promise.all(auth).then(() => {
         Logger.info('Database connection established!');
 }).catch(err => {
     return Logger.error(`Error occured on connecting to database : ${err} ${JSON.stringify(err)}`);
-});;
-process.on('beforeExit', async (code) => {
-    try {
-        await UnicronDB.close();
-        await GuildDB.close();
-        await UserDB.close();
-        Logger.info(`Database Connection terminated with code ${code}`, 'Database');
-    } catch (e) {
-        Logger.error(e, 'Database');
-    }
 });

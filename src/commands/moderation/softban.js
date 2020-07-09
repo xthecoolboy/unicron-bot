@@ -9,7 +9,7 @@ module.exports = class extends BaseCommand {
         super({
             config: {
                 name: 'softban',
-                description: 'Ban someone from the server and immediately unban!',
+                description: 'Bans someone from the server then immediately unban!',
                 permission: 'Server Moderator',
             },
             options: {
@@ -18,7 +18,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: true,
-                usage: 'softban <UserMention|UserID> [..Reason]',
+                usage: 'softban <UserMention|UserID> [...Reason]',
                 donatorOnly: false,
                 premiumServer: false,
             }

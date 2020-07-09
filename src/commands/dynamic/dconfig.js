@@ -19,7 +19,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 3,
                 nsfwCommand: false,
                 args: true,
-                usage: 'dvconfig <view|set|enable|disable> <key> [value]\n\nExamples:\ndvconfig set category 1426249876277277 (CHANNEL_ID)',
+                usage: 'dconfig <view|set|enable|disable> <key> [value]\n\nExamples:\ndconfig set category 1426249876277277 (CHANNEL_ID)',
                 donatorOnly: false,
                 premiumServer: false,
             }

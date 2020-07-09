@@ -12,6 +12,7 @@ if (!process.argv.includes('--terminal')) {
         token: process.env.BOT_TOKEN,
         totalShards: 'auto',
         shardArgs: ['--shard'],
+        respawn: true,
     });
 
     Manager.spawn();

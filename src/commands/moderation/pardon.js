@@ -17,7 +17,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: true,
-                usage: 'pardon <UserID> [Reason]',
+                usage: 'pardon <UserID> [...Reason]',
                 donatorOnly: false,
                 premiumServer: false,
             },

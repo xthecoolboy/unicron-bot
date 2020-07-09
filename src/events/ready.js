@@ -11,6 +11,8 @@ module.exports = class extends BaseEvent {
      * @param {Client} client 
      */
     async run(client) {
-        client.poster.startInterval();
+        await client.wait(5000);
+        const fn = client.poster.startInterval;
+        client.shard.broadcastEval(`if (this.shard.id === 0) (${fn.bind(client)})();`);
     }
 }

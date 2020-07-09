@@ -19,7 +19,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 3,
                 nsfwCommand: false,
                 args: true,
-                usage: 'crypto <COIN> <COIN>',
+                usage: 'crypto <...Coin Symbols>',
                 donatorOnly: false,
                 premiumServer: false,
             }

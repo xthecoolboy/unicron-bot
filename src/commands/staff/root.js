@@ -33,7 +33,7 @@ const evaluation = async function (client, message, [key, ...value]) {
                 const status = key;
                 const type = value.shift().toUpperCase();
                 const message = value.join(' ');
-                client.shard.broadcastEval(`this.user.setPresence({ activity: { name: ${message}, type: ${type} }, status: ${status} })`)
+                client.presence(status, type, message).catch(console.error);
                 return;
             }
             case 'codes': {

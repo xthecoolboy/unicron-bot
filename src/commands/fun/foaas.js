@@ -9,7 +9,7 @@ module.exports = class extends BaseCommand {
         super({
             config: {
                 name: 'foaas',
-                description: 'Sends a Random Fuck Off As A Service!',
+                description: 'Sends a Random F*ck Off As A Service!',
                 permission: 'User',
             },
             options: {

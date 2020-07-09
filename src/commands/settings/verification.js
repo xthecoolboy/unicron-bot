@@ -18,7 +18,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: false,
-                usage: 'verification (Interactive Setup)\nverification [-enable|-disable]',
+                usage: 'verification (Interactive Setup)\nverification [--enable|--disable]',
                 donatorOnly: false,
                 premiumServer: false,
             }
