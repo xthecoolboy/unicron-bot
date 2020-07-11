@@ -18,7 +18,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: true,
-                usage: 'ban <UserMention|UserID|UserTag|Username> [...Reason]\nban <UserMention|UserID|UserTag|Username> [Duration] [...Reason]',
+                usage: 'ban <User> [...Reason]\nban <User> [Duration] [...Reason]',
                 donatorOnly: false,
                 premiumServer: false,
             }

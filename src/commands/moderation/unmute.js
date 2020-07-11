@@ -18,7 +18,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: true,
-                usage: 'unmute <UserMention|UserID|UserTag|Username> [...Reason]',
+                usage: 'unmute <User> [...Reason]',
                 donatorOnly: false,
                 premiumServer: false,
             }

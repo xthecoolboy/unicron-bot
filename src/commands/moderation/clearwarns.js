@@ -17,7 +17,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: true,
-                usage: 'clearwarns <UserMention|UserID|UserTag|Username>',
+                usage: 'clearwarns <User>',
                 donatorOnly: false,
                 premiumServer: false,
             }

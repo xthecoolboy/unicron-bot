@@ -16,7 +16,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 1200,
                 nsfwCommand: false,
                 args: true,
-                usage: 'marry [UserMention|UserID|UserTag|Username]',
+                usage: 'marry [User]',
                 donatorOnly: false,
                 premiumServer: false,
             }

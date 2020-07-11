@@ -59,7 +59,7 @@ module.exports = (client, message, user_id, member) => {
                             days: 7,
                             reason,
                         }
-                    ).catch(() => { });;
+                    ).catch(() => { });
                     setTimeout(() => {
                         message.guild.members.unban(member.user.id).catch(() => { });
                     }, 1000);

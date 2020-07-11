@@ -21,7 +21,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: true,
-                usage: 'warn <UserMention|UserID|UserTag|Username> [...Reason]\nwarn <UserMention|UserID|UserTag|Username> [Duration] [...Reason]',
+                usage: 'warn <User> [...Reason]\nwarn <User> [Duration] [...Reason]',
                 donatorOnly: false,
                 premiumServer: false,
             }

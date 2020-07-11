@@ -18,7 +18,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 3,
                 nsfwCommand: false,
                 args: false,
-                usage: 'balance [UserMention|UserID|UserTag|Username]',
+                usage: 'balance [User]',
                 donatorOnly: false,
             }
         });

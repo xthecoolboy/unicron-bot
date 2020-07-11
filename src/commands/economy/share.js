@@ -17,7 +17,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 180,
                 nsfwCommand: false,
                 args: true,
-                usage: 'share <Amount> <UserMention|UserID|UserTag|Username>\nshare <UserMention|UserID|UserTag|Username> <Amount>',
+                usage: 'share <Amount> <User>\nshare <User> <Amount>',
                 donatorOnly: false,
             }
         });

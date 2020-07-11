@@ -19,7 +19,7 @@ module.exports = (client, message) => {
                 )
             ) ? true : false;
             if (!strat) return resolve(false);
-            if (message.deletable) message.delete().catch(() => {});;
+            if (message.deletable) message.delete().catch(() => {});
             message.channel.send(`No Swearing! ${message.author}.`)
                 .then(msg => msg.delete({ timeout: 5000 }));
             const mChannel = message.guild.channels.cache.get(message.guild.db.moderation('modLogChannel'));
@@ -29,7 +29,7 @@ module.exports = (client, message) => {
                     .setAuthor(client.user.tag, client.user.displayAvatarURL({ dynamic: true }))
                     .setTitle('Swear Blocker')
                     .setDescription(`Member: ${message.author.tag} / ${message.author.id}`)
-                ).catch(() => {});;
+                ).catch(() => {});
             }
             await AutoModeration(client, message, message.member);
             resolve(true);

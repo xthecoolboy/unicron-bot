@@ -32,7 +32,7 @@ module.exports = (client, message) => {
                 .setDescription(`<@${message.author.id}>, you have been verified!`)
             ).then((m) => {
                 m.delete({ timeout: 5000 }).catch(() => { });
-                if (!message.member.roles.cache.has(role)) message.member.roles.add(role).catch(() => { });;
+                if (!message.member.roles.cache.has(role)) message.member.roles.add(role).catch(() => { });
                 resolve(true);
             }).catch(() => { });
         } catch (e) {

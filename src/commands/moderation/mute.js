@@ -19,7 +19,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: true,
-                usage: 'mute <UserMention|UserID|UserTag|Username> [...Reason]\nmute <UserMention|UserID|UserTag|Username> [Duration] [...Reason]',
+                usage: 'mute <User> [...Reason]\nmute <User> [Duration] [...Reason]',
                 donatorOnly: false,
                 premiumServer: false,
             }
@@ -118,7 +118,7 @@ module.exports = class extends BaseCommand {
                 .setTitle(`You have been muted from ${message.guild.name}`)
                 .setDescription(`Reason : ${_reason}`)
                 .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
-            ).catch(() => { });;
+            ).catch(() => { });
         } catch (e) {
             //
         }

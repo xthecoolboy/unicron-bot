@@ -17,7 +17,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 8,
                 nsfwCommand: false,
                 args: false,
-                usage: 'inventory [UserMention|UserID|UserTag|Username] [Page]\ninventory [Page]\binventory page <Page>',
+                usage: 'inventory [User] [Page]\ninventory [Page]\binventory page <Page>',
                 donatorOnly: false,
                 premiumServer: false,
             }

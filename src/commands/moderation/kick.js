@@ -18,7 +18,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: true,
-                usage: 'kick <UserMention|UserID|UserTag|Username> [...Reason]',
+                usage: 'kick <User> [...Reason]',
                 donatorOnly: false,
                 premiumServer: false,
             }

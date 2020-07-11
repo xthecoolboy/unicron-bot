@@ -19,7 +19,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: false,
-                usage: 'warnings <UserMention|UserID|UserTag|Username> [Page]\nwarnings [Page]',
+                usage: 'warnings <User> [Page]\nwarnings [Page]',
                 donatorOnly: false,
                 premiumServer: false,
             }

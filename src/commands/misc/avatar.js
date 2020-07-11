@@ -16,7 +16,7 @@ module.exports = class extends BaseCommand {
                 aliases: ['av'],
                 cooldown: 3,
                 args: false,
-                usage: `avatar [UserMention|UserID|UserTag|Username]`,
+                usage: `avatar [User]`,
             }
         });
     }

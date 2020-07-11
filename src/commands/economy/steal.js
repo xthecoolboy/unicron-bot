@@ -64,7 +64,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 180,
                 nsfwCommand: false,
                 args: true,
-                usage: 'steal <UserMention|UserID|UserTag|Username>',
+                usage: 'steal <User>',
                 donatorOnly: false,
                 premiumServer: false,
             }

@@ -62,9 +62,9 @@ module.exports = (client, message, member) => {
                             days: 7,
                             reason,
                         }
-                    ).catch(() => {});;
+                    ).catch(() => {});
                     setTimeout(() => {
-                        message.guild.members.unban(member.user.id).catch(() => {});;
+                        message.guild.members.unban(member.user.id).catch(() => {});
                     }, 1000);
                     break;
                 }
@@ -74,11 +74,11 @@ module.exports = (client, message, member) => {
                             days: 7,
                             reason,
                         }
-                    ).catch(() => {});;
+                    ).catch(() => {});
                     if (duration && !isNaN(duration)) {
                         try {
                             setTimeout(() => {
-                                message.guild.members.unban(member.user.id).catch(() => {});;
+                                message.guild.members.unban(member.user.id).catch(() => {});
                             }, Number(duration));
                         } catch (E) {
 
@@ -97,7 +97,7 @@ module.exports = (client, message, member) => {
                     .setTimestamp()
                     .setThumbnail(message.author.displayAvatarURL({ dynamic: true }) || null)
                     .setDescription(`**Member** : ${message.author.tag} / ${message.author.id}\n**Action** : ${action}\n**Reason** : ${reason}\n${duration ? `**Length** : ${ms(duration)}` : ''}`)
-                ).catch(() => {});;
+                ).catch(() => {});
             }
             try {
                 const dm = await target.createDM();
