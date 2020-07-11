@@ -40,7 +40,6 @@ PORT=
 ### Emojis
 For emojis, you must add them on one of your bot's servers.
 Complete configuration for emojis are located on [Emojis](../assets/Emotes.json)
-Remember to replace **all** IDs to your Emojis' IDs ._.
 
 ## Installing Dependencies
 Open Command prompt or Powershell as **Administrator** then enter the following

@@ -27,13 +27,12 @@ module.exports = class extends BaseEvent {
                 || !status
                 || (channel_id !== reaction.message.channel.id)
                 || (isReact !== 'react')
-                || (reaction.message.author.id !== client.user.id)
                 || reaction.emoji.name !== 'yes'
                 || !reaction.message.guild.me.permissions.has(['MANAGE_ROLES'])
             ) return;
             const member = await reaction.message.guild.members.fetch(user.id);
             if (member) {
-                if (member.roles.cache.has(role)) await member.roles.remove(role).catch(() => {});;
+                if (member.roles.cache.has(role)) await member.roles.remove(role).catch(() => {});
                 reaction.message.channel.send(new MessageEmbed()
                     .setColor(0x00FF00)
                     .setTimestamp()

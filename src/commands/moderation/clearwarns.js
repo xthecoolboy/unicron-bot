@@ -17,7 +17,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: true,
-                usage: 'clearwarns <UserMention|UserID>',
+                usage: 'clearwarns <UserMention|UserID|UserTag|Username>',
                 donatorOnly: false,
                 premiumServer: false,
             }
@@ -30,8 +30,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        const [user,] = args;
-        let target = message.mentions.users.first() || client.users.cache.get(user);
+        const target = await client.resolveUser(args[0]);
         if (!target || target.bot) return message.channel.send(`I can't clear the warnings of an invalid user`);
         const member = new Member(target.id, message.guild.id);
         const warns = await member.warnings.fetchAll();

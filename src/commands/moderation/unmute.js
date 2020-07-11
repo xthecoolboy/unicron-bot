@@ -18,7 +18,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: true,
-                usage: 'unmute <UserMention|UserID> [...Reason]',
+                usage: 'unmute <UserMention|UserID|UserTag|Username> [...Reason]',
                 donatorOnly: false,
                 premiumServer: false,
             }
@@ -32,7 +32,7 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         const [user, ...reason] = args;
-        const target = message.mentions.users.first() || client.users.cache.get(user);
+        const target = await client.resolveUser(user);
         if (!target) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')

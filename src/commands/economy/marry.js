@@ -16,7 +16,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 1200,
                 nsfwCommand: false,
                 args: true,
-                usage: 'marry <UserMention>',
+                usage: 'marry [UserMention|UserID|UserTag|Username]',
                 donatorOnly: false,
                 premiumServer: false,
             }
@@ -35,7 +35,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
-                .setDescription('Error: You gotta mention who to marry -_-')
+                .setDescription('Sorry, You gotta mention who to marry -_-')
             );
         }
         if (target.bot) {
@@ -43,7 +43,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
-                .setDescription('Error: You can\'t marry a bot user </3')
+                .setDescription('Sorry, You can\'t marry a bot user </3')
             );
         }
         if (message.author.equals(target)) {
@@ -51,7 +51,7 @@ module.exports = class extends BaseCommand {
                 .setColor('RED')
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
-                .setDescription('Error: You can\'t marry yourself :<')
+                .setDescription('Sorry, You can\'t marry yourself :<')
             );
         }
         const ttarget = await client.database.users.fetch(target.id);

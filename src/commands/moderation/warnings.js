@@ -19,7 +19,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: false,
-                usage: 'warnings <UserMention|UserID> [Page]\nwarnings [Page]',
+                usage: 'warnings <UserMention|UserID|UserTag|Username> [Page]\nwarnings [Page]',
                 donatorOnly: false,
                 premiumServer: false,
             }
@@ -32,8 +32,8 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        const [user, page, ...values] = args;
-        let target = message.mentions.users.first() || client.users.cache.get(user) || message.author;
+        const [user, page] = args;
+        const target = await client.resolveUser(user) || message.author;
         if (!target || target.bot) target = message.author;
         let embed = new Discord.MessageEmbed()
             .setColor('RANDOM')

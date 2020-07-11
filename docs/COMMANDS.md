@@ -5,14 +5,12 @@ Here's the list of all commands.
 **Name**: The name of the command  
 **Description**: A brief explanation of the purpose of the command  
 **Usage**: The arguments/options that the command takes in parameters
-- `<>` are required
-- `[]` are optional
-- `()` are Miscellaneous informations
-- `...` symbol it means it can have one or more arguments
+- `<>` - Required
+- `[]` - Optional
+- `()` - Miscellaneous informations
+- `...` - One or more arguments
 
-::: tip
-You can do `help <Command>` for more information about a specific command
-:::
+> You can do `help <Command>` for more information about a specific command
 
 
 ### Moderation
@@ -35,7 +33,7 @@ You can do `help <Command>` for more information about a specific command
 Fully **Customizable** Configurations. including simplistic interactive configuration setups,
 to configure Unicron Bot functionality for your server.
 
-All commands below requires permission level `Server Administrator`
+> All commands on this category requires permission level `Server Administrator`
 
 | Name             | Description                                                  | Usage                                                      |
 | :--------------- | :----------------------------------------------------------- | :--------------------------------------------------------- |
@@ -50,6 +48,8 @@ All commands below requires permission level `Server Administrator`
 ### Dynamic Text/Voice
 Which allows users to create their own text/voice Channels to enhance your community environment as your users continue to meet new people.
 
+> You can also have a role named `Dynamic Mod` so whoevers has that role has full access to all dynamic channels. like a Moderator ;)
+> 
 | Name         | Description                                       | Usage                                                                                 |
 | :----------- | :------------------------------------------------ | :------------------------------------------------------------------------------------ |
 | **dconfig**  | Configure Dynamic Text/Voice to your server!      | `dconfig <view|set|enable|disable> <key> [value]` or use `help dconfig` for more info |
@@ -60,7 +60,7 @@ Which allows users to create their own text/voice Channels to enhance your commu
 ### Ticket System
 Our wonderful very simple **Ticket System** bringing/helping support from your members as your community continue to grows
 
-You can also have a role named `Support Team` so whoevers has that role can access any ticket.
+> You can also have a role named `Support Team` so whoevers has that role can access any ticket.
 
 | Name             | Description                                | Usage                                                  |
 | :--------------- | :----------------------------------------- | :----------------------------------------------------- |
@@ -176,6 +176,5 @@ WOAHHHHH yeyyy fun commands woohoooooo oh yeahhh, hmmmm somehow that sounded sar
 | **tableflip**     | Flips up a table (with a cool animation)                               | `tableflip`           |
 | **trump**         | Sends a random stupid thing that Donald Trump said                     | `trump`               |
 
-::: info
-Note: Some of the informations above may or may not be accurate as the bot continues to grow and some of the informations may or may be missing in this context
-:::
+
+> Note: Some of the informations above may or may not be accurate as the bot continues to grow and some of the informations may or may be missing in this context

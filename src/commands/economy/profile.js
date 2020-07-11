@@ -17,7 +17,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 5,
                 nsfwCommand: false,
                 args: false,
-                usage: 'profile [User]',
+                usage: 'profile [UserMention|UserID|UserTag|Username]',
                 donatorOnly: false,
             }
         });
@@ -29,12 +29,11 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        const target = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
-        if (!target) target = message.author;
+        const target = await client.resolveUser(args[0]) || message.author;
         if (target.bot) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
-                .setDescription('Error: Cannot show profile of a bot user.'));
+                .setDescription('Sorry, i cannot show the profile of a bot user.'));
         }
         const profile = await client.database.users.fetch(target.id, true);
         const badges = client.chunk(profile.badges.fetch(), 8);

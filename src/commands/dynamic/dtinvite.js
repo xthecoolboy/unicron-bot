@@ -66,7 +66,7 @@ module.exports = class extends BaseCommand {
                 SEND_MESSAGES: true,
                 VIEW_CHANNEL: true,
                 READ_MESSAGE_HISTORY: true,
-            });
+            }).catch(() => { });
         }
         message.channel.send(`Member(s) has been added to this channel`);
     }

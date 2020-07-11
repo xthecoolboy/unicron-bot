@@ -44,7 +44,7 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         const user = message.mentions.users.first();
-        if (!user) return message.channel.send('Oh oh... you gotta mention who to slap :/');
+        if (!user) return message.channel.send('Oh oh... you gotta provide a valid user to slap :/');
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setImage(slaps[Math.floor(Math.random() * slaps.length)])

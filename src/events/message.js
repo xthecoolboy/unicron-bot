@@ -113,7 +113,7 @@ ${command.options.clientPermissions.join(' ')}
         const timestamps = cooldowns.get(command.config.name);
         let cooldownAmount = (command.options.cooldown || 3) * 1000;
         const bcd = cooldownAmount;
-        const donator = await message.author.db.profile('premium');
+        const donator = message.author.db.profile('premium');
         if (command.options.donatorOnly && !donator) {
             return message.channel.send(new MessageEmbed()
                 .setColor('RED')
@@ -121,7 +121,7 @@ ${command.options.clientPermissions.join(' ')}
                 .setDescription(`Sorry, this command is limited only for [Donators](${message.unicron.serverInviteURL} 'Click me!').`)
             );
         } else if (donator) {
-            cooldownAmount = Math.floor(cooldownAmount - (cooldownAmount * 0.25));
+            cooldownAmount = Math.floor(cooldownAmount - (cooldownAmount * 0.28));
         }
         if (timestamps.has(message.author.id)) {
             const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
@@ -138,7 +138,7 @@ ${command.options.clientPermissions.join(' ')}
         if (!LevelingCD.has(message.author.id)) {
             LevelingCD.set(message.author.id, 'timer');
             message.author.db.levelup(client, message);
-            if (await message.author.db.profile('premium')) setTimeout(() => LevelingCD.delete(message.author.id), 40000);
+            if (donator) setTimeout(() => LevelingCD.delete(message.author.id), 40000);
             else setTimeout(() => LevelingCD.delete(message.author.id), 55000);
         }
         try {

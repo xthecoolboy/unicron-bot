@@ -38,7 +38,7 @@ Unicron offers:
 ## Installation
 
 If you don't want to edit the code of the bot, a permanent online version is available, which you can invite to your own Discord!
-- [Invite Link](https://discord.com/oauth2/authorize?client_id=634908645896880128&scope=bot&permissions=285599830)
+[Invite Link](https://discord.com/oauth2/authorize?client_id=634908645896880128&scope=bot&permissions=285599830)
 
 If you want to edit the bot's code and host it on your machine, it's possible!
 

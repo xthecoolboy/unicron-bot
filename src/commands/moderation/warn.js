@@ -21,7 +21,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: true,
-                usage: 'warn <UserMention|UserID> [...Reason]\nwarn <UserMention|UserID> [Duration] [...Reason]',
+                usage: 'warn <UserMention|UserID|UserTag|Username> [...Reason]\nwarn <UserMention|UserID|UserTag|Username> [Duration] [...Reason]',
                 donatorOnly: false,
                 premiumServer: false,
             }
@@ -35,7 +35,7 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         const [user, ...reason] = args;
-        let target = message.mentions.users.first() || client.users.cache.get(user);
+        const target = await client.resolveUser(user);
         if (!target || target.bot) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')

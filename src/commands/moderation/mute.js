@@ -19,7 +19,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: true,
-                usage: 'mute <UserMention|UserID> [...Reason]\nmute <UserMention|UserID> [Duration] [...Reason]',
+                usage: 'mute <UserMention|UserID|UserTag|Username> [...Reason]\nmute <UserMention|UserID|UserTag|Username> [Duration] [...Reason]',
                 donatorOnly: false,
                 premiumServer: false,
             }

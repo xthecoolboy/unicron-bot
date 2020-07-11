@@ -17,7 +17,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 10,
                 nsfwCommand: false,
                 args: false,
-                usage: '',
+                usage: 'userinfo [UserMention|UserID|UserTag|Username]',
                 donatorOnly: false,
                 premiumServer: false,
             }
@@ -30,8 +30,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        let user = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
-        if (!user) user = message.author;
+        const user = await client.resolveUser(args[0]) || message.author;
         const member = message.guild.member(user);
         let nick = member.nickname;
         if (!nick) nick = '-';

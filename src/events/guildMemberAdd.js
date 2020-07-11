@@ -50,7 +50,7 @@ module.exports = class extends BaseEvent {
                     }
                     setTimeout(async () => {
                         await member.fetch();
-                        if (!member.roles.cache.has(role) && member.kickable) await member.kick('Did not verified in 10 mins');
+                        if (!member.roles.cache.has(role) && member.kickable) await member.kick('Did not verified in 10 mins').catch(() => { });
                     }, 60000 * 10);
                 } catch (e) {
 

@@ -16,7 +16,7 @@ module.exports = class extends BaseCommand {
                 aliases: ['av'],
                 cooldown: 3,
                 args: false,
-                usage: `avatar [user]`,
+                usage: `avatar [UserMention|UserID|UserTag|Username]`,
             }
         });
     }
@@ -27,8 +27,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        let target = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
-        if (!target) target = message.author;
+        const target = await client.resolveUser(args[0]) || message.author;
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setAuthor(target.tag, target.displayAvatarURL({ dynamic: true }))

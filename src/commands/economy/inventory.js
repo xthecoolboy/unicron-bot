@@ -17,7 +17,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 8,
                 nsfwCommand: false,
                 args: false,
-                usage: 'inventory [UserMention] [Page]\ninventory [Page]\binventory page <Page>',
+                usage: 'inventory [UserMention|UserID|UserTag|Username] [Page]\ninventory [Page]\binventory page <Page>',
                 donatorOnly: false,
                 premiumServer: false,
             }
@@ -31,7 +31,7 @@ module.exports = class extends BaseCommand {
      */
     async run(client, message, args) {
         const [action, paging] = args;
-        const target = message.mentions.members.first() || message.guild.members.cache.get(action) || message.author;
+        const target = await client.resolveUser(action) || message.author;
         const userp = await client.database.users.fetch(target.id);
         const items = await userp.inventory.fetch();
         if (!items.length) {

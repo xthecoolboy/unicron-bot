@@ -22,7 +22,7 @@ module.exports = (client, message) => {
                     .setAuthor(client.user.tag, client.user.displayAvatarURL({ dynamic: true }))
                     .setTitle('Mention Spam Blocker')
                     .setDescription(`Member: ${message.author.tag} / ${message.author.id}`)
-                ).catch(() => {});;
+                ).catch(() => {});
             }
             await AutoModeration(client, message).catch(() => {});
             resolve(true);

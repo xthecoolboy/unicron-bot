@@ -64,7 +64,7 @@ module.exports = class extends BaseCommand {
                 cooldown: 180,
                 nsfwCommand: false,
                 args: true,
-                usage: 'steal <UserMention|UserID|UserTag>',
+                usage: 'steal <UserMention|UserID|UserTag|Username>',
                 donatorOnly: false,
                 premiumServer: false,
             }
@@ -77,7 +77,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        const utarget = message.mentions.users.first() || client.users.cache.get(args[0]) || client.users.cache.find((u) => u.tag === args[0]);
+        const utarget = await client.resolveUser(args[0]);
         if (!utarget || utarget.bot) {
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')

@@ -24,7 +24,7 @@ module.exports = (client, message) => {
                     .setAuthor(client.user.tag, client.user.displayAvatarURL({ dynamic: true }))
                     .setTitle('Invite Blocker')
                     .setDescription(`Member: ${message.author.tag} / ${message.author.id}`)
-                ).catch(() => {});;
+                ).catch(() => {});
             }
             await AutoModeration(client, message, message.member).catch(() => {});;
             return resolve(true);
