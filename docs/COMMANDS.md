@@ -1,5 +1,5 @@
 # Commands  
-Here's the list of Unicron commands.
+Here's the list of all commands.
 
 #### Contents of the table  
 **Name**: The name of the command  

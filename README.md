@@ -1,31 +1,51 @@
 
 # Unicron Bot
-A Powerful Multipurpose Discord Bot with over than 100+ commands!
-description description blah blah blah 
+A Powerful multipurpose open source Discord Bot with over than 100+ commands!
 
-- [Documentation](https://unicron.gitbook.io/docs)
-- [Guide](https://unicron.gitbook.io/guide)
-- [Invite](https://discord.com/oauth2/authorize?client_id=634908645896880128&scope=bot&permissions=285599830)
+Coded in Javascript with [Discord.js](https://discord.js.org) by [oadpoaw](https://github.com/oadpoaw) including spaghetti code!
+
+> Feel free to add a star ⭐ to the repository to promote the Bot and the project iteself!
+
+## Features
+
+Unicron offers:
+- Server Configuration (prefix, welcomer, farewell etc...)
+- Member Captcha Verification System
+- Simple Ticket System - 
+- Dynamic Text/Voice - Which allows users to create their own text/voice Channels to enhance your community environment as your users continue to meet new people.
+- High Performance Moderation System + Auto-Moderation
+- and more!
+
+### Many Commands (yes)
+> Unicron has alot of commands reaching 100+ split into 9 categories!
+- 🚓 **Moderation**
+- ⚙️ **Configuration** 
+- 💰 **Economy**
+- 🖨️ **Miscellaneous**
+- 🗳️ **Ticket System**
+- 🎵 **Dynamic Text/Voice**
+- 👻 **Fun**
+- **Utility**
+- **Search**
+
+
+## Links
+- [Invite the Bot](https://discord.com/oauth2/authorize?client_id=634908645896880128&scope=bot&permissions=285599830)
 - [Support Server](https://discord.gg/Pp9T2zS)
-- [Commands](docs/COMMANDS.md)
+- [Documentation](https://unicron.gitbook.io/docs) or [This](docs/SUMMARY.md)
+- [Guide](https://unicron.gitbook.io/guide)
 
-## Installation (Host the bot yourself!)
-Requires `Node 12.x.x` and above.
+## Installation
 
-Setup [env.example](.env.example) with your credentials and other stuffs xd
+If you don't want to edit the code of the bot, a permanent online version is available, which you can invite to your own Discord!
+- [Invite Link](https://discord.com/oauth2/authorize?client_id=634908645896880128&scope=bot&permissions=285599830)
 
-```bash
-# clone the repo
-$ git clone https://github.com/oadpoaw/unicron-bot.git
-$ cd unicron-bot
-# Install production dependencies
-$ npm install --production
-# initialize database tables
-$ node . --database --reset --all
-# start the bot 
-$ node .
-```
+If you want to edit the bot's code and host it on your machine, it's possible!
 
-## License
+You must follow the [Installation Guide](docs/Installation.md) to properly install it!
 
-See [LICENSE](./LICENSE)
+> Don't worry, it's fast and simple if you follow the guide!
+
+# License
+
+> Unicron is licensed under the MIT license. See the file [LICENSE](LICENSE) for more information. If you plan to use any part of this source code in your own bot, I would be grateful if you would include some form of credit somewhere.
