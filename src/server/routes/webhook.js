@@ -31,9 +31,9 @@ class Webhook extends Endpoint {
         this.route.post('/donate', (req, res) => {
             try {
                 const buyer = req.body;
-                res.status(202).send(buyer);
+                res.status(202).json(buyer);
             } catch (e) {
-                res.status(500).send({
+                res.status(500).json({
                     message: 'Internal Server Error'
                 });
                 this.client.logger.error(e);
@@ -47,12 +47,12 @@ class Webhook extends Endpoint {
                     return;
                 }
                 const parsed = this.parseJSON[list](req.body);
-                if (!parsed.id) return res.status(400).send({ message: 'Bad Request' });
+                if (!parsed.id) return res.status(400).json({ message: 'Bad Request' });
                 this.client.emit('vote', new Voter(parsed));
-                res.status(202).send(parsed);
+                res.status(202).json(parsed);
             } catch (e) {
                 console.log(e);
-                res.status(500).send({
+                res.status(500).json({
                     message: 'Internal Server Error'
                 });
             }

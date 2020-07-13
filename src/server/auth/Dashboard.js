@@ -9,7 +9,7 @@ function validateKey(authorization) {
     return new Promise(async (resolve, reject) => {
         try {
             if (!authorization) throw { status: 400, message: 'Bad Request: No Authorization Provided' };
-            const keys = await Admin.findOne({ where: { table: 'UserAPI' } });
+            const keys = await Admin.findOne({ where: { table: 'Dashboard' } });
             if (!keys || !keys.data.includes(authorization)) throw { status: 403, message:'Forbidden: Invalid Authorization Key'}
             return resolve(true);
         } catch (e) {

@@ -42,6 +42,7 @@ module.exports = class Guild extends Base {
      * @returns {Promise<JSON>}
      */
     async toJSON() {
+        const tags = await GuildTags.findAll({ where: { guild_id: this.id } });
         return {
             guild_id: this.id,
             prefix: this.settings('prefix'),
@@ -84,7 +85,7 @@ module.exports = class Guild extends Base {
                 message: this.leaver('message'),
                 enabled: this.leaver('enabled'),
             },
-            tags: (await GuildTags.findAll({ where: { guild_id: this.id } })).map((v) => { return { name: v.tag_name, value: v.value } }),
+            tags: tags ? tags.map((v) => { return v.tag_name && v.value ? { name: v.tag_name, value: v.value } : null }) : [],
         }
     }
     /**

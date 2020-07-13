@@ -92,7 +92,7 @@ module.exports = class Server extends EventEmitter {
         }));
         this.app.use(express.json());
         this.app.get('/', (req, res) => {
-            res.status(200).send({
+            res.status(200).json({
                 gateway: '/api/v1/',
                 author: 'oadpoaw'
             });
@@ -127,7 +127,7 @@ module.exports = class Server extends EventEmitter {
     }
     /**
      * 
-     * @param {string } dir 
+     * @param {string} dir 
      */
     async registerEvents(dir) {
         const filePath = path.join(__dirname, dir);
@@ -146,7 +146,7 @@ module.exports = class Server extends EventEmitter {
     }
     /**
      * 
-     * @param {number} port 
+     * @param {number} [port=4200]
      */
     login(port = 4200) {
         return new Promise(async (resolve, reject) => {
@@ -157,6 +157,7 @@ module.exports = class Server extends EventEmitter {
                 });
                 const ids = await this.manager.broadcastEval(`this.user.id`);
                 this.id = ids.shift();
+                this.poster.startInterval();
                 return resolve(port);
             } catch (e) {
                 reject(e);

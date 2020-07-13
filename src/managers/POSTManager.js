@@ -21,11 +21,11 @@ module.exports = class POSTManager {
 
     async startInterval() {
         const services = Object.keys(BotLists);
-         for (let service of services) {
-                service = BotLists[service];
-                const { server_count, member_count, shard_count } = await this.getStats();
-                await this.post({ service, server_count, shard_count, member_count });
-            }
+        for (let service of services) {
+            service = BotLists[service];
+            const { server_count, member_count, shard_count } = await this.getStats();
+            await this.post({ service, server_count, shard_count, member_count });
+        }
         setInterval(async () => {
             for (let service of services) {
                 service = BotLists[service];

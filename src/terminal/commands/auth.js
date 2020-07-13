@@ -10,6 +10,7 @@ class Help extends Command {
             'WebHook',
             'UserAPI',
             'GuildAPI',
+            'Dashboard',
         ]
     }
     /**
