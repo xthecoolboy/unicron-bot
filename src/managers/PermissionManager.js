@@ -58,7 +58,7 @@ module.exports = class PermissionManager extends BaseManager {
         }
     }
     /**
-     * @returns {Promise<number>}
+     * @returns {number}
      * @param {Message} message 
      */
     level(message) {

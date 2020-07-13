@@ -17,7 +17,6 @@ const {
 module.exports = class GuildManager extends BaseManager {
     /**
      * 
-     * @param {Client} client 
      * @param {Object<string, any>} options 
      */
     constructor(client, options) {

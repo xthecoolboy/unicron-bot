@@ -1,12 +1,10 @@
 const BaseManager = require('../classes/BaseManager');
 const User = require('../classes/User');
 const { UserProfile } = require('../database/database');
-const Client = require('../classes/Unicron');
 
 module.exports = class UserManager extends BaseManager {
     /**
      * 
-     * @param {Client} client 
      * @param {Object<string, any>} options 
      */
     constructor(client, options) {

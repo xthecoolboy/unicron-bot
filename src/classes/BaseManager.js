@@ -1,11 +1,9 @@
 
 const { Collection } = require('discord.js');
-const Client = require('./Unicron');
 
 module.exports = class BaseManager {
     /**
      * 
-     * @param {Client} client 
      * @param {Object<string, any>} options
      */
     constructor(client, options) {

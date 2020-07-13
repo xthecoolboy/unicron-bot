@@ -19,7 +19,7 @@ const {
 
 class Guild extends Endpoint {
     constructor(app) {
-        super('/guild', app);
+        super('/api/v1/guild', app);
         this.models = {
             GuildDynamicVoice,
             GuildFilter,

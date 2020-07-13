@@ -14,7 +14,6 @@ const BaseEvent = require('./BaseEvent');
 const UserManager = require('../managers/UserManager');
 const GuildManager = require('../managers/GuildManager');
 const PermissionManager = require('../managers/PermissionManager');
-const POSTManager = require('../managers/POSTManager');
 
 class Client extends DiscordClient {
     constructor() {
@@ -54,7 +53,6 @@ class Client extends DiscordClient {
             guilds: new GuildManager(this),
         }
         this.permission = new PermissionManager(this);
-        this.poster = new POSTManager(this);
     }
     /**
      * @returns {Promise<User>|null}
@@ -128,7 +126,6 @@ class Client extends DiscordClient {
      * @param {string} name 
      */
     getEmoji(name) {
-        if (!process.argv.includes('--shard')) return this.emojis.cache.get(Emotes[name]);
         if (this.botEmojis.has(name)) return this.botEmojis.get(name);
         function findEmoji(id) {
             const temp = this.emojis.cache.get(id);
@@ -263,18 +260,16 @@ class Client extends DiscordClient {
     }
     /**
      * @returns {Promise<number>}
-     * @param {'guilds'|'users'} props
+     * @param {"users"|"guilds"} props 
      */
     async getCount(props) {
-        if (!process.argv.includes('--shard')) {
-            if (props === 'users') return this.guilds.cache.reduce((acc, cur) => acc + cur.memberCount, 0);
-            return this[props].cache.size;
-        }
         if (props === 'users') {
             const raw = await this.shard.broadcastEval(`this.guilds.cache.reduce((acc, cur) => acc + cur.memberCount, 0)`);
             return raw.reduce((acc, cur) => acc + cur, 0);
-        }
-        return await this.shard.fetchClientValues(`${props}.cache.size`).then((results) => results.reduce((prev, cur) => prev + cur, 0));
+        } else if (props === 'guilds') {
+            const raw = await this.shard.broadcastEval(`this.guilds.cache.size`);
+            return raw.reduce((acc, cur) => acc + cur, 0);
+        } return 0;
     }
 
     /**

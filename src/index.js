@@ -1,5 +1,4 @@
 require('dotenv').config();
-require('./server/server');
 require('./terminal');
 require('./database/Connection');
 
@@ -8,12 +7,13 @@ const { ShardingManager } = require('discord.js');
 
 const Manager = new ShardingManager('./src/Unicron.js', {
     token: process.env.BOT_TOKEN,
-    totalShards: 'auto',
+    totalShards: 3,
     shardArgs: ['--shard'],
     respawn: true,
 });
 
 Manager.spawn();
+
 Manager.on('shardCreate', (shard) => {
     Logger.info(`Shard[${shard.id}] has been created!`, 'Shard');
     shard.on('ready', () => {
@@ -35,3 +35,5 @@ Manager.on('shardCreate', (shard) => {
         Logger.info(`Shard[${shard.id}][${child.pid}] has been spawned!`, 'Shard');
     });
 });
+
+require('./server/server')(Manager);

@@ -7,7 +7,7 @@ const { Regex } = require('../../utils');
 
 class User extends Endpoint {
     constructor(app) {
-        super('/user', app);
+        super('/api/v1/user', app);
     }
     createRoute() {
         this.route.use(Authorization);

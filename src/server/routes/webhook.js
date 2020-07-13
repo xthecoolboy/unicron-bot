@@ -4,7 +4,7 @@ const Voter = require('../../classes/Voter');
 
 class Webhook extends Endpoint {
     constructor(app) {
-        super('/webhook', app);
+        super('/api/v1/webhook', app);
         this.parseJSON = {
             discordboats: function (body) {
                 return {

@@ -24,20 +24,21 @@ module.exports = class extends BaseEvent {
      * @param {boolean} triggerCommand 
      */
     async run(client, message, triggerCommand = true) {
+
+        if (message.partial) await message.fetch();
         if (message.author.bot) return;
 
         if (await Blacklist(client, message.author.id, message.guild.id)) return;
 
         if (message.channel.type === 'dm') return await client.emit('directMessage', message);
+
         if (!message.guild) return;
-
-        if (!message.member) await message.member.fetch();
-
         if (!message.channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES'])) return;
+        if (!message.member) await message.member.fetch();
 
         if (!message.author.db) message.author.db = await client.database.users.fetch(message.author.id, true);
         if (!message.guild.db) message.guild.db = await client.database.guilds.fetch(message.guild.id, true);
-        message.author.permLevel = await client.permission.level(message);
+        message.author.permLevel = client.permission.level(message);
 
         if (await memberVerification(client, message)) return;
         if (await swearFilter(client, message)) return;

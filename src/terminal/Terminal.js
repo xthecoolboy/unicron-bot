@@ -25,6 +25,7 @@ class Terminal extends BaseClient {
                 if (Command.prototype instanceof BaseCommand) {
                     const instance = new Command();
                     this.on(instance.name, instance.run.bind(instance, this));
+                    this.logger.info(`Terminal command '${instance.name}' loaded`)
                     this.commands.push(instance.name);
                 }
             }

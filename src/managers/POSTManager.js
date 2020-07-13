@@ -1,33 +1,35 @@
-const BaseManager = require('../classes/BaseManager');
+const Server = require('../server/classes/Server');
 const fetch = require('node-fetch');
 const { BotLists } = require('../utils/Constants');
-const UnicronClient = require('../classes/Unicron');
 
-module.exports = class POSTManager extends BaseManager {
+module.exports = class POSTManager {
     /**
      * 
-     * @param {UnicronClient} client 
+     * @param {Server} server
      * @param {Object<string, any>} options 
      */
-    constructor(client, options) {
-        super(client, options);
+    constructor(server) {
+        this.server = server;
+    }
+    async getStats() {
+        return {
+            server_count: await this.server.getCount('guilds'),
+            member_count: await this.server.getCount('users'),
+            shard_count: this.server.manager.shards.size,
+        }
     }
 
     async startInterval() {
         const services = Object.keys(BotLists);
          for (let service of services) {
                 service = BotLists[service];
-                const server_count = await this.client.getCount('guilds');
-                const shard_count = this.client.shard.count;
-                const member_count = await this.client.getCount('users');
+                const { server_count, member_count, shard_count } = await this.getStats();
                 await this.post({ service, server_count, shard_count, member_count });
             }
         setInterval(async () => {
             for (let service of services) {
                 service = BotLists[service];
-                const server_count = await this.client.getCount('guilds');
-                const shard_count = this.client.shard.count;
-                const member_count = await this.client.getCount('users');
+                const { server_count, member_count, shard_count } = await this.getStats();
                 await this.post({ service, server_count, shard_count, member_count });
             }
         }, 60000 * 30);
@@ -47,7 +49,7 @@ module.exports = class POSTManager extends BaseManager {
     async post(options) {
         if (!options.service || !options.service.token) return;
         try {
-            const url = options.service.endpoint.replace(/:id/g, this.client.user.id);
+            const url = options.service.endpoint.replace(/:id/g, this.server.id);
             const response = await fetch.default(url,
                 {
                     method: 'POST',
@@ -59,9 +61,9 @@ module.exports = class POSTManager extends BaseManager {
                     body: JSON.stringify(options.service.parse(options.server_count, options.shard_count, options.member_count)),
                 }
             );
-            this.client.logger.info(`${url}: Status (${response.status})`);
+            this.server.logger.info(`${url}: Status (${response.status})`);
         } catch (e) {
-            this.client.logger.error(`${options.service.endpoint}: ${e.message}`);
+            this.server.logger.error(`${options.service.endpoint}: ${e.message}`);
         }
     }
 }
