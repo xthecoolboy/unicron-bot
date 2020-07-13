@@ -36,4 +36,4 @@ Manager.on('shardCreate', (shard) => {
     });
 });
 
-require('./server/server')(Manager);
+require('./api/server')(Manager);

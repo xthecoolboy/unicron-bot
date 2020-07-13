@@ -1,6 +1,6 @@
 {
     "name": "unicron-bot",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "description": "Multipurpose discord bot :)",
     "main": "src/index.js",
     "dependencies": {
@@ -39,6 +39,10 @@
         "type": "git",
         "url": "git://github.com/oadpoaw/unicron-bot.git"
     },
+    "bugs": {
+        "url": "https://github.com/oadpoaw/unicron-bot/issues"
+    },
+    "homepage": "https://github.com/oadpoaw/unicron-bot#README",
     "author": "undefine#6084",
     "license": "MIT"
 }
