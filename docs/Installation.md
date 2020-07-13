@@ -35,6 +35,8 @@ GUILD_DATABASE_PASSWORD=
 GUILD_DATABASE_FILE=
 # Server PORT
 PORT=
+
+# Note: some required environment variables were not listed because you will never get them such as API Keys
 ```
 
 ### Emojis

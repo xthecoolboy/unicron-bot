@@ -1,8 +1,6 @@
 
-const Discord = require('discord.js');
-const { Random } = require('../../utils/');
 const quotes = require('../../../assets/quotes.json');
-const { Message } = require('discord.js');
+const { Message, MessageEmbed } = require('discord.js');
 const Client = require('../../classes/Unicron');
 const BaseCommand = require('../../classes/BaseCommand');
 
@@ -28,11 +26,11 @@ module.exports = class extends BaseCommand {
      * @param {Array<string>} args 
      */
     async run(client, message, args) {
-        const index = Random.nextInt({ max: 241, min: 0 });
-        return message.channel.send(new Discord.MessageEmbed()
+        const index = quotes[Math.floor(Math.random() * quotes.length)]
+        return message.channel.send(new MessageEmbed()
             .setColor('RANDOM')
-            .setDescription(`${quotes[index]['quote']}`)
-            .setFooter(`- ${quotes[index]['author']}`)
+            .setDescription(`${index.quote}`)
+            .setFooter(`- ${index.author}`)
         );
     }
 }

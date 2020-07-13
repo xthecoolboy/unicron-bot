@@ -28,7 +28,7 @@ module.exports = class extends BaseCommand {
     async run(client, message, args) {
         return message.channel.send(new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setTitle('Your fortune says...')
+            .setAuthor('Your fortune says...', client.user.displayAvatarURL({ dynamic: true }))
             .setDescription(fortune[Math.floor(Math.random() * fortune.length)])
         );
     }
