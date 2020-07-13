@@ -23,10 +23,8 @@
     },
     "devDependencies": {},
     "scripts": {
-        "test": "node tests/index.js",
-        "start": "node src/index.js",
-        "dbInit": "node src/index.js --database --reset --all",
-        "terminal": "node src/terminal/index.js"
+        "start": "node .",
+        "dbInit": "node . --database --reset --all"
     },
     "engines": {
         "node": "12.16.3"

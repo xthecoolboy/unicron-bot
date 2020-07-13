@@ -128,6 +128,7 @@ class Client extends DiscordClient {
      * @param {string} name 
      */
     getEmoji(name) {
+        if (!process.argv.includes('--shard')) return this.emojis.cache.get(Emotes[name]);
         if (this.botEmojis.has(name)) return this.botEmojis.get(name);
         function findEmoji(id) {
             const temp = this.emojis.cache.get(id);
@@ -159,8 +160,8 @@ class Client extends DiscordClient {
      * 
      * @param {Message} message 
      * @param {string|MessageEmbed} question 
-     * @param {number} limit millieseconds
-     * @param {boolean} obj Put `true` to return the message class instead of returning the message content
+     * @param {number} [limit=60000] millieseconds
+     * @param {boolean} [obj=false] Put `true` to return the message class instead of returning the message content
      * 
      * @returns {Promise<boolean|string|Message>}
      */
@@ -262,9 +263,17 @@ class Client extends DiscordClient {
     }
     /**
      * @returns {Promise<number>}
-     * @param {string} props
+     * @param {'guilds'|'users'} props
      */
-    async getCount(props = 'guilds' || 'users') {
+    async getCount(props) {
+        if (!process.argv.includes('--shard')) {
+            if (props === 'users') return this.guilds.cache.reduce((acc, cur) => acc + cur.memberCount, 0);
+            return this[props].cache.size;
+        }
+        if (props === 'users') {
+            const raw = await this.shard.broadcastEval(`this.guilds.cache.reduce((acc, cur) => acc + cur.memberCount, 0)`);
+            return raw.reduce((acc, cur) => acc + cur, 0);
+        }
         return await this.shard.fetchClientValues(`${props}.cache.size`).then((results) => results.reduce((prev, cur) => prev + cur, 0));
     }
 
@@ -283,8 +292,7 @@ class Client extends DiscordClient {
     /**
      * 
      * @param {string} text 
-     * @param {number} maxLen 
-     * @default maxLen=2000
+     * @param {number} [maxLen=2000]
      */
     shorten(text, maxLen = 2000) {
         return text.length > maxLen ? `${text.substr(0, maxLen - 3)}...` : text;
@@ -292,7 +300,7 @@ class Client extends DiscordClient {
     /**
      * 
      * @param {number} number 
-     * @param {number} minimumFractionDigits 
+     * @param {number} [minimumFractionDigits=0] 
      */
     formatNumber(number, minimumFractionDigits = 0) {
         return Number.parseFloat(number).toLocaleString(undefined, {
@@ -337,9 +345,10 @@ class Client extends DiscordClient {
     /**
      * @returns {Array<Array>}
      * @param {Array} array 
-     * @param {number} chunkSize 
+     * @param {number} [chunkSize=0] 
      */
     chunk(array, chunkSize = 0) {
+        if (!Array.isArray(array)) throw new Error('First Parameter must be an array');
         return array.reduce((previous, current) => {
             let chunk;
             if (previous.length === 0 || previous[previous.length - 1].length === chunkSize) {
@@ -353,11 +362,11 @@ class Client extends DiscordClient {
         }, []);
     }
     /**
-     * @returns {string|Array<any>}
+     * @returns {string|Array<any>|null}
      * @param {string|Array<any>} obj 
      */
     shuffle(obj) {
-        if (!obj) return obj;
+        if (!obj) return null;
         if (Array.isArray(obj)) {
             let i = obj.length;
             while (i) {

@@ -49,7 +49,7 @@ module.exports = class extends BaseCommand {
                 .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
         }
-        const member = await message.guild.members.fetch(target.id).catch((e) => { throw e; });
+        const member = message.guild.member(target.id);
         if (member) {
             if (message.author.id !== message.guild.ownerID && message.member.roles.highest.comparePositionTo(member.roles.highest) <= 0) {
                 return message.channel.send(new Discord.MessageEmbed()
@@ -76,18 +76,19 @@ module.exports = class extends BaseCommand {
             );
         }
         const _reason = reason ? reason.join(' ') : 'No reason provided.';
+        const dm = await target.createDM();
+        await dm.send(new Discord.MessageEmbed()
+            .setTimestamp()
+            .setTitle(`You have been soft banned from ${message.guild.name} / ${message.guild.id}`)
+            .setDescription(`Reason : ${_reason}`)
+            .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
+        );
         try {
-            await message.guild.members.ban(member.user.id,
-                {
-                    days: 7,
-                    reason: _reason,
-                }
-            );
+            await message.guild.members.ban(member.user.id, { reason: _reason, }).catch((e) => { throw e });
             setTimeout(() => {
-                message.guild.members.unban(target.id);
+                message.guild.members.unban(target.id).catch(() => { });
             }, 10000);
         } catch (e) {
-            console.log(e);
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setDescription(`Unexpected error occured. Member was not soft banned`)
@@ -105,17 +106,6 @@ module.exports = class extends BaseCommand {
                 .setThumbnail(target.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : SoftBan\n**Reason** : ${_reason}`)
             );
-        }
-        try {
-            const dm = await target.createDM();
-            await dm.send(new Discord.MessageEmbed()
-                .setTimestamp()
-                .setTitle(`You have been soft banned from ${message.guild.name} / ${message.guild.id}`)
-                .setDescription(`Reason : ${_reason}`)
-                .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
-            );
-        } catch (e) {
-
         }
     }
 }

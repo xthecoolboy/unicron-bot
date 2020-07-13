@@ -25,14 +25,13 @@ Unicron offers:
 - 🗳️ **Ticket System**
 - 🎵 **Dynamic Text/Voice**
 - 👻 **Fun**
-- **Utility**
-- **Search**
+- and more!
 
 
 ## Links
 - [Invite the Bot](https://discord.com/oauth2/authorize?client_id=634908645896880128&scope=bot&permissions=285599830)
 - [Support Server](https://discord.gg/Pp9T2zS)
-- [Documentation](https://unicron.gitbook.io/docs) or [This](docs/SUMMARY.md)
+- [Documentation](https://unicron.gitbook.io/docs) or [this](docs/SUMMARY.md)
 - [Guide](https://unicron.gitbook.io/guide)
 
 ## Installation

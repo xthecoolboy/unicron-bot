@@ -48,9 +48,12 @@ $ npm install -g --production windows-build-tools
 $ npm install --production
 ```
 
+## Setting up the datbase
+```bash
+$ npm run dbInit
+```
 ## Launching the bot
 ```bash
-$ node . --database --reset --all # setup the database
 $ node . 
 ```
-then enjoy!
+enjoy!

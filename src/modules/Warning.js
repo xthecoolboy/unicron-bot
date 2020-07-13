@@ -19,28 +19,27 @@ module.exports = (client, message, user_id, member) => {
             const faction = action.toLowerCase();
             const reason = 'Maximum Warn Threshold Reached!';
             if (maxTreshold === 0 || maxTreshold >= warns.size) return resolve(false);
+            const dm = await member.user.createDM();
+            await dm.send(new MessageEmbed()
+                .setTimestamp()
+                .setTitle(`You have been ${faction} from ${message.guild.name}`)
+                .setDescription(`Reason : ${reason}`)
+                .setFooter(`Moderator : ${client.user.tag} / ${client.user.id}`, client.user.displayAvatarURL({ dynamic: true }))
+            ).catch(() => { });
             switch (action) {
                 case 'MUTE': {
                     let role = message.guild.roles.cache.find((r) => { return r.name === 'Muted' });
-                    if (!role) {
-                        role = await message.guild.roles.create({
-                            name: 'Muted',
-                        }).catch(() => { });
-                    }
-                    if (!role) return;
-                    await member.roles.add(role, reason);
-                    try {
-                        for (let channel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
-                            channel = channel[1];
-                            if (!channel.permissionOverwrites.get(role.id)) {
-                                await channel.createOverwrite(role, {
-                                    SEND_MESSAGES: false,
-                                    ADD_REACTIONS: false
-                                }).catch(() => { });
-                            }
+                    if (!role) role = await message.guild.roles.create({ name: 'Muted' }).catch(() => { });
+                    if (!role) return resolve(false);
+                    await member.roles.add(role, reason).catch(() => { });
+                    for (let channel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
+                        channel = channel[1];
+                        if (!channel.permissionOverwrites.get(role.id)) {
+                            await channel.createOverwrite(role, {
+                                SEND_MESSAGES: false,
+                                ADD_REACTIONS: false
+                            }).catch(() => { });
                         }
-                    } catch (e) {
-
                     }
                     if (duration && !isNaN(duration)) {
                         setTimeout(() => {
@@ -92,14 +91,7 @@ module.exports = (client, message, user_id, member) => {
                     .setDescription(`**Member** : ${message.author.tag} / ${message.author.id}\n**Action** : ${faction}\n**Reason** : ${reason}\n${duration ? `**Length** : ${ms(duration)}` : ''}`)
                 ).catch(() => { });
             }
-            const dm = await member.user.createDM();
-            await dm.send(new MessageEmbed()
-                .setTimestamp()
-                .setTitle(`You have been ${faction} from ${message.guild.name}`)
-                .setDescription(`Reason : ${reason}`)
-                .setFooter(`Moderator : ${client.user.tag} / ${client.user.id}`, client.user.displayAvatarURL({ dynamic: true }))
-            ).catch(() => { });
-            resolve(true);
+            return resolve(true);
         } catch (e) {
             console.log(e);
             resolve(false);

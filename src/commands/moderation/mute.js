@@ -72,33 +72,23 @@ module.exports = class extends BaseCommand {
         if (duration) reason.shift();
         const _reason = reason ? reason.join(' ') : 'No reason provided.';
         let role = message.guild.roles.cache.find((r) => { return r.name === 'Muted' });
-        if (!role) {
-            role = await message.guild.roles.create({
-                name: 'Muted'
-            }, 'Mute');
-        }
-        await member.roles.add(role, _reason);
-        try {
-            for (let schannel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
-                const channel = schannel[1];
-                if (!channel.permissionOverwrites.get(role.id)) {
-                    await channel.createOverwrite(role, {
-                        SEND_MESSAGES: false,
-                        ADD_REACTIONS: false
-                    }).catch(() => { });
-                }
+        if (!role) role = await message.guild.roles.create({ name: 'Muted' }, 'Mute');
+        await member.roles.add(role, _reason).catch(() => {
+            message.channel.send('Member was not muted.');
+        });
+        for (let schannel of message.guild.channels.cache.filter(channel => channel.type === 'text')) {
+            const channel = schannel[1];
+            if (!channel.permissionOverwrites.get(role.id)) {
+                await channel.createOverwrite(role, {
+                    SEND_MESSAGES: false,
+                    ADD_REACTIONS: false
+                }).catch(() => { });
             }
-        } catch (e) {
-
         }
         if (duration && !isNaN(duration)) {
-            try {
-                setTimeout(() => {
-                    member.roles.remove(role, 'Mute Duration expired').catch(() => { });
-                }, Number(duration));
-            } catch (E) {
-
-            }
+            setTimeout(() => {
+                member.roles.remove(role, 'Mute Duration expired').catch(() => { });
+            }, Number(duration));
         }
         message.channel.send(`Successfully muted ${target}`);
         const modchannel = await client.channels.fetch(message.guild.db.moderation('modLogChannel')).catch(() => { });

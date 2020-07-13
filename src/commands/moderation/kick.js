@@ -76,10 +76,16 @@ module.exports = class extends BaseCommand {
             );
         }
         const _reason = reason ? reason.join(' ') : 'No reason provided.';
+        const dm = await target.createDM();
+        await dm.send(new Discord.MessageEmbed()
+            .setTimestamp()
+            .setTitle(`You have been kicked from ${message.guild.name}`)
+            .setDescription(`Reason : ${_reason}`)
+            .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
+        ).catch(() => { });
         try {
             await member.kick(_reason).catch((e) => { throw e });
         } catch (e) {
-            console.log(e);
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setDescription(`Unexpected error occured. Member was not kicked`)
@@ -97,17 +103,6 @@ module.exports = class extends BaseCommand {
                 .setThumbnail(target.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : Kick\n**Reason** : ${_reason}`)
             );
-        }
-        try {
-            const dm = await target.createDM();
-            await dm.send(new Discord.MessageEmbed()
-                .setTimestamp()
-                .setTitle(`You have been kicked from ${message.guild.name}`)
-                .setDescription(`Reason : ${_reason}`)
-                .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
-            ).catch(() => { });
-        } catch (e) {
-
         }
     }
 }

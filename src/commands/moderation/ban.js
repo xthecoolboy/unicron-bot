@@ -78,26 +78,27 @@ module.exports = class extends BaseCommand {
         const duration = reason[0] ? ms(reason[0]) : false;
         if (duration) reason.shift();
         const _reason = reason ? reason.join(' ') : 'No reason provided.';
+        const dm = await target.createDM();
+        await dm.send(new Discord.MessageEmbed()
+            .setTimestamp()
+            .setTitle(`You have been banned from ${message.guild.name} / ${message.guild.id}`)
+            .setDescription(`Reason : ${_reason}`)
+            .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
+        ).catch(() => { });
         try {
-            await message.guild.members.ban(member.user.id,
-                {
-                    days: 7,
-                    reason: _reason,
-                }
-            );
-            if (duration && !isNaN(duration)) {
-                setTimeout(() => {
-                    message.guild.members.unban(target.id, 'Duration expired');
-                }, Number(duration));
-            }
+            await message.guild.members.ban(member.user.id, { days: 7, reason: _reason, }).catch((e) => { throw e });
         } catch (e) {
-            console.log(e);
             return message.channel.send(new Discord.MessageEmbed()
                 .setColor('RED')
                 .setDescription(`Unexpected error occured. Member was not banned`)
                 .setTimestamp()
                 .setFooter(message.author.tag, message.author.displayAvatarURL({ dynamic: true }) || client.user.displayAvatarURL({ dynamic: true }))
             );
+        }
+        if (duration && !isNaN(duration)) {
+            setTimeout(() => {
+                message.guild.members.unban(target.id, 'Duration expired').catch(() => { });
+            }, Number(duration));
         }
         message.channel.send(`Successfully banned ${target.tag}`);
         const modchannel = await client.channels.fetch(await message.guild.db.moderation('modLogChannel')).catch(() => { });
@@ -109,17 +110,6 @@ module.exports = class extends BaseCommand {
                 .setThumbnail(target.displayAvatarURL({ dynamic: true }) || null)
                 .setDescription(`**Member** : ${target.tag} / ${target.id}\n**Action** : Ban\n**Reason** : ${_reason}\n${duration ? `**Length** : ${ms(duration)}` : ''}`)
             );
-        }
-        try {
-            const dm = await target.createDM();
-            await dm.send(new Discord.MessageEmbed()
-                .setTimestamp()
-                .setTitle(`You have been banned from ${message.guild.name} / ${message.guild.id}`)
-                .setDescription(`Reason : ${_reason}`)
-                .setFooter(`Moderator : ${message.author.tag} / ${message.author.id}`, message.author.displayAvatarURL({ dynamic: true }) || message.guild.iconURL())
-            );
-        } catch (e) {
-            //
         }
     }
 }
