@@ -18,7 +18,7 @@ module.exports = class extends BaseEvent {
         const enabled = db.dynamicVoice('enabled');
         const waitingRoom = db.dynamicVoice('waitingRoom');
         const category = db.dynamicVoice('category');
-        if (!enabled 
+        if (!enabled
             || oldState.member.user.bot
             || newState.member.user.bot
             || !oldState.guild.me.permissions.has(['MOVE_MEMBERS', 'MANAGE_CHANNELS', 'MANAGE_ROLES'])
@@ -40,14 +40,14 @@ module.exports = class extends BaseEvent {
                             }
                         ]
                     }).then(channel => {
-                        newState.setChannel(channel).catch(() => {});
-                    }).catch(() => {});
+                        newState.setChannel(channel).catch(() => { });
+                    }).catch(() => { });
             }
         }
         if (!!oldState.channel) {
             if (oldState.channel.parent.id === category && oldState.channel.id !== waitingRoom) {
                 if (oldState.channel.members.size === 0) {
-                    oldState.channel.delete().catch(() => {});
+                    oldState.channel.delete().catch(() => { });
                 }
             }
         }

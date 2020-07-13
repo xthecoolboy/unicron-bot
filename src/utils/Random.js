@@ -16,9 +16,8 @@ const Random = {
     },
     /**
      * @param {Object} options
-     * @param {number} options.max
-     * @param {number} options.min
-     * @default {max=100,min=0} 
+     * @param {number} [options.max=100]
+     * @param {number} [options.min=0]
      * @throws {RangeError} When options.max is less than or equal to options.min.
      * @return {number}
     */

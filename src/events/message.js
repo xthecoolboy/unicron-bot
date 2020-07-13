@@ -106,9 +106,7 @@ ${command.options.clientPermissions.join(' ')}
                 .setDescription(`Sorry, i can\'t run nsfw commands on a non-nsfw channel.`)
             );
         }
-        if (!cooldowns.has(command.config.name)) {
-            cooldowns.set(command.config.name, new Collection());
-        }
+        if (!cooldowns.has(command.config.name)) cooldowns.set(command.config.name, new Collection());
         const now = Date.now();
         const timestamps = cooldowns.get(command.config.name);
         let cooldownAmount = (command.options.cooldown || 3) * 1000;

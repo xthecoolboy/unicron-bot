@@ -17,7 +17,6 @@ function encode(value) {
         result = ALPHA.charAt(mod) + result;
         value = Math.floor(value / 64);
     } while (value > 0);
-
     return result;
 }
 
@@ -34,10 +33,10 @@ function shuffleString(str) {
  * @param {string} prefix 
  * @param {number} seed 
  */
-function lureneight(prefix, seed = (Math.random() * Date.now() * 0xFFFFF)) {
+function lureneight(prefix, seed = Date.now()) {
     if (!prefix) throw 'Prefix should be a string but gotten undefined';
     const front = Buffer.from(prefix).toString('base64');
-    const middle = shuffleString(shuffleString(encode(seed)));
+    const middle = shuffleString(encode(seed));
     const last = shuffleString(shuffleString(Buffer.from(shuffleString((Math.random() * 0xFFFFFF).toString())).toString('base64')))
     return `${front}.${middle}.${last}`;
 }

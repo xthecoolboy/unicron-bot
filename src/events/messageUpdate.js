@@ -9,9 +9,11 @@ module.exports = class extends Event {
     }
     /**
      * @param {Client} client 
-     * @param {Message} message 
+     * @param {Message} oldMessage 
+     * @param {Message} newMessage
      */
     async run(client, oldMessage, newMessage) {
+        if (newMessage.partial) await newMessage.fetch();
         client.emit('message', newMessage, false);
     }
 }

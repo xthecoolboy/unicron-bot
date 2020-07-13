@@ -36,7 +36,7 @@ module.exports = class GuildManager extends BaseManager {
         }
     }
     /**
-     * 
+     * @private
      * @returns {Promise<Model>}
      * @param {typeof GuildSettings} model 
      * @param {string} guild_id 
