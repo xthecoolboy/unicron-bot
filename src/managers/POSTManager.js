@@ -11,6 +11,9 @@ module.exports = class POSTManager {
     constructor(server) {
         this.server = server;
     }
+    /**
+     * @returns {Object<string, number>}
+     */
     async getStats() {
         return {
             server_count: await this.server.getCount('guilds'),

@@ -11,6 +11,6 @@ module.exports = class extends BaseEvent {
      * @param {Client} client 
      */
     async run(client) {
-        client.logger.info(`${client.user.tag}/${client.user.id} ${client.shard} ready!`)
+        client.logger.info(`${client.user.tag}/${client.user.id} ${client.shard} ready!`);
     }
 }
