@@ -16,8 +16,8 @@ class Dashboard extends Endpoint {
                     'GET /discord/guild/:id',
                     'GET /unicron/user/:id',
                     'GET /unicron/guild/:id',
-                    'POST /unicron/user/:id',
-                    'POST /unicron/guild/:id',
+                    'POST /user/:id',
+                    'POST /guild/:id',
                 ]
             });
         });
