@@ -1,3 +1,5 @@
+# Installation
+
 ## Before you begin
 
 1. Make sure you have installed [Node.js](https://www.guru99.com/download-install-node-js.html) v12 or higher and [Git](https://www.linode.com/docs/development/version-control/how-to-install-git-on-linux-mac-and-windows/)
@@ -6,7 +8,8 @@
 
 ## Setting configurations.
 
-### Create an `.env` file and copy the following: (then place your credentials on it)
+### Create an `.env` file and copy the following: \(then place your credentials on it\)
+
 ```bash
 # Default prefix for the bot
 DEFAULT_PREFIX=
@@ -40,22 +43,29 @@ PORT=
 ```
 
 ### Emojis
-For emojis, you must add them on one of your bot's servers.
-Complete configuration for emojis are located on [Emojis](../assets/Emotes.json)
+
+For emojis, you must add them on one of your bot's servers. Complete configuration for emojis are located on [Emojis](https://github.com/oadpoaw/unicron-bot/tree/6c975122a6b50ba1a0987885b47bc7f5a8d8d41e/assets/Emotes.json)
 
 ## Installing Dependencies
+
 Open Command prompt or Powershell as **Administrator** then enter the following
+
 ```bash
 $ npm install -g --production windows-build-tools
 $ npm install --production
 ```
 
 ## Setting up the datbase
+
 ```bash
 $ npm run dbInit
 ```
+
 ## Launching the bot
+
 ```bash
-$ node . 
+$ node .
 ```
+
 enjoy!
+
