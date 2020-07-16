@@ -1,6 +1,6 @@
 # Table of contents
 
 - [Introduction](../README.md)
-- [Commands](./Commands.md)
+- [Commands](./COMMANDS.md)
 - [Installation](Installation.md)
 - [Contributing](Contributing.md)
