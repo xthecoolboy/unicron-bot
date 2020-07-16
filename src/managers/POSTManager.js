@@ -1,4 +1,4 @@
-const Server = require('../server/classes/Server');
+const Server = require('../api/classes/Server');
 const fetch = require('node-fetch');
 const { BotLists } = require('../utils/Constants');
 

@@ -34,7 +34,7 @@ module.exports = class Server extends EventEmitter {
      */
     async getCount(props) {
         if (props === 'users') {
-            const raw = await this.manage.broadcastEval(`this.guilds.cache.reduce((acc, cur) => acc + cur.memberCount, 0)`);
+            const raw = await this.manager.broadcastEval(`this.guilds.cache.reduce((acc, cur) => acc + cur.memberCount, 0)`);
             return raw.reduce((acc, cur) => acc + cur, 0);
         } else if (props === 'guilds') {
             const raw = await this.manager.broadcastEval(`this.guilds.cache.size`);
@@ -155,6 +155,7 @@ module.exports = class Server extends EventEmitter {
                 this.app.listen(port, () => {
                     this.logger.info(`API Server Running on port ${this.port}`);
                 });
+                await this.wait(20000);
                 const ids = await this.manager.broadcastEval(`this.user.id`);
                 this.id = ids.shift();
                 this.poster.startInterval();
