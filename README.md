@@ -47,4 +47,4 @@ You must follow the [Installation Guide](docs/Installation.md) to properly insta
 
 # License
 
-> Unicron is licensed under the MIT license. See the file [LICENSE](LICENSE) for more information. If you plan to use any part of this source code in your own bot, I would be grateful if you would include some form of credit somewhere.
+> Unicron is licensed under the GNU GPL license. See the file [LICENSE](LICENSE) for more information. If you plan to use any part of this source code in your own bot, I would be grateful if you would include some form of credit somewhere.
