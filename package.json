@@ -23,7 +23,7 @@
     },
     "devDependencies": {},
     "scripts": {
-        "start": "node .",
+        "start": "node src/index.js",
         "dbInit": "node . --database --reset --all"
     },
     "engines": {
